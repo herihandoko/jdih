@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="{{ asset('storage/backend/vendor/fontawesome-free/css/all.min.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/sb-admin-2.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/vendor/datatables/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/toastr.min.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/jquery-ui.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/jquery.timepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/summernote-bs4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/spacing.css') }}">
+<link rel="stylesheet" href="{{ asset('storage/backend/css/style.css') }}">
