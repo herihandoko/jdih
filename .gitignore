@@ -13,4 +13,12 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/storage
+
+# Abaikan semua file PDF
+*.pdf
+
+# Abaikan semua file log
+*.log
+
+# Abaikan semua file ZIP
+*.zip
