@@ -1,2 +1,17 @@
+# !.gitignore
+# Abaikan semua isi folder ini
 *
-!.gitignore
+
+# Kecualikan folder backend dan frontend
+!backend/
+!frontend/
+
+# Abaikan isi dalam backend & frontend secara default
+backend/*
+frontend/*
+
+# Kecualikan lagi semua isinya (biar isi folder ikut di-track)
+!backend/**/*
+!frontend/**/*
+
+
