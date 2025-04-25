@@ -58,6 +58,9 @@
                                 <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}
                             </a>
                         </div>
+                        <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
+                            {!! QrCode::size(150)->generate(asset('storage/places/peraturan/'.$produkHukumDetail->file_peraturan)) !!}
+                        </div>
                     @else
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
                             <button class="btn btn-sm btn-secondary btn-block" disabled="true" style="cursor: default; font-weight: 800;">
