@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,232 +19,233 @@
 
 <body id="page-top">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-        @php
-        $url = Request::path();
-        $conName = explode('/',$url);
-        if(!isset($conName[3]))
-        {
-            $conName[3] = '';
-        }
-        if(!isset($conName[2]))
-        {
-            $conName[2] = '';
-        }
-        @endphp
-
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-            <div class="sidebar-brand-text mx-3">JDIH Administrator</div>
-        </a>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-
-        <!-- Dashboard -->
-        <li class="nav-item @if($conName[1] == 'dashboard') active @endif">
-            <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                <i class="fas fa-fw fa-home"></i>
-                <span>Dashboard</span>
-
-            </a>
-        </li>
-
-        @php $arr_one = array(); @endphp
-        @if(session('role_id')!=1)
             @php
-                $row = array();
-                $access_data = DB::table('role_permissions')
-        ->join('role_pages', 'role_permissions.role_page_id', 'role_pages.id')
-        ->where('role_id', session('role_id'))
-        ->get();
+            $url = Request::path();
+            $conName = explode('/',$url);
+            if(!isset($conName[3]))
+            {
+            $conName[3] = '';
+            }
+            if(!isset($conName[2]))
+            {
+            $conName[2] = '';
+            }
+            @endphp
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
+                <div class="sidebar-brand-text mx-3">JDIH Administrator</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+
+            <!-- Dashboard -->
+            <li class="nav-item @if($conName[1] == 'dashboard') active @endif">
+                <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Dashboard</span>
+
+                </a>
+            </li>
+
+            @php $arr_one = array(); @endphp
+            @if(session('role_id')!=1)
+            @php
+            $row = array();
+            $access_data = DB::table('role_permissions')
+            ->join('role_pages', 'role_permissions.role_page_id', 'role_pages.id')
+            ->where('role_id', session('role_id'))
+            ->get();
             @endphp
             @foreach($access_data as $row)
-                @php
-                    if($row->access_status == 1):
-                    $arr_one[] = $row->page_title;
-                    endif;
-                @endphp
+            @php
+            if($row->access_status == 1):
+            $arr_one[] = $row->page_title;
+            endif;
+            @endphp
             @endforeach
-        @endif
+            @endif
 
 
 
-        <!-- General Settings -->
-        @php if( in_array('General Settings', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[1] == 'setting' && $conName[2] == 'general') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSetting" aria-expanded="true" aria-controls="collapseSetting">
-                <i class="fas fa-cog"></i>
-                <span>General Settings</span>
-            </a>
-            <div id="collapseSetting" class="collapse @if($conName[1] == 'setting' && $conName[2] == 'general') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @if($conName[3] == 'logo') active @endif" href="{{ route('admin.general_setting.logo') }}">Logo</a>
-                    <a class="collapse-item @if($conName[3] == 'favicon') active @endif" href="{{ route('admin.general_setting.favicon') }}">Favicon</a>
-                    <a class="collapse-item @if($conName[3] == 'loginbg') active @endif" href="{{ route('admin.general_setting.loginbg') }}">Login Background</a>
-                    <a class="collapse-item @if($conName[3] == 'topbar') active @endif" href="{{ route('admin.general_setting.topbar') }}">Top Bar</a>
-                    <a class="collapse-item @if($conName[3] == 'banner') active @endif" href="{{ route('admin.general_setting.banner') }}">Banner</a>
-                    <a class="collapse-item @if($conName[3] == 'footer') active @endif" href="{{ route('admin.general_setting.footer') }}">Footer</a>
-                    <a class="collapse-item @if($conName[3] == 'sidebar') active @endif" href="{{ route('admin.general_setting.sidebar') }}">Sidebar</a>
-                    <a class="collapse-item @if($conName[3] == 'color') active @endif" href="{{ route('admin.general_setting.color') }}">Color</a>
-                    <a class="collapse-item @if($conName[3] == 'preloader') active @endif" href="{{ route('admin.general_setting.preloader') }}">Preloader</a>
-                    <a class="collapse-item @if($conName[3] == 'stickyheader') active @endif" href="{{ route('admin.general_setting.stickyheader') }}">Sticky Header</a>
-                    <a class="collapse-item @if($conName[3] == 'googleanalytic') active @endif" href="{{ route('admin.general_setting.googleanalytic') }}">Google Analytic</a>
-                    <a class="collapse-item @if($conName[3] == 'googlerecaptcha') active @endif" href="{{ route('admin.general_setting.googlerecaptcha') }}">Google Recaptcha</a>
-                    <a class="collapse-item @if($conName[3] == 'tawklivechat') active @endif" href="{{ route('admin.general_setting.tawklivechat') }}">Tawk Live Chat</a>
-                    <a class="collapse-item @if($conName[3] == 'cookieconsent') active @endif" href="{{ route('admin.general_setting.cookieconsent') }}">Cookie Consent</a>
+            <!-- General Settings -->
+            @php if( in_array('General Settings', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[1] == 'setting' && $conName[2] == 'general') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSetting" aria-expanded="true" aria-controls="collapseSetting">
+                    <i class="fas fa-cog"></i>
+                    <span>General Settings</span>
+                </a>
+                <div id="collapseSetting" class="collapse @if($conName[1] == 'setting' && $conName[2] == 'general') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item @if($conName[3] == 'logo') active @endif" href="{{ route('admin.general_setting.logo') }}">Logo</a>
+                        <a class="collapse-item @if($conName[3] == 'bannerandroid') active @endif" href="{{ route('admin.general_setting.bannerandroid') }}">Banner Android</a>
+                        <a class="collapse-item @if($conName[3] == 'favicon') active @endif" href="{{ route('admin.general_setting.favicon') }}">Favicon</a>
+                        <a class="collapse-item @if($conName[3] == 'loginbg') active @endif" href="{{ route('admin.general_setting.loginbg') }}">Login Background</a>
+                        <a class="collapse-item @if($conName[3] == 'topbar') active @endif" href="{{ route('admin.general_setting.topbar') }}">Top Bar</a>
+                        <a class="collapse-item @if($conName[3] == 'banner') active @endif" href="{{ route('admin.general_setting.banner') }}">Banner</a>
+                        <a class="collapse-item @if($conName[3] == 'footer') active @endif" href="{{ route('admin.general_setting.footer') }}">Footer</a>
+                        <a class="collapse-item @if($conName[3] == 'sidebar') active @endif" href="{{ route('admin.general_setting.sidebar') }}">Sidebar</a>
+                        <a class="collapse-item @if($conName[3] == 'color') active @endif" href="{{ route('admin.general_setting.color') }}">Color</a>
+                        <a class="collapse-item @if($conName[3] == 'preloader') active @endif" href="{{ route('admin.general_setting.preloader') }}">Preloader</a>
+                        <a class="collapse-item @if($conName[3] == 'stickyheader') active @endif" href="{{ route('admin.general_setting.stickyheader') }}">Sticky Header</a>
+                        <a class="collapse-item @if($conName[3] == 'googleanalytic') active @endif" href="{{ route('admin.general_setting.googleanalytic') }}">Google Analytic</a>
+                        <a class="collapse-item @if($conName[3] == 'googlerecaptcha') active @endif" href="{{ route('admin.general_setting.googlerecaptcha') }}">Google Recaptcha</a>
+                        <a class="collapse-item @if($conName[3] == 'tawklivechat') active @endif" href="{{ route('admin.general_setting.tawklivechat') }}">Tawk Live Chat</a>
+                        <a class="collapse-item @if($conName[3] == 'cookieconsent') active @endif" href="{{ route('admin.general_setting.cookieconsent') }}">Cookie Consent</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
 
-        <!-- Page Settings -->
-        @php if( in_array('Page Settings', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[1] == 'page') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageSettings" aria-expanded="true" aria-controls="collapsePageSettings">
-                <i class="fas fa-paste"></i>
-                <span>Page Settings</span>
-            </a>
-            <div id="collapsePageSettings" class="collapse @if($conName[1] == 'page') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @if($conName[2] == 'home') active @endif" href="{{ route('admin.page_home.edit') }}">Beranda</a>
-                    <a class="collapse-item @if($conName[2] == 'about') active @endif" href="{{ route('admin.page_about.edit') }}">About</a>
-                    <a class="collapse-item @if($conName[2] == 'service') active @endif" href="{{ route('admin.page_service.edit') }}">Service</a>
-                    <a class="collapse-item @if($conName[2] == 'shop') active @endif" href="{{ route('admin.page_shop.edit') }}">Shop</a>
-                    <a class="collapse-item @if($conName[2] == 'blog') active @endif" href="{{ route('admin.page_blog.edit') }}">Blog</a>
-                    <a class="collapse-item @if($conName[2] == 'project') active @endif" href="{{ route('admin.page_project.edit') }}">Project</a>
-                    <a class="collapse-item @if($conName[2] == 'faq') active @endif" href="{{ route('admin.page_faq.edit') }}">FAQ</a>
-                    <a class="collapse-item @if($conName[2] == 'team') active @endif" href="{{ route('admin.page_team.edit') }}">Team Member</a>
-                    <a class="collapse-item @if($conName[2] == 'photo-gallery') active @endif" href="{{ route('admin.page_photo_gallery.edit') }}">Photo Gallery</a>
-                    <a class="collapse-item @if($conName[2] == 'video-gallery') active @endif" href="{{ route('admin.page_video_gallery.edit') }}">Video Gallery</a>
-                    <a class="collapse-item @if($conName[2] == 'contact') active @endif" href="{{ route('admin.page_contact.edit') }}">Kontak</a>
-                    <a class="collapse-item @if($conName[2] == 'career') active @endif" href="{{ route('admin.page_career.edit') }}">Career</a>
-                    <a class="collapse-item @if($conName[2] == 'term') active @endif" href="{{ route('admin.page_term.edit') }}">Term</a>
-                    <a class="collapse-item @if($conName[2] == 'privacy') active @endif" href="{{ route('admin.page_privacy.edit') }}">Privacy</a>
-                    <a class="collapse-item @if($conName[2] == 'other') active @endif" href="{{ route('admin.page_other.edit') }}">Other</a>
+            <!-- Page Settings -->
+            @php if( in_array('Page Settings', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[1] == 'page') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePageSettings" aria-expanded="true" aria-controls="collapsePageSettings">
+                    <i class="fas fa-paste"></i>
+                    <span>Page Settings</span>
+                </a>
+                <div id="collapsePageSettings" class="collapse @if($conName[1] == 'page') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item @if($conName[2] == 'home') active @endif" href="{{ route('admin.page_home.edit') }}">Beranda</a>
+                        <a class="collapse-item @if($conName[2] == 'about') active @endif" href="{{ route('admin.page_about.edit') }}">About</a>
+                        <a class="collapse-item @if($conName[2] == 'service') active @endif" href="{{ route('admin.page_service.edit') }}">Service</a>
+                        <a class="collapse-item @if($conName[2] == 'shop') active @endif" href="{{ route('admin.page_shop.edit') }}">Shop</a>
+                        <a class="collapse-item @if($conName[2] == 'blog') active @endif" href="{{ route('admin.page_blog.edit') }}">Blog</a>
+                        <a class="collapse-item @if($conName[2] == 'project') active @endif" href="{{ route('admin.page_project.edit') }}">Project</a>
+                        <a class="collapse-item @if($conName[2] == 'faq') active @endif" href="{{ route('admin.page_faq.edit') }}">FAQ</a>
+                        <a class="collapse-item @if($conName[2] == 'team') active @endif" href="{{ route('admin.page_team.edit') }}">Team Member</a>
+                        <a class="collapse-item @if($conName[2] == 'photo-gallery') active @endif" href="{{ route('admin.page_photo_gallery.edit') }}">Photo Gallery</a>
+                        <a class="collapse-item @if($conName[2] == 'video-gallery') active @endif" href="{{ route('admin.page_video_gallery.edit') }}">Video Gallery</a>
+                        <a class="collapse-item @if($conName[2] == 'contact') active @endif" href="{{ route('admin.page_contact.edit') }}">Kontak</a>
+                        <a class="collapse-item @if($conName[2] == 'career') active @endif" href="{{ route('admin.page_career.edit') }}">Career</a>
+                        <a class="collapse-item @if($conName[2] == 'term') active @endif" href="{{ route('admin.page_term.edit') }}">Term</a>
+                        <a class="collapse-item @if($conName[2] == 'privacy') active @endif" href="{{ route('admin.page_privacy.edit') }}">Privacy</a>
+                        <a class="collapse-item @if($conName[2] == 'other') active @endif" href="{{ route('admin.page_other.edit') }}">Other</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
 
 
-        <!-- Admin Users Section -->
-        @php if( in_array('User Section', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[1] == 'role' || $conName[1] == 'admin-user') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminUser" aria-expanded="true" aria-controls="collapseAdminUser">
-                <i class="fas fa-user-secret"></i>
-                <span>User Section</span>
-            </a>
-            <div id="collapseAdminUser" class="collapse @if($conName[1] == 'role' || $conName[1] == 'admin-user') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item @if($conName[2] == 'index') active @endif" href="{{ route('admin.role.index') }}">Roles</a>
-                    <a class="collapse-item @if($conName[2] == 'user') active @endif" href="{{ route('admin.role.user') }}">Users</a>
+            <!-- Admin Users Section -->
+            @php if( in_array('User Section', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[1] == 'role' || $conName[1] == 'admin-user') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAdminUser" aria-expanded="true" aria-controls="collapseAdminUser">
+                    <i class="fas fa-user-secret"></i>
+                    <span>User Section</span>
+                </a>
+                <div id="collapseAdminUser" class="collapse @if($conName[1] == 'role' || $conName[1] == 'admin-user') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item @if($conName[2] == 'index') active @endif" href="{{ route('admin.role.index') }}">Roles</a>
+                        <a class="collapse-item @if($conName[2] == 'user') active @endif" href="{{ route('admin.role.user') }}">Users</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
-        <!-- Web Section -->
-        @php if( in_array('Web Section', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[1] == 'slider' || $conName[1] == 'menu' || $conName[1] == 'footer' || $conName[1] == 'social-media' || $conName[1] == 'page-visimisi' || $conName[1] == 'page-strukturorganisasi' || $conName[1] == 'page-tupoksi') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWebSection" aria-expanded="true" aria-controls="collapseWebSection">
-                <i class="fas fa-globe"></i>
-                <span>Web Section</span>
-            </a>
-            <div id="collapseWebSection" class="collapse @if($conName[1] == 'slider' || $conName[1] == 'menu' || $conName[1] == 'footer' || $conName[1] == 'social-media' || $conName[1] == 'page-visimisi' || $conName[1] == 'page-strukturorganisasi' || $conName[1] == 'page-tupoksi') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    @php if( in_array('Social Media', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Web Section -->
+            @php if( in_array('Web Section', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[1] == 'slider' || $conName[1] == 'menu' || $conName[1] == 'footer' || $conName[1] == 'social-media' || $conName[1] == 'page-visimisi' || $conName[1] == 'page-strukturorganisasi' || $conName[1] == 'page-tupoksi') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseWebSection" aria-expanded="true" aria-controls="collapseWebSection">
+                    <i class="fas fa-globe"></i>
+                    <span>Web Section</span>
+                </a>
+                <div id="collapseWebSection" class="collapse @if($conName[1] == 'slider' || $conName[1] == 'menu' || $conName[1] == 'footer' || $conName[1] == 'social-media' || $conName[1] == 'page-visimisi' || $conName[1] == 'page-strukturorganisasi' || $conName[1] == 'page-tupoksi') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        @php if( in_array('Social Media', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'social-media') active @endif" href="{{ route('admin.social_media.index') }}">Social Media</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Sliders', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Sliders', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'slider') active @endif" href="{{ route('admin.slider.index') }}">Sliders</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Menu Manage', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Menu Manage', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'menu') active @endif" href="{{ route('admin.menu.index') }}">Menu Manage</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Visi dan Misi', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Visi dan Misi', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'page-visimisi') active @endif" href="{{ route('admin.web_setting.page_visimisi') }}">Visi dan Misi</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Struktur Organisasi', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Struktur Organisasi', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'page-strukturorganisasi') active @endif" href="{{ route('admin.web_setting.page_strukturorganisasi') }}">Struktur Organisasi</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Tupoksi', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Tupoksi', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'page-tupoksi') active @endif" href="{{ route('admin.web_setting.page_tupoksi') }}">Tupoksi</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Footer Columns', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Footer Columns', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[1] == 'footer') active @endif" href="{{ route('admin.footer.index') }}">Footer Columns</a>
-                    @endif
+                        @endif
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
-        <!-- Produk Hukum -->
-        @php if( in_array('Produk Hukum', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[2] == 'tipe-dokumen' || $conName[2] == 'jenis-peraturan' || $conName[2] == 'list-data') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProdukHukum" aria-expanded="true" aria-controls="collapseProdukHukum">
-                <i class="fas fa-book-journal-whills"></i>
-                <span>Produk Hukum</span>
-            </a>
-            <div id="collapseProdukHukum" class="collapse @if($conName[2] == 'tipe-dokumen' || $conName[2] == 'jenis-peraturan' || $conName[2] == 'list-data') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+            <!-- Produk Hukum -->
+            @php if( in_array('Produk Hukum', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[2] == 'tipe-dokumen' || $conName[2] == 'jenis-peraturan' || $conName[2] == 'list-data') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProdukHukum" aria-expanded="true" aria-controls="collapseProdukHukum">
+                    <i class="fas fa-book-journal-whills"></i>
+                    <span>Produk Hukum</span>
+                </a>
+                <div id="collapseProdukHukum" class="collapse @if($conName[2] == 'tipe-dokumen' || $conName[2] == 'jenis-peraturan' || $conName[2] == 'list-data') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
 
-                    @php if( in_array('Tipe Dokumen', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Tipe Dokumen', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[2] == 'tipe-dokumen') active @endif" href="{{ route('admin.produk_hukum.tipe.index') }}">Tipe Dokumen</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Jenis Peraturan', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Jenis Peraturan', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[2] == 'jenis-peraturan') active @endif" href="{{ route('admin.produk_hukum.jenis.index') }}">Jenis Peraturan</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Daftar Produk Hukum', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Daftar Produk Hukum', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[2] == 'list-data') active @endif" href="{{ route('admin.produk_hukum.listdata.index') }}">Daftar Produk</a>
-                    @endif
+                        @endif
 
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
-        <!-- Media Hukum -->
-        @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
-        <li class="nav-item @if($conName[2] == 'artikel-hukum' || $conName[2] == 'majalah-hukum') active @endif">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMediaHukum" aria-expanded="true" aria-controls="collapseMediaHukum">
-                <i class="fas fa-book-journal-whills"></i>
-                <span>Media Hukum</span>
-            </a>
-            <div id="collapseMediaHukum" class="collapse @if($conName[2] == 'artikel-hukum' || $conName[2] == 'majalah-hukum') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+            <!-- Media Hukum -->
+            @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
+            <li class="nav-item @if($conName[2] == 'artikel-hukum' || $conName[2] == 'majalah-hukum') active @endif">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMediaHukum" aria-expanded="true" aria-controls="collapseMediaHukum">
+                    <i class="fas fa-book-journal-whills"></i>
+                    <span>Media Hukum</span>
+                </a>
+                <div id="collapseMediaHukum" class="collapse @if($conName[2] == 'artikel-hukum' || $conName[2] == 'majalah-hukum') show @endif" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
 
-                    @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[2] == 'artikel-hukum') active @endif" href="{{ route('admin.media_hukum.artikelhukum.index') }}">Artikel Hukum</a>
-                    @endif
+                        @endif
 
-                    @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
+                        @php if( in_array('Media Hukum', $arr_one) || session('role_id')==1 ): @endphp
                         <a class="collapse-item @if($conName[2] == 'majalah-hukum') active @endif" href="{{ route('admin.media_hukum.majalahhukum.index') }}">Majalah Hukum</a>
-                    @endif
+                        @endif
 
+                    </div>
                 </div>
-            </div>
-        </li>
-        @endif
+            </li>
+            @endif
 
-        <!-- Footer Columns -->
-        <!-- @php if( in_array('Footer Columns', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Footer Columns -->
+            <!-- @php if( in_array('Footer Columns', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'footer') active @endif">
             <a class="nav-link" href="{{ route('admin.footer.index') }}">
                 <i class="fas fa-fw fa-list-alt"></i>
@@ -252,8 +254,8 @@
         </li>
         @endif -->
 
-        <!-- Sliders -->
-        <!-- @php if( in_array('Sliders', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Sliders -->
+            <!-- @php if( in_array('Sliders', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'slider') active @endif">
             <a class="nav-link" href="{{ route('admin.slider.index') }}">
                 <i class="fas fa-sliders-h"></i>
@@ -264,8 +266,8 @@
 
 
 
-        <!-- Blog Section -->
-        <!-- @php if( in_array('Blog Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Blog Section -->
+            <!-- @php if( in_array('Blog Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'category' || $conName[1] == 'blog' || $conName[1] == 'comment') active @endif">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBlog" aria-expanded="true" aria-controls="collapseBlog">
                 <i class="fas fa-cubes"></i>
@@ -284,8 +286,8 @@
 
 
 
-        <!-- Dynamic Pages -->
-        <!-- @php if( in_array('Dynamic Pages', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Dynamic Pages -->
+            <!-- @php if( in_array('Dynamic Pages', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'dynamic-page') active @endif">
             <a class="nav-link" href="{{ route('admin.dynamic_page.index') }}">
                 <i class="fas fa-cube"></i>
@@ -294,8 +296,8 @@
         </li>
         @endif -->
 
-        <!-- Menu Manage -->
-        <!-- @php if( in_array('Menu Manage', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Menu Manage -->
+            <!-- @php if( in_array('Menu Manage', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'menu') active @endif">
             <a class="nav-link" href="{{ route('admin.menu.index') }}">
                 <i class="fas fa-bars"></i>
@@ -304,8 +306,8 @@
         </li>
         @endif -->
 
-        <!-- Project -->
-        <!-- @php if( in_array('Project', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Project -->
+            <!-- @php if( in_array('Project', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'project') active @endif">
             <a class="nav-link" href="{{ route('admin.project.index') }}">
                 <i class="fas fa-umbrella"></i>
@@ -314,8 +316,8 @@
         </li>
         @endif -->
 
-        <!-- Career Section -->
-        <!-- @php if( in_array('Career Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Career Section -->
+            <!-- @php if( in_array('Career Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'job' || $conName[1] == 'job-application') active @endif">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCareer" aria-expanded="true" aria-controls="collapseCareer">
                 <i class="fas fa-user-secret"></i>
@@ -331,8 +333,8 @@
         @endif -->
 
 
-        <!-- Photo Gallery -->
-        <!-- @php if( in_array('Photo Gallery', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Photo Gallery -->
+            <!-- @php if( in_array('Photo Gallery', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'photo-gallery') active @endif">
             <a class="nav-link" href="{{ route('admin.photo.index') }}">
                 <i class="fas fa-camera"></i>
@@ -341,8 +343,8 @@
         </li>
         @endif -->
 
-        <!-- Video Gallery -->
-        <!-- @php if( in_array('Video Gallery', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Video Gallery -->
+            <!-- @php if( in_array('Video Gallery', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'video-gallery') active @endif">
             <a class="nav-link" href="{{ route('admin.video.index') }}">
                 <i class="fas fa-video"></i>
@@ -351,8 +353,8 @@
         </li>
         @endif -->
 
-        <!-- Product Section -->
-        <!-- @php if( in_array('Product Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Product Section -->
+            <!-- @php if( in_array('Product Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'product' || $conName[1] == 'shipping' || $conName[1] == 'coupon') active @endif">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="true" aria-controls="collapseProduct">
                 <i class="fas fa-shopping-cart"></i>
@@ -368,8 +370,8 @@
         </li>
         @endif -->
 
-        <!-- Order -->
-        <!-- @php if( in_array('Order Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Order -->
+            <!-- @php if( in_array('Order Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'order') active @endif">
             <a class="nav-link" href="{{ route('admin.order.index') }}">
                 <i class="fas fa-bookmark"></i>
@@ -378,8 +380,8 @@
         </li>
         @endif -->
 
-        <!-- Customer -->
-        <!-- @php if( in_array('Customer Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Customer -->
+            <!-- @php if( in_array('Customer Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'customer') active @endif">
             <a class="nav-link" href="{{ route('admin.customer.index') }}">
                 <i class="fas fa-users"></i>
@@ -388,8 +390,8 @@
         </li>
         @endif -->
 
-        <!-- Why Choose Us -->
-        <!-- @php if( in_array('Why Choose Us', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Why Choose Us -->
+            <!-- @php if( in_array('Why Choose Us', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'why-choose') active @endif">
             <a class="nav-link" href="{{ route('admin.why_choose.index') }}">
                 <i class="fas fa-arrows-alt"></i>
@@ -398,8 +400,8 @@
         </li>
         @endif -->
 
-        <!-- Services -->
-        <!-- @php if( in_array('Service', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Services -->
+            <!-- @php if( in_array('Service', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'service') active @endif">
             <a class="nav-link" href="{{ route('admin.service.index') }}">
                 <i class="fas fa-certificate"></i>
@@ -408,8 +410,8 @@
         </li>
         @endif -->
 
-        <!-- Testimonials -->
-        <!-- @php if( in_array('Testimonial', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Testimonials -->
+            <!-- @php if( in_array('Testimonial', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'testimonial') active @endif">
             <a class="nav-link" href="{{ route('admin.testimonial.index') }}">
                 <i class="fas fa-award"></i>
@@ -418,8 +420,8 @@
         </li>
         @endif -->
 
-        <!-- Team Members -->
-        <!-- @php if( in_array('Team Member', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Team Members -->
+            <!-- @php if( in_array('Team Member', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'team-member') active @endif">
             <a class="nav-link" href="{{ route('admin.team_member.index') }}">
                 <i class="fas fa-user-plus"></i>
@@ -428,8 +430,8 @@
         </li>
         @endif -->
 
-        <!-- FAQ -->
-        <!-- @php if( in_array('FAQ', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- FAQ -->
+            <!-- @php if( in_array('FAQ', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'faq') active @endif">
             <a class="nav-link" href="{{ route('admin.faq.index') }}">
                 <i class="fas fa-question-circle"></i>
@@ -438,8 +440,8 @@
         </li>
         @endif -->
 
-        <!-- Email Template -->
-        <!-- @php if( in_array('Email Template', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Email Template -->
+            <!-- @php if( in_array('Email Template', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'email-template') active @endif">
             <a class="nav-link" href="{{ route('admin.email_template.index') }}">
                 <i class="fas fa-envelope"></i>
@@ -448,8 +450,8 @@
         </li>
         @endif -->
 
-        <!-- Subscriber -->
-        <!-- @php if( in_array('Subscriber Section', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Subscriber -->
+            <!-- @php if( in_array('Subscriber Section', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'subscriber') active @endif">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSubscriber" aria-expanded="true" aria-controls="collapseSubscriber">
                 <i class="fas fa-share-alt-square"></i>
@@ -464,8 +466,8 @@
         </li>
         @endif -->
 
-        <!-- Social Media -->
-        <!-- @php if( in_array('Social Media', $arr_one) || session('role_id')==1 ): @endphp
+            <!-- Social Media -->
+            <!-- @php if( in_array('Social Media', $arr_one) || session('role_id')==1 ): @endphp
         <li class="nav-item @if($conName[1] == 'social-media') active @endif">
             <a class="nav-link" href="{{ route('admin.social_media.index') }}">
                 <i class="fas fa-basketball-ball"></i>
@@ -475,92 +477,93 @@
         @endif -->
 
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
+            <!-- Divider -->
+            <hr class="sidebar-divider">
 
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-    </ul>
-    <!-- End of Sidebar -->
-
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-        <!-- Main Content -->
-        <div id="content">
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
-
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-
-
-                    <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="btn btn-info btn-sm mt-3" href="{{ url('/') }}" target="_blank">
-                            Visit Website
-                        </a>
-                    </li>
-
-                    <div class="topbar-divider d-none d-sm-block"></div>
-                    <!-- Nav Item - User Information -->
-                    <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('name') }}</span>
-                            <img class="img-profile rounded-circle" src="{{ asset('storage/places/'.session('photo')) }}">
-                        </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-
-                            @if(session('id') == 1)
-                            <a class="dropdown-item" href="{{ route('admin.profile_change') }}">
-                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Change Profile
-                            </a>
-                            @endif
-
-                            <a class="dropdown-item" href="{{ route('admin.password_change') }}">
-                                <i class="fas fa-unlock-alt fa-sm fa-fw mr-2 text-gray-400"></i> Change Password
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.photo_change') }}">
-                                <i class="fas fa-image fa-sm fa-fw mr-2 text-gray-400"></i> Change Photo
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{ route('admin.logout') }}">
-                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </nav>
-            <!-- End of Topbar -->
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                @yield('admin_content')
-
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-            <!-- /.container-fluid -->
+        </ul>
+        <!-- End of Sidebar -->
+
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="btn btn-info btn-sm mt-3" href="{{ url('/') }}" target="_blank">
+                                Visit Website
+                            </a>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ session('name') }}</span>
+                                <img class="img-profile rounded-circle" src="{{ asset('storage/places/'.session('photo')) }}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+
+                                @if(session('id') == 1)
+                                <a class="dropdown-item" href="{{ route('admin.profile_change') }}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Change Profile
+                                </a>
+                                @endif
+
+                                <a class="dropdown-item" href="{{ route('admin.password_change') }}">
+                                    <i class="fas fa-unlock-alt fa-sm fa-fw mr-2 text-gray-400"></i> Change Password
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.photo_change') }}">
+                                    <i class="fas fa-image fa-sm fa-fw mr-2 text-gray-400"></i> Change Photo
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('admin.logout') }}">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    @yield('admin_content')
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
         </div>
-        <!-- End of Main Content -->
+        <!-- End of Content Wrapper -->
 
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Page Wrapper -->
 
-</div>
-<!-- End of Page Wrapper -->
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-@include('admin.includes.scripts-footer')
+    @include('admin.includes.scripts-footer')
 
 </body>
+
 </html>

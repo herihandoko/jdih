@@ -28,18 +28,18 @@ class LoginController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required',
         ]);
 
-        $check_email = Admin::where('email',$request->email)->first();
-        if(!$check_email)
+        $check_login = Admin::where('username',$request->username)->first();
+        if(!$check_login)
         {
-        	return redirect()->back()->with('error', 'Alamat Email tidak ditemukan');
+        	return redirect()->back()->with('error', 'Username tidak ditemukan');
         }
         else
         {
-        	$saved_password = $check_email->password;
+        	$saved_password = $check_login->password;
         	$given_password = $request->password;
 
         	if(\Hash::check($given_password,$saved_password) == false)
@@ -50,14 +50,15 @@ class LoginController extends Controller
 
         // Saving data into session
         session(['role' => 'admin']);
-        session(['id' => $check_email->id]);
-        session(['name' => $check_email->name]);
-        session(['email' => $check_email->email]);
-        session(['photo' => $check_email->photo]);
-        session(['role_id' => $check_email->role_id]);
-        session(['comp_code' => $check_email->comp_code]);
+        session(['id' => $check_login->id]);
+        session(['name' => $check_login->name]);
+        session(['username' => $check_login->username]);
+        session(['email' => $check_login->email]);
+        session(['photo' => $check_login->photo]);
+        session(['role_id' => $check_login->role_id]);
+        session(['comp_code' => $check_login->comp_code]);
 
-        $adminUpdate = Admin::findOrFail($check_email->id);
+        $adminUpdate = Admin::findOrFail($check_login->id);
         $data['last_login_at'] = Carbon::now()->toDateTimeString();
         $data['last_login_ip'] = $request->ip();
 

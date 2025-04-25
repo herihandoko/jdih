@@ -27,7 +27,7 @@
     			</div>
 
     			<div class="col-md-4">
-    				<div class="container-iframe">
+    				<div class="container-iframe shadow">
                         @if($majalahHukumDetail->file_majalah)
     	                    <iframe class="responsive-iframe" src="{{ url('storage/places/majalah/'.$majalahHukumDetail->file_majalah) }}" frameborder="0">
     	                    </iframe>

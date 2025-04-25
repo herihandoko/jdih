@@ -42,4 +42,7 @@
 <script src="{{ asset('storage/frontend/js/select2.full.js') }}"></script>
 <script src="{{ asset('storage/frontend/js/toastr.min.js') }}"></script>
 <script src="{{ asset('storage/frontend/js/bootstrap-select.js') }}"></script>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script src="{{ asset('storage/frontend/js/theia-sticky-sidebar.js') }}"></script>
+<script src="{{ asset('storage/frontend/js/ResizeSensor.js') }}"></script>
+
+<script src="{{ asset('storage/backend/js/echarts.min.js') }}"></script>

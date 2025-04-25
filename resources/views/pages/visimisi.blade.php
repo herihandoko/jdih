@@ -1,27 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-banner" style="background-image: url({{ asset('storage/places/'.$visiMisi->banner) }})">
-        <div class="bg-page"></div>
-        <div class="text">
-            <h1>{{ $visiMisi->name }}</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $visiMisi->name }}</li>
-                </ol>
-            </nav>
+    <div class="page-banner">
+        <div class="container">
+            <h1>{{ translateText($visiMisi->name) }}</h1>
         </div>
     </div>
 
     <div class="page-content">
         <div class="container">
-            <font style="font-size: small; font-style: italic; color: #B1B1B1">Diposting tanggal {{ $registeredAt }}</font>
+            <font style="font-size: small; font-style: italic; color: #B1B1B1">Diposting tanggal {{ $updatedAt }}</font>
             <hr/>
 
             <div class="row">
                 <div class="col-md-12" style="padding-bottom: 10px;">
-                    {!! $visiMisi->content !!}
+                    {!! html_entity_decode($visiMisi->content) !!}
                 </div>
             </div>
 

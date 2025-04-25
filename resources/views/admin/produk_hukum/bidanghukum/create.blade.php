@@ -11,6 +11,7 @@
                     <a href="{{ route('admin.produk_hukum.bh.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat List</a>
                 </div>
             </div>
+            
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-2">
@@ -43,6 +44,12 @@
                 </div>
 
                 <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Simpan
+                </button>
             </div>
         </div>
     </form>

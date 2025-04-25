@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PageStrukturOrganisasiItem extends Model
 {
-    use LogsActivity;
+    use LogsActivity, HasFactory;
     
     protected static $logAttributes = [
         'name',

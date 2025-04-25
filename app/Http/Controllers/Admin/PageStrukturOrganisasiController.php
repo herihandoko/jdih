@@ -76,12 +76,14 @@ class PageStrukturOrganisasiController extends Controller
             $request->validate([
                 'picture' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
-            unlink(public_path('storage/places/'.$request->current_picture));
-            $ext = $request->file('picture')->extension();
-            $final_name = 'struktur-organisasi-picture.'.$ext;
-            Storage::putFileAs('public/places', $request->file('picture'), $final_name);
-//            $request->file('picture')->move(public_path('uploads/'), $final_name);
-            $data['picture'] = $final_name;
+            
+            $name_file = $request->file('picture')->getClientOriginalName();
+            $filename_picture = pathinfo($name_file, PATHINFO_FILENAME);
+            $extension_file = $request->file('picture')->extension();
+            $final_name_file = $filename_picture . '_' . time() . '.' . $extension_file;
+            Storage::putFileAs('public/places', $request->file('picture'), $final_name_file);
+
+            $data['picture'] = $final_name_file;
         } else {
             $data['picture'] = $request->current_picture;
         }
@@ -90,12 +92,14 @@ class PageStrukturOrganisasiController extends Controller
             $request->validate([
                 'banner' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
-            unlink(public_path('storage/places/'.$request->current_banner));
-            $ext = $request->file('banner')->extension();
-            $final_name = 'struktur-organisasi-banner.'.$ext;
-            Storage::putFileAs('public/places', $request->file('banner'), $final_name);
-//            $request->file('banner')->move(public_path('uploads/'), $final_name);
-            $data['banner'] = $final_name;
+            
+            $name_file_banner = $request->file('banner')->getClientOriginalName();
+            $filename_banner = pathinfo($name_file_banner, PATHINFO_FILENAME);
+            $extension_file_banner = $request->file('banner')->extension();
+            $final_name_file_banner = $filename_banner . '_' . time() . '.' . $extension_file_banner;
+            Storage::putFileAs('public/places', $request->file('banner'), $final_name_file_banner);
+            
+            $data['banner'] = $final_name_file_banner;
         } else {
             $data['banner'] = $request->current_banner;
         }

@@ -63,18 +63,20 @@ class BeritaListController extends Controller
         $slug = Str::slug($request->judul_berita, '-');
 
         $beritaList = new BeritaList();
-        $data = $request->only($beritaList->getFillable());
 
-        if($request->publish == 1) {
-            $data['publish'] = 1;
-            $data['publish_at'] = Carbon::now()->toDateTimeString();
+        if($request->type_active == 1) {
+            $beritaList->publish = 1;
+            $beritaList->publish_at = Carbon::now()->toDateTimeString();
         } else {
-            $data['publish'] = 0;
+            $beritaList->publish = 0;
         }
-
-        $data['slug'] = $slug;
-        $data['comp_code'] = session('comp_code');
-        $data['created_by'] = session('id');
+        
+        $beritaList->judul_berita = $request->judul_berita;
+        $beritaList->berita_categories_id = $request->berita_categories_id;
+        $beritaList->content_berita = $request->content_berita;
+        $beritaList->slug = $slug;
+        $beritaList->comp_code = session('comp_code');
+        $beritaList->created_by = session('id');
         
         if($request->hasFile('photo_berita')) {
             $request->validate([
@@ -86,15 +88,15 @@ class BeritaListController extends Controller
 
             $name_file = $request->file('photo_berita')->getClientOriginalName();
             $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
-            $extension_file = $request->file('photo_berita')->getClientOriginalExtension();
+            $extension_file = $request->file('photo_berita')->extension();
             $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/berita', $request->file('photo_berita'), $final_name_file);
 //            $request->file('photo_berita')->move(public_path('uploads/berita/'), $final_name_file);
 
-            $data['photo_berita'] = $final_name_file;
+            $beritaList->photo_berita = $final_name_file;
         }
 
-        $beritaList->fill($data)->save();
+        $beritaList->save();
 //        return redirect()->back()->with('success', 'Berita is added successfully!');
         return redirect()->route('admin.media_hukum.berita.index')->with('success', 'Berita is added successfully!');
     }
@@ -112,7 +114,6 @@ class BeritaListController extends Controller
     public function update(Request $request, $id)
     {
         $beritaList = BeritaList::findOrFail($id);
-        $data = $request->only($beritaList->getFillable());
 
         $request->validate([
             'judul_berita' =>  [
@@ -123,13 +124,18 @@ class BeritaListController extends Controller
 
         $slug = Str::slug($request->judul_berita, '-');
 
-        if($request->publish == 1) {
-            $data['publish'] = 1;
-            $data['publish_at'] = Carbon::now()->toDateTimeString();
+        if($request->type_active == 1) {
+            $beritaList->publish = 1;
+            $beritaList->publish_at = Carbon::now()->toDateTimeString();
+        } else {
+            $beritaList->publish = 0;
         }
-
-        $data['slug'] = $slug;
-        $data['updated_by'] = session('id');
+        
+        $beritaList->judul_berita = $request->judul_berita;
+        $beritaList->berita_categories_id = $request->berita_categories_id;
+        $beritaList->content_berita = $request->content_berita;
+        $beritaList->slug = $slug;
+        $beritaList->updated_by = session('id');
         
         if($request->hasFile('photo_berita')) {
             $request->validate([
@@ -141,15 +147,15 @@ class BeritaListController extends Controller
 
             $name_file = $request->file('photo_berita')->getClientOriginalName();
             $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
-            $extension_file = $request->file('photo_berita')->getClientOriginalExtension();
+            $extension_file = $request->file('photo_berita')->extension();
             $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/berita', $request->file('photo_berita'), $final_name_file);
 //            $request->file('photo_berita')->move(public_path('uploads/berita/'), $final_name_file);
 
-            $data['photo_berita'] = $final_name_file;
+            $beritaList->photo_berita = $final_name_file;
         }
 
-        $beritaList->fill($data)->save();
+        $beritaList->save();
 //        return redirect()->back()->with('success', 'Berita is updated successfully!');
         return redirect()->route('admin.media_hukum.berita.index')->with('success', 'Berita is updated successfully!');
     }
@@ -187,11 +193,12 @@ class BeritaListController extends Controller
         ]);
 
         $beritaCategory = new BeritaCategory();
-        $data = $request->only($beritaCategory->getFillable());
+        
+        $beritaCategory->category_name = $request->category_name;
+        $beritaCategory->category_active = $request->category_active;
+        $beritaCategory->created_by = session('id');
 
-        $data['created_by'] = session('id');
-
-        $beritaCategory->fill($data)->save();
+        $beritaCategory->save();
         return redirect()->route('admin.media_hukum.berita.category')->with('success', 'Kategori Berita is added successfully!');
     }
 
@@ -205,7 +212,6 @@ class BeritaListController extends Controller
     public function categoryupdate(Request $request, $id)
     {
         $beritaCategory = BeritaCategory::findOrFail($id);
-        $data = $request->only($beritaCategory->getFillable());
 
         $request->validate([
             'category_name' =>  [
@@ -213,10 +219,12 @@ class BeritaListController extends Controller
                 Rule::unique('berita_categories')->ignore($id),
             ]
         ]);
+        
+        $beritaCategory->category_name = $request->category_name;
+        $beritaCategory->category_active = $request->category_active;
+        $beritaCategory->updated_by = session('id');
 
-        $data['updated_by'] = session('id');
-
-        $beritaCategory->fill($data)->save();
+        $beritaCategory->save();
         return redirect()->route('admin.media_hukum.berita.category')->with('success', 'Kategori Berita is updated successfully!');
     }
 

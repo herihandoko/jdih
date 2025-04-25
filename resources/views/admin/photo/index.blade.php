@@ -11,17 +11,17 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
+                        <th style="width: 2%;">No.</th>
                         <th>File Foto</th>
                         <th>Nama Foto</th>
                         @if($compcode == '')
-                        <th>Dinas</th>
+                            <th>Dinas</th>
                         @endif
-                        <th style="width: 14%;">Dibuat Oleh</th>
-                        <th style="width: 14%;">Dibuat Tgl</th>
+                        <th>Dibuat Oleh</th>
+                        <th>Dibuat Tgl</th>
                         <th>Urut</th>
                         <th>Aksi</th>
                     </tr>
@@ -29,26 +29,26 @@
                     <tbody>
                         @foreach($photosList as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>
-                                <img src="{{ url('storage/places/galeri_foto/'.$row->photo_name) }}" alt="" class="w_200">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="text-align: center; width: 20%;">
+                                <img src="{{ url('storage/places/galeri_foto/'.$row->photo_name) }}" alt="" class="w-50">
                             </td>
-                            <td>{{ $row->photo_caption }}</td>
+                            <td style="width: 20%;">{{ $row->photo_caption }}</td>
                             @if($compcode == '')
-                                <td>{{ $row->comp_name }}</td>
+                                <td style="width: auto;">{{ $row->comp_name }}</td>
                             @endif
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 {{ $row->name }}
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 @if($row->created_at)
-                                    {!! date('d-m-Y H:i:s', strtotime($row->created_at)) !!}
+                                    {!! date('d M Y H:i:s', strtotime($row->created_at)) !!}
                                 @else
                                     {{ '-' }}
                                 @endif
                             </td>
-                            <td>{{ $row->photo_order }}</td>
-                            <td style="text-align: center;">
+                            <td style="width: auto;">{{ $row->photo_order }}</td>
+                            <td style="text-align: center; width: auto;">
                                 @php $fotoID = Crypt::encrypt($row->id); @endphp
                                 <a href="{{ URL::to('admin/photo-gallery/edit/'.$fotoID) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>

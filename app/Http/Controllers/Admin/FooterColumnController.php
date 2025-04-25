@@ -7,6 +7,8 @@ use App\Models\Admin\FooterColumn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use DB;
 
 class FooterColumnController extends Controller
@@ -29,9 +31,6 @@ class FooterColumnController extends Controller
 
     public function store(Request $request)
     {
-        $footer_column_item = new FooterColumn();
-        $data = $request->only($footer_column_item->getFillable());
-        
         $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
         $request->validate([
@@ -46,22 +45,46 @@ class FooterColumnController extends Controller
             'column_item_order.min' => 'Column Item Order tidak boleh kosong.',
             'column_item_order.numeric' => 'Column Item Order tidak boleh kosong.'
         ]);
+        
+        $footer_column_item = new FooterColumn();
+        
+        $footer_column_item->column_item_text = $request->column_item_text;
+        $footer_column_item->column_item_url = $request->column_item_url;
+        $footer_column_item->column_item_order = $request->column_item_order;
+        $footer_column_item->column_name = $request->column_name;
+        $footer_column_item->is_member = $request->is_member;
+        
+        if($request->hasFile('logo')) {
+            $request->validate([
+                'logo' => 'required|mimes:jpeg,png,jpg|max:2048'
+            ],
+            [
+                'logo.mimes' => 'Logo tidak diijinkan'
+            ]);
 
-        $footer_column_item->fill($data)->save();
+            $name_file = $request->file('logo')->getClientOriginalName();
+            $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
+            $extension_file = $request->file('logo')->extension();
+            $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
+            Storage::putFileAs('public/places/logo_institusi', $request->file('logo'), $final_name_file);
+
+            $footer_column_item->logo = $final_name_file;
+        }
+        
+        $footer_column_item->save();
+        
         return redirect()->route('admin.footer.index')->with('success', 'Column Item is added successfully!');
     }
 
     public function edit($id)
     {
-        $footer_column_item = FooterColumn::findOrFail($id);
+        $footerID = Crypt::decrypt($id);
+        $footer_column_item = FooterColumn::findOrFail($footerID);
         return view('admin.footer_column.edit', compact('footer_column_item'));
     }
 
     public function update(Request $request, $id)
     {
-        $footer_column_item = FooterColumn::findOrFail($id);
-        $data = $request->only($footer_column_item->getFillable());
-
         $regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
         $request->validate([
@@ -76,8 +99,34 @@ class FooterColumnController extends Controller
             'column_item_order.min' => 'Column Item Order tidak boleh kosong.',
             'column_item_order.numeric' => 'Column Item Order tidak boleh kosong.'
         ]);
+        
+        $footer_column_item = FooterColumn::findOrFail($id);
+        
+        $footer_column_item->column_item_text = $request->column_item_text;
+        $footer_column_item->column_item_url = $request->column_item_url;
+        $footer_column_item->column_item_order = $request->column_item_order;
+        $footer_column_item->column_name = $request->column_name;
+        $footer_column_item->is_member = $request->is_member;
+        
+        if($request->hasFile('logo')) {
+            $request->validate([
+                'logo' => 'required|mimes:jpeg,png,jpg|max:2048'
+            ],
+            [
+                'logo.mimes' => 'Logo tidak diijinkan'
+            ]);
 
-        $footer_column_item->fill($data)->save();
+            $name_file = $request->file('logo')->getClientOriginalName();
+            $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
+            $extension_file = $request->file('logo')->extension();
+            $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
+            Storage::putFileAs('public/places/logo_institusi', $request->file('logo'), $final_name_file);
+
+            $footer_column_item->logo = $final_name_file;
+        }
+
+        $footer_column_item->save();
+        
         return redirect()->route('admin.footer.index')->with('success', 'Column Item is updated successfully!');
     }
 

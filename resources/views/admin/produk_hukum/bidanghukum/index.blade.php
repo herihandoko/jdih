@@ -11,25 +11,40 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
-                    <tr>
-                        <th style="width: 5%;">No.</th>
-                        <th style="width: 5%;">Kode</th>
-                        <th>Bidang Hukum</th>
-                        <th style="width: 5%;">Aktif</th>
-                        <th style="width: 5%;">Aksi</th>
-                    </tr>
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
+                        <tr>
+                            <th style="width: 2%;">No.</th>
+                            <th>Kode</th>
+                            <th>Bidang Hukum</th>
+                            <th>Aktif</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" placeholder="Cari Kode" class="form-control form-control-sm column-filter" data-column="1" /></th>
+                            <th><input type="text" placeholder="Cari Bidang Hukum" class="form-control form-control-sm column-filter" data-column="2" /></th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="3">
+                                    <option value="">Semua</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($produkHukumBidangHukum as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->bh_code }}</td>
-                            <td>{{ $row->bh_name }}</td>
-                            <td style="text-align: center;">@if($row->bh_active == 1) <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> @else <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> @endif</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->bh_code }}</td>
+                            <td style="width: auto;">{{ $row->bh_name }}</td>
+                            <td style="text-align: center; width: auto;">@if($row->bh_active == 1) <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> @else <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> @endif</td>
+                            <td style="text-align: center; width: auto;">
                                 @php $bhID = Crypt::encrypt($row->id); @endphp
                                 <a href="{{ URL::to('admin/produk-hukum/bidang-hukum/edit/'.$bhID) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                             </td>

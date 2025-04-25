@@ -17,7 +17,9 @@ class Slider extends Model
         'slider_text',
         'slider_button_text',
         'slider_button_url',
-        'slider_photo'];
+        'slider_photo',
+        'slider_sort',
+        'is_publish'];
 
     protected static $recordEvents = ['created', 'updated', 'deleted'];
     protected static $logOnlyDirty = true;
@@ -38,7 +40,9 @@ class Slider extends Model
         'slider_text',
         'slider_button_text',
         'slider_button_url',
-        'slider_photo'
+        'slider_photo',
+        'slider_sort',
+        'is_publish'
     ];
 
 }

@@ -13,6 +13,8 @@ class VisiMisiController extends Controller
         $visiMisi = DB::table('page_visi_misi_items')->where('id', 1)->first();
         $createdAt = Carbon::parse($visiMisi->created_at);
         $registeredAt = $createdAt->isoFormat('D MMMM Y');
-        return view('pages.visimisi', compact('visiMisi', 'registeredAt'));
+        $updateAt = Carbon::parse($visiMisi->updated_at);
+        $updatedAt = $updateAt->isoFormat('D MMMM Y HH:mm:ss');
+        return view('pages.visimisi', compact('visiMisi', 'registeredAt', 'updatedAt'));
     }
 }

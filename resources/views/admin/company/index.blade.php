@@ -11,23 +11,23 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
-                        <th style="width: 6%;">Kode</th>
+                        <th style="width: 2%;">No.</th>
+                        <th>Kode</th>
                         <th>Nama Dinas</th>
-                        <th style="width: 12%;">Aksi</th>
+                        <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($company as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->comp_code }}</td>
-                            <td>{{ $row->comp_name }}</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->comp_code }}</td>
+                            <td style="width: auto;">{{ $row->comp_name }}</td>
+                            <td style="text-align: center; width: auto;">
                                 <a href="{{ URL::to('admin/company/edit/'.$row->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>

@@ -48,15 +48,18 @@ class RoleController extends Controller
         $request->validate(
             [
                 'name' => 'required',
+                'username' => 'required|unique:admins',
                 'email' => 'required|unique:admins',
                 'password' => 'required',
                 're_password' => 'required|same:password'
             ],
             [
-                'email.unique' => 'Alamat Email sudah ada. Silakan input Alamat Email lainnya.'
+                'email.unique' => 'Alamat Email sudah ada. Silakan input Alamat Email lainnya.',
+                'username.unique' => 'Username sudah ada. Silakan input Username lainnya.'
             ],
             [
                 'name' => 'Name',
+                'username' => 'Username',
                 'email' => 'Email',
                 'password' => 'Password',
                 're_password' => 'Retype Password'
@@ -113,6 +116,9 @@ class RoleController extends Controller
                 'email'   =>  [
                     Rule::unique('admins')->ignore($id),
                 ],
+                'username'   =>  [
+                    Rule::unique('admins')->ignore($id),
+                ],
                 'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
             unlink(public_path('storage/places/'.$admin->photo));
@@ -127,6 +133,9 @@ class RoleController extends Controller
                     'required'
                 ],
                 'email'   =>  [
+                    Rule::unique('admins')->ignore($id),
+                ],
+                'username'   =>  [
                     Rule::unique('admins')->ignore($id),
                 ]
             ]);

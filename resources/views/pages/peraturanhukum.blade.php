@@ -1,97 +1,141 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-banner">
-        <div class="bg-page"></div>
-        <div class="text">
-            <h1>{{ $catMenuPeraturan->type_name }}</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item" style="color: white;">
-                        Ditemukan {{ $peraturanCount }} Peraturan
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+<style>
+    .card-header {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: start;
+    }
+    
+    @media (min-width: 768px) {
+        .card-header {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+    }
+</style>
 
-    <div class="page-content">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8">
-                    @if( $peraturanList->count() > 0 )
-                        
-                        @php
-                            $i = 0;
-                        @endphp
-                        
-                        @foreach ($peraturanList as $key => $row)
-                            <div class="mb-3">
-                                <div class="card-header text-white" style="background-color: #11D694;">
-                                    <span style="display: inline-block; border-radius: 2px; border: 1px solid cadetblue; padding: 0 14px; font-size: 13px; background-color: cadetblue;">
-                                        <small>
-                                            <i class="fa fa-eye"></i>&nbsp;dilihat {{ $row->view }} kali
-                                        </small>
+<div class="page-banner">
+    <div class="container">
+        <h1>{{ translateText($menu->menu_name) }}</h1>
+        <p class="subtitle">{{ translateText('Ditemukan') }} {{ $peraturanList->total() }} {{ translateText('Peraturan') }}</p>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container-jdihcontent">
+        <div class="row">
+            <div class="col-md-3 order-1 order-md-2 sidebar">
+                @include('layouts.sidebar_peraturan')
+            </div>
+            <div class="col-sm-9 order-2 order-md-1">
+                @if( $peraturanList->count() > 0 )
+                    @php
+                        $i = 0;
+                    @endphp
+
+                    @foreach ($peraturanList as $key => $row)
+                        <div class="mb-3">
+                            <div class="card-header text-white" style="background-color: #11D694;">
+                                <p class="mt-0 mb-0" style="color: #222; font-weight: 700; text-transform: uppercase;">
+                                    {{ 'Pemerintah Provinsi Banten' }}
+                                </p>
+                            </div>
+                            <div class="feature-mono">
+                                <span style="font-size: x-small;">{{ translateText('No.') }} {{ $peraturanList->firstItem() + $key }} {{ translateText('dari') }} {{ $peraturanList->total() }}</span>
+                                @if($row->status_akhir == 'Berlaku')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-success btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
                                     </span>
-                                    <span style="float: right; margin-top: 2px; display: inline-block; border-radius: 2px; border: 1px solid cadetblue; padding: 0 14px; font-size: 13px; background-color: cadetblue;">
-                                        <small>
-                                            <i class="fa fa-calendar-alt"></i>&nbsp;{{ $row->updated_at->isoFormat('D MMMM Y') }} {{ $row->updated_at->format('H:i:s') }}
-                                        </small>
+                                @elseif($row->status_akhir == 'Diubah')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-primary btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
+                                    </span>
+                                @elseif($row->status_akhir == 'Mengubah')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-primary btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
+                                    </span>
+                                @elseif($row->status_akhir == 'Dicabut')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-warning btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
+                                    </span>
+                                @elseif($row->status_akhir == 'Mencabut')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-warning btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
+                                    </span>
+                                @elseif($row->status_akhir == 'Tidak Berlaku')
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-danger btn-sm" style="font-size: x-small;">{{ 'Tidak Berlaku' }}</font>
+                                    </span>
+                                @else
+                                    <span style="float: right; margin-right: 20px;">
+                                        <font class="btn-success btn-sm" style="font-size: x-small;">{{ 'Berlaku' }}</font>
+                                    </span>
+                                @endif
+
+                                <p style="margin-top: 10px !important; margin-bottom: 15px !important;">
+                                    @php
+                                        $encryptedId = encrypt($row->id);
+                                        $encryptedKeyword = encrypt(request('keyword', ''));
+                                        $encryptedNomor = encrypt(request('nomor', ''));
+                                        $encryptedTahun = encrypt(request('tahun', 0));
+                                        $encryptedPage = encrypt(request('page', 1));
+                                        $encryptedRoutes = encrypt('front.detail.peraturanhukum');
+                                    @endphp
+                                    <form id="detailForm" action="{{ route('front.detail.peraturanhukum', ['menuslug' => $menu->slug, 'slug' => $row->slug]) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input style="display: none;" name="menuslug" value="{{ $menu->slug }}">
+                                        <input style="display: none;" name="slug" value="{{ $row->slug }}">
+                                        <input style="display: none;" name="id" value="{{ $encryptedId }}">
+                                        <input style="display: none;" name="keyword" value="{{ $encryptedKeyword }}">
+                                        <input style="display: none;" name="nomor" value="{{ $encryptedNomor }}">
+                                        <input style="display: none;" name="tahun" value="{{ $encryptedTahun }}">
+                                        <input style="display: none;" name="page" value="{{ $encryptedPage}}">
+                                        <input style="display: none;" name="pagefrom" value="{{ 'inside' }}">
+                                        <input style="display: none;" name="routes" value="{{ $encryptedRoutes }}">
+
+                                        <button type="submit" class="btn btn-sm btn-links p-0 m-0 align-baseline" style="font-size: medium; font-weight: 600; text-align: left;">
+                                            {{ ucwords(translateText($row->judul_peraturan)) }}
+                                        </button>
+                                    </form>
+                                </p>
+                                <p>
+                                    @if($row->produk_hukum_types)
+                                        {{ translateText($row->produk_hukum_types->type_name) }}
+                                    @endif
+                                </p>
+
+                                <div class="mt-2 mb-md-0 view-pengundangan">
+                                    <span class="mr-2">
+                                        <i class="fa fa-eye"></i>&nbsp;<small>{{ number_format($row->view, 0) }}</small>
                                     </span>
                                 </div>
-                                <div class="feature-mono">
-                                    <span style="font-size: small;">No. {{ $peraturanList->firstItem() + $key }} dari {{ $peraturanCount }}</span>
-                                    @if($row->status_akhir == 'Berlaku')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-success btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
-                                        </span>
-                                    @elseif($row->status_akhir == 'Diubah')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-primary btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
-                                        </span>
-                                    @elseif($row->status_akhir == 'Mengubah')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-primary btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
-                                        </span>
-                                    @elseif($row->status_akhir == 'Dicabut')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-warning btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
-                                        </span>
-                                    @elseif($row->status_akhir == 'Mencabut')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-warning btn-sm" style="font-size: x-small;">{{ $row->status_akhir }}</font>
-                                        </span>
-                                    @elseif($row->status_akhir == 'Tidak Berlaku')
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-danger btn-sm" style="font-size: x-small;">{{ 'Tidak Berlaku' }}</font>
-                                        </span>
-                                    @else
-                                        <span style="float: right; margin-right: 20px;">
-                                            <font class="btn-success btn-sm" style="font-size: x-small;">{{ 'Berlaku' }}</font>
-                                        </span>
-                                    @endif
-                                    <h4 style="margin-top: 10px !important; margin-bottom: 15px !important;">
-                                        <a href="{{ url('produkhukum/'.$menu->slug.'/'.$row->slug) }}">{{ $row->judul_peraturan }}</a>
-                                    </h4>
-                                    <p>{{ $row->produk_hukum_types->type_name }}</p>
+
+                                <div class="mt-2 mb-md-0 view-pengundangan">
+                                    <span>
+                                        @if($row->tgl_pengundangan)
+                                            <small><i class="fa fa-calendar-alt"></i>&nbsp;{{ translateText('Tgl Pengundangan:') }} {{ Carbon\Carbon::parse($row->tgl_pengundangan ?? $row->tanggal_pengundangan)->isoFormat('D MMMM Y') }}</small>
+                                        @else
+                                            <small><i class="fa fa-calendar-alt"></i>&nbsp;{{ Carbon\Carbon::parse($row->created_at)->isoFormat('D MMMM Y') }}</small>
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="shadowbox text-danger">
-                            Tidak ada data yang tersedia
                         </div>
-                    @endif
-                    <div class="blog-item mb-3">
-                        <div>
-                            {!! $peraturanList->links() !!}
-                        </div>
+                    @endforeach
+                @else
+                    @include('pages.no_data')
+                @endif
+                <div class="blog-item mb-3">
+                    <div>
+                        {!! $peraturanList->appends(['keyword' => request('keyword'), 'nomor' => request('nomor'), 'tahun' => request('tahun')])->links() !!}
                     </div>
-                </div>
-                <div class="col-md-4">
-                    @include('layouts.sidebar_peraturan')
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

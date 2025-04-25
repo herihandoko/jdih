@@ -11,23 +11,42 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
-                    <tr>
-                        <th style="width: 5%;">No.</th>
-                        <th>Jenis Peraturan</th>
-                        <th style="width: 5%;">Aktif</th>
-                        <th style="width: 5%;">Aksi</th>
-                    </tr>
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
+                        <tr>
+                            <th style="width: 2%;">No.</th>
+                            <th>Jenis Peraturan</th>
+                            <th>Aktif</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" placeholder="Cari Jenis Peraturan" class="form-control form-control-sm column-filter" data-column="1" /></th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="2">
+                                    <option value="">Semua</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
-                        @php $i=0; @endphp
                         @foreach($produkHukumType as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->type_name }}</td>
-                            <td style="text-align: center;">@if($row->type_active == 1) <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> @else <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> @endif</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->type_name }}</td>
+                            <td style="text-align: center; width: auto;">
+                                @if($row->type_active == 1) 
+                                    <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> 
+                                @else 
+                                    <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> 
+                                @endif
+                            </td>
+                            <td style="text-align: center; width: auto;">
                                 <a href="{{ URL::to('admin/produk-hukum/jenis-peraturan/edit/'.$row->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>

@@ -39,33 +39,33 @@
         </div>
 	</div>
 
-	<div class="card shadow mb-4">
-    	<div class="card-body">
+	
+    	<div class="card card-body shadow mb-4">
     		<div class="table-responsive">
-                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center; background-color: lightsalmon;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead style="background-color: lightsalmon;">
                     <tr>
                         <th style="width: 2%;">No.</th>
-                        <th style="width: 10%;">Nama</th>
-                        <th style="width: 6%;">Jenis Kelamin</th>
-                        <th style="width: 2%;">Umur</th>
-                        <th style="width: 5%;">Email</th>
-                        <th style="width: 1%;">Pendidikan</th>
-                        <th style="width: 5%;">Pekerjaan</th>
-                        <th style="width: 5%;">Tgl Survey</th>
-                        <th style="width: 2%;">Aksi</th>
+                        <th>Nama</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Umur</th>
+                        <th>Email</th>
+                        <th>Pendidikan</th>
+                        <th>Pekerjaan</th>
+                        <th>Tgl Survey</th>
+                        <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
                     	@php $i=0; @endphp
                     	@foreach($listSurvey as $row)
                     	<tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">
                             	{{ $row->visitor_name }}
                             </td>
 
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                             	@if($row->visitor_sex == "L")
                             		<font class="btn-primary btn-sm" style="font-size: small;">{{ 'Laki-Laki' }}</font>
                             	@else
@@ -73,19 +73,19 @@
                             	@endif
                             </td>
 
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                             	{{ $row->visitor_age }}
                             </td>
 
-                            <td>
+                            <td style="width: auto;">
                             	{{ $row->visitor_email }}
                             </td>
 
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                             	{{ $row->visitor_education }}
                             </td>
                             
-                            <td>
+                            <td style="width: auto;">
                             	@if($row->visitor_job == "LAINNYA")
                             		{{ $row->visitor_jobother }}
                             	@else
@@ -93,11 +93,11 @@
                             	@endif
                             </td>
 
-                            <td style="text-align: center;">
-                            	{{ $row->created_at }}
+                            <td style="text-align: center; width: auto;">
+                                {!! date('d M Y H:i:s', strtotime($row->created_at)) !!}
                             </td>
 
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 @php $surveyID = Crypt::encrypt($row->id); @endphp
                                 <a href="#" id="preview" data-toggle="modal" class="btn btn-warning btn-sm" data-identity="{{$surveyID}}">
                                 	<i class="fas fa-file-text"></i>
@@ -109,7 +109,7 @@
                 </table>
             </div>
     	</div>
-    </div>
+    
 
     @include('admin.modalPreview')
 

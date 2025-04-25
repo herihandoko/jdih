@@ -13,23 +13,23 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
+                        <th style="width: 2%;">No.</th>
                         <th>Nama Kategori</th>
-                        <th style="width: 5%;">Aktif</th>
-                        <th style="width: 5%;">Aksi</th>
+                        <th>Aktif</th>
+                        <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($beritaCategory as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->category_name }}</td>
-                            <td style="text-align: center;">@if($row->category_active == 1) <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> @else <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> @endif</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->category_name }}</td>
+                            <td style="text-align: center; width: 2%;">@if($row->category_active == 1) <font class="btn-success btn-sm" style="font-size: small;">{{ 'Ya' }}</font> @else <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak' }}</font> @endif</td>
+                            <td style="text-align: center; width: auto;">
                                 @php $kategoriID = Crypt::encrypt($row->id); @endphp
                                 <a href="{{ URL::to('admin/media-hukum/category-berita/edit/'.$kategoriID) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                             </td>

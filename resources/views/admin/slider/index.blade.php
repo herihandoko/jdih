@@ -11,23 +11,35 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: x-small;">
                     <thead>
-                    <tr>
-                        <th>SL</th>
-                        <th>Photo</th>
-                        <th>Slider Heading</th>
-                        <th>Action</th>
-                    </tr>
+                        <tr>
+                            <th style="width: 2%;">No.</th>
+                            <th>Photo</th>
+                            <th>Slider Heading</th>
+                            <th>Status</th>
+                            <th>Order</th>
+                            <th>Action</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($slider as $row)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td><img src="{{ asset('storage/places/'.$row->slider_photo) }}" alt="" class="w_150"></td>
-                            <td>{{ $row->slider_heading }}</td>
-                            <td>
+                        <tr style="text-align: center;s">
+                            <td style="width: 2%; vertical-align: middle;">{{ $loop->iteration }}</td>
+                            <td style="width: auto; vertical-align: middle;">
+                                <img src="{{ asset('storage/places/'.$row->slider_photo) }}" alt="" class="w_150">
+                            </td>
+                            <td style="width: auto; vertical-align: middle;">{{ $row->slider_heading }}</td>
+                            <td style="width: auto; vertical-align: middle;">
+                                @if($row->is_publish == 1)
+                                    <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Publish' }}</font>
+                                @else
+                                    <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Tidak Publish' }}</font>
+                                @endif
+                            </td>
+                            <td style="width: auto; vertical-align: middle;">{{ $row->slider_sort }}</td>
+                            <td style="width: auto; vertical-align: middle;">
                                 <a href="{{ URL::to('admin/slider/edit/'.$row->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                 <a href="{{ URL::to('admin/slider/delete/'.$row->id) }}" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
                             </td>

@@ -5,63 +5,93 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin\ProdukHukumList;
 use App\Models\Admin\BeritaList;
-use App\Models\Admin\PhotosList;
+use App\Models\Admin\Page;
 use Illuminate\Support\Str;
 use DB;
 
 class FrontPageController extends Controller
 {
-    public function index($slug)
-    {   
-        if($slug == "berita") {
-            $contentList = BeritaList::join('admins', 'berita_lists.created_by', '=', 'admins.id')
-                            ->where('berita_lists.is_deleted', 0)
-                            ->where('berita_lists.publish', 1)
-                            ->orderby('berita_lists.created_at', 'desc')
-                            ->paginate(10);
+    public function index(Request $request, $slug)
+    {
+        if($request->input('slugs')) {
+            $slug = $request->input('slugs');
+        }
+        
+        $menu = DB::table('menus')->where('slug', $slug)->first();
+        $pageView = Page::where('id', $menu->page_id)->first();
+        
+        $keyword = $request->input('keyword');
+        $tahun = $request->input('tahun');
+        
+        if(isset($pageView)) {
+            $secondNamespace = 'App\Http\Controllers\Front\\';
+            $controllerName = $secondNamespace . $pageView->page_view;
+            $secondMethod = 'index';
+            $response = \App::call("$controllerName@$secondMethod");
             
-            $contentCount = BeritaList::where('is_deleted', 0)
-                            ->where('publish', 1)
-                            ->orderby('created_at', 'desc')
-                            ->count();
-            
-            return view('pages.berita', compact('contentList', 'contentCount'));
-        } elseif(Str::contains($slug, 'foto')) {
-            $contentList = PhotosList::where('is_deleted', 0)
-                            ->orderby('created_at', 'desc')
-                            ->paginate(10);
-            
-            $contentCount = PhotosList::where('is_deleted', 0)
-                            ->orderby('created_at', 'desc')
-                            ->count();
-            
-            return view('pages.photo_gallery', compact('contentList', 'contentCount'));
+            return $response;
         } else {
-            $menu = DB::table('menus')->where('slug', $slug)->first();
             
-            $contentList = ProdukHukumList::where('produk_hukum_categories_id', $menu->type_doc)
-                            ->where('is_deleted', 0)
+            $data = ProdukHukumList::where('produk_hukum_categories_id', $menu->type_doc);
+            
+            if(($keyword != '') && ($tahun == 0)) {
+                $data->where(function($query) use ($keyword) {
+                        $query->where('judul_peraturan', 'like', '%' . $keyword . '%')
+                              ->orWhere('teu_badan', 'like', '%' . $keyword . '%');
+                        });
+            }
+            
+            if(($keyword == '') && ($tahun != 0)) {
+                $data->whereYear('thn_peraturan', $tahun);
+            }
+            
+            if(($keyword != '') && ($tahun != 0)) {
+                
+                $data->where(function($query) use ($keyword) {
+                        $query->where('judul_peraturan', 'like', '%' . $keyword . '%')
+                              ->orWhere('teu_badan', 'like', '%' . $keyword . '%');
+                        })
+                        ->whereYear('thn_peraturan', $tahun);
+            }
+            
+            $contentList = $data->where('is_deleted', 0)
                             ->where('is_publish', 1)
                             ->orderby('created_at', 'desc')
                             ->paginate(10);
-
-            $contentCount = ProdukHukumList::where('produk_hukum_categories_id', $menu->type_doc)
-                            ->where('is_deleted', 0)
-                            ->where('is_publish', 1)
-                            ->count();
-
-            $tahun = DB::table('produk_hukum_lists')->where('thn_peraturan', '!=', null)->where('produk_hukum_categories_id', '=', $menu->type_doc)->groupBy('thn_peraturan')->pluck('thn_peraturan');
+            $contentList->appends(['keyword' => $keyword, 'tahun' => $tahun]);
             
-            return view('pages.frontpage', compact('menu', 'contentList', 'contentCount', 'tahun'));
+//            $contentList = ProdukHukumList::where('produk_hukum_categories_id', $menu->type_doc)
+//                            ->where('is_deleted', 0)
+//                            ->where('is_publish', 1)
+//                            ->orderby('created_at', 'desc')
+//                            ->paginate(10);
+
+            $tahun = DB::table('produk_hukum_lists')
+                        ->where('thn_peraturan', '!=', null)
+                        ->where('produk_hukum_categories_id', '=', $menu->type_doc)
+                        ->groupBy('thn_peraturan')
+                        ->orderBy('thn_peraturan', 'desc')
+                        ->pluck('thn_peraturan');
+            
+            return view('pages.frontpage', compact('menu', 'contentList', 'tahun'));
         }
     }
     
-    public function detail($menuslug, $slug)
+    public function detail(Request $request)
     {
         $g_setting = DB::table('general_settings')->where('id', 1)->first();
+        
+        $menuslug = $request->input('menuslug');
+        $slug = $request->input('slug');
+        
         $menu = DB::table('menus')->where('slug', $menuslug)->first();
 
-        $produkHukumDetail = ProdukHukumList::where('produk_hukum_categories_id', $menu->type_doc)->where('slug', $slug)->first();
+//        $produkHukumDetail = ProdukHukumList::leftJoin('produk_hukum_types', 'produk_hukum_lists.produk_hukum_types_id', '=', 'produk_hukum_types.id')
+//                                                ->where('produk_hukum_categories_id', $menu->type_doc)
+//                                                ->where('slug', $slug)
+//                                                ->first();
+        
+        $produkHukumDetail = ProdukHukumList::where('id', $request->input('id'))->first();
 
         if(!$produkHukumDetail) {
             return abort(404);
@@ -75,7 +105,11 @@ class FrontPageController extends Controller
             ProdukHukumList::where('id', '=', $produkHukumDetail->id)->update($dataView);
         }
         
-        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail'));
+        $keyword = $request->input('keyword');
+        $tahun = $request->input('tahun');
+        $page = $request->input('page', 1);
+        
+        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'keyword', 'tahun', 'page'));
     }
     
     public function detailBerita($slug) {

@@ -55,7 +55,6 @@ class ProdukHukumCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'type_name'   =>  [
                 'required',

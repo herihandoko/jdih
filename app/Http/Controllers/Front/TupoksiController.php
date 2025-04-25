@@ -13,6 +13,8 @@ class TupoksiController extends Controller
         $tupoksi = DB::table('page_tupoksi_items')->where('id', 1)->first();
         $createdAt = Carbon::parse($tupoksi->created_at);
         $registeredAt = $createdAt->isoFormat('D MMMM Y');
-        return view('pages.tupoksi', compact('tupoksi', 'registeredAt'));
+        $updateAt = Carbon::parse($tupoksi->updated_at);
+        $updatedAt = $updateAt->isoFormat('D MMMM Y HH:mm:ss');
+        return view('pages.tupoksi', compact('tupoksi', 'registeredAt', 'updatedAt'));
     }
 }

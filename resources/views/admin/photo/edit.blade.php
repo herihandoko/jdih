@@ -11,22 +11,10 @@
                     <a href="{{ route('admin.photo.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Lihat List</a>
                 </div>
             </div>
+            
             <div class="card-body">
-                <div class="form-group">
-                    <label for="">Foto Saat Ini</label>
-                    <div>
-                        <img src="{{ asset('storage/places/galeri_foto/'.$photo->photo_name) }}" alt="" class="w_300">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="">Ubah Foto</label>
-                    <span style="font-style: italic; font-size: smaller;">(Ekstensi Foto: .jpeg, .png, .jpg, .gif || Maks.: 1.5 MB)</span>
-                    <div>
-                        <input type="file" name="photo_name" accept=".jpeg, .png, .jpg, .gif">
-                    </div>
-                </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="">Nama Foto</label>
                             <input type="text" name="photo_caption" class="form-control" value="{{ $photo->photo_caption }}" autofocus>
@@ -37,7 +25,36 @@
                         </div>        
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Ubah</button>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Image Saat Ini</label>
+                            <div>
+                                @if($photo)
+                                    <img src="{{ asset('storage/places/galeri_foto/'.$photo->photo_name) }}" alt="" class="w_300">
+                                @else
+                                    <img alt="" class="w_300">
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="">Ubah Image</label>
+                            <span style="font-style: italic; font-size: smaller;">(Ekstensi Foto: .jpeg, .png, .jpg, .gif || Maks.: 1.5 MB)</span>
+                            <div>
+                                <input type="file" name="photo_name" accept=".jpeg, .png, .jpg, .gif">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Ubah
+                </button>
             </div>
         </div>
     </form>

@@ -13,12 +13,13 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
+                        <th style="width: 2%;">No.</th>
                         <th>Foto</th>
                         <th>Nama</th>
+                        <th>Username</th>
                         <th>Alamat Email</th>
                         <th>Dinas</th>
                         <th>Role</th>
@@ -28,25 +29,26 @@
                     <tbody>
                     @foreach($admin_users as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="text-align: center; width: auto;">
                                 @if($row->photo)
                                     <img src="{{ asset('storage/places/'.$row->photo) }}" alt="" class="w_30">
                                 @else
                                     <img src="{{ asset('storage/places/avatar_profile.png') }}" alt="" class="w_30">
                                 @endif
                             </td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->email }}</td>
-                            <td>
+                            <td style="width: auto;">{{ $row->name }}</td>
+                            <td style="width: auto;">{{ $row->username }}</td>
+                            <td class="text-left" style="width: auto;">{{ $row->email }}</td>
+                            <td style="width: auto;">
                                 @if($row->id != 1)
                                     {{ $row->comp_name }}
                                 @else
                                     {{ 'Super Admin' }}
                                 @endif
                             </td>
-                            <td>{{ $row->role_name }}</td>
-                            <td style="text-align: center; font-size: x-small;">
+                            <td style="width: auto;">{{ $row->role_name }}</td>
+                            <td style="text-align: center; width: auto;">
                                 @if($row->id != 1)
                                     <a href="{{ URL::to('admin/role/user/edit/password/'.$row->id) }}" class="btn btn-success btn-sm">
                                         <i class="fas fa-key"></i>

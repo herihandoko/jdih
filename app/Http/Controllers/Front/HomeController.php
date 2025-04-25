@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\ProdukHukumList;
 use App\Models\Admin\BeritaList;
+use App\Models\Admin\Videos;
 use App\Models\Admin\ProdukHukumType;
 use App\Models\Admin\ProdukHukumCategory;
+use App\Models\Admin\ApiLink;
 use App\Models\Tracker;
 use Illuminate\Http\Request;
 use DB;
@@ -14,7 +16,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-    	$sliders = DB::table('sliders')->get();
+    	$sliders = DB::table('sliders')->where('is_publish', 1)->orderBy('slider_sort', 'asc')->get();
     	$page_home = DB::table('page_home_items')->where('id',1)->first();
     	$why_choose_items = DB::table('why_choose_items')->get();
     	$services = DB::table('services')->get();
@@ -35,26 +37,59 @@ class HomeController extends Controller
         $peraturanTerbaru = ProdukHukumList::join('menus', 'produk_hukum_lists.produk_hukum_types_id', '=', 'menus.type_ruledoc')
                                 ->select('produk_hukum_lists.*', 'menus.slug as menuSlug')
                                 ->where('produk_hukum_lists.produk_hukum_categories_id', $peraturanId->id)
+                                ->where('produk_hukum_lists.is_publish', 1)
                                 ->where('produk_hukum_lists.is_deleted', 0)
-                                ->orderBy('produk_hukum_lists.updated_at', 'desc')
+                                ->orderBy('produk_hukum_lists.tgl_pengundangan', 'desc')
                                 ->paginate(5);
         
         $peraturanTerpopuler = ProdukHukumList::join('menus', 'produk_hukum_lists.produk_hukum_types_id', '=', 'menus.type_ruledoc')
                                 ->select('produk_hukum_lists.*', 'menus.slug as menuSlug')
                                 ->where('produk_hukum_lists.produk_hukum_categories_id', $peraturanId->id)
+                                ->where('produk_hukum_lists.is_publish', 1)
                                 ->where('produk_hukum_lists.is_deleted', 0)
                                 ->orderBy('produk_hukum_lists.view', 'desc')
                                 ->paginate(5);
         
-        $produkHukumType = ProdukHukumType::select('id', 'type_name')->where('type_active', '=', 1)->get();
+        $produkHukumKategori = ProdukHukumCategory::select('id', 'category_name')->where('category_active', '=', 1)->get();
         
         $produkHukumKategoriId = ProdukHukumCategory::where('category_name', 'like', 'Peraturan%')->first();
         $produkHukumKategoriStatus = ProdukHukumList::where('produk_hukum_categories_id', '=', $produkHukumKategoriId->id)->groupBy('status_akhir')->pluck('status_akhir');
         
-        $berita = BeritaList::where('publish', '=', 1)->where('is_deleted', '=', 0)->orderBy('publish_at', 'desc')->limit(6)->get();
+        $instansi = ApiLink::select('id', 'api_name')->where('api_active', '=', 1)->get();
+        
+        $berita = BeritaList::join('admins', 'berita_lists.created_by', '=', 'admins.id')
+                    ->select('berita_lists.judul_berita', 'berita_lists.content_berita', 'berita_lists.slug', 'berita_lists.photo_berita', 'berita_lists.created_at', 'berita_lists.publish_at', 'admins.name',)
+                    ->where('berita_lists.publish', '=', 1)
+                    ->where('berita_lists.is_deleted', '=', 0)
+                    ->orderBy('berita_lists.publish_at', 'desc')
+                    ->limit(6)
+                    ->get();
+        
+        $video = Videos::where('publish', '=', 1)->where('is_deleted', '=', 0)->orderBy('publish_at', 'desc')->limit(6)->get();
+        
+        $totalPeraturan = DB::select('select full_month.month, COUNT(a.id) AS total from (
+					SELECT 1 AS MONTH
+				 UNION SELECT 2 AS MONTH
+				 UNION SELECT 3 AS MONTH
+				 UNION SELECT 4 AS MONTH
+				 UNION SELECT 5 AS MONTH
+				 UNION SELECT 6 AS MONTH
+				 UNION SELECT 7 AS MONTH
+				 UNION SELECT 8 AS MONTH
+				 UNION SELECT 9 AS MONTH
+				 UNION SELECT 10 AS MONTH
+				 UNION SELECT 11 AS MONTH
+				 UNION SELECT 12 AS MONTH ) as full_month LEFT JOIN produk_hukum_lists a ON full_month.month = MONTH(a.tgl_penetapan) AND YEAR(a.tgl_penetapan) = YEAR(CURDATE()) LEFT JOIN produk_hukum_categories b ON a.produk_hukum_categories_id = b.id AND b.category_name = "Peraturan Perundang-undangan" GROUP BY full_month.month ORDER BY full_month.month');
 
         Tracker::hit();
 
-        return view('pages.index', compact('sliders','page_home','why_choose_items','services', 'testimonials','projects','team_members','blogs', 'artikel', 'artikelMenu', 'majalah', 'majalahMenu', 'peraturanTerbaru', 'peraturanTerpopuler', 'produkHukumType', 'produkHukumKategoriStatus', 'berita'));
+        return view('pages.index', compact('sliders','page_home','why_choose_items','services', 'testimonials','projects','team_members','blogs', 'artikel', 'artikelMenu', 'majalah', 'majalahMenu', 'peraturanTerbaru', 'peraturanTerpopuler', 'produkHukumKategori', 'produkHukumKategoriStatus', 'berita', 'video', 'totalPeraturan', 'instansi'));
+    }
+    
+    public function getJenisByKategori($kategoriId)
+    {
+        $jenis = ProdukHukumList::join('produk_hukum_types', 'produk_hukum_lists.produk_hukum_types_id', '=', 'produk_hukum_types.id')
+                                ->where('produk_hukum_lists.produk_hukum_categories_id', $kategoriId)->pluck('produk_hukum_types.type_name', 'produk_hukum_types.id');
+        return response()->json($jenis);
     }
 }

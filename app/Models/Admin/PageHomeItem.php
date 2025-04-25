@@ -71,7 +71,18 @@ class PageHomeItem extends Model
         'majalah_title',
         'majalah_subtitle',
         'majalah_bg',
-        'majalah_status'];
+        'majalah_status',
+        'video_title',
+        'video_subtitle',
+        'video_bg',
+        'video_status',
+        'grafis_title',
+        'grafis_subtitle',
+        'grafis_bg',
+        'grafis_status',
+        'skm_popup_link',
+        'skm_popup_show',
+        'skm_popup_status'];
 
     protected static $recordEvents = ['created', 'updated', 'deleted'];
     protected static $logOnlyDirty = true;
@@ -147,7 +158,18 @@ class PageHomeItem extends Model
         'majalah_title',
         'majalah_subtitle',
         'majalah_bg',
-        'majalah_status'
+        'majalah_status',
+        'video_title',
+        'video_subtitle',
+        'video_bg',
+        'video_status',
+        'grafis_title',
+        'grafis_subtitle',
+        'grafis_bg',
+        'grafis_status',
+        'skm_popup_link',
+        'skm_popup_show',
+        'skm_popup_status'
     ];
 
 }

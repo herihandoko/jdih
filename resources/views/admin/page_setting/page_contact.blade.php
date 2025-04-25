@@ -52,7 +52,7 @@
                     <label for="">Meta Description</label>
                     <textarea name="seo_meta_description" class="form-control h_100" cols="30" rows="10">{{ $page_contact->seo_meta_description }}</textarea>
                 </div>
-                <button type="submit" class="btn btn-success">Update</button>
+                <button type="submit" class="btn btn-block btn-sm btn-success">Update</button>
             </div>
         </div>
     </form>

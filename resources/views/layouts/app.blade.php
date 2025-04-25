@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+    use App\Models\Tracker;
     
     $g_setting = DB::table('general_settings')->where('id', 1)->first();
     $s_media = DB::table('social_media_items')->orderBy('social_order', 'asc')->get();
@@ -18,13 +19,22 @@
     $countLastMonth = DB::table('stat_visits')->whereMonth('visit_date', '=', Carbon::now()->subMonth()->month)->count();
 
     $totCount = $countToday + $countLastWeek + $countLastMonth;
+    
+    $totVisit = DB::table('stat_visits')->count();
+    
+    $onlineUsers = Tracker::getOnlineUsers();
 @endphp
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="JDIH Pemerintah Provinsi Banten">
+    <meta name="keywords" content="jdih, jdih banten, jdih provinsi banten, jdih pemerintah provinsi banten, jdih biro hukum banten, jdih birhuk banten">
+    <meta name="author" content="Khrisna Wardhana Monoyasa/TA Diskominfo Pemprov Banten">
+    <meta name="robots" content="index, follow">
 
     @php
     $url = Request::path();
@@ -48,7 +58,7 @@
             $item_row = DB::table('page_home_items')->where('id',1)->first();
         @endphp
         <meta name="description" content="{{ $item_row->seo_meta_description }}">
-        <title>{{ $item_row->seo_title }}</title>
+        <title>{{ translateText($item_row->seo_title) }}</title>
     @endif
 
     @if($conName[0] == 'visi-misi')
@@ -56,7 +66,11 @@
             $item_row = DB::table('page_visi_misi_items')->where('id', 1)->first();
         @endphp
         <meta name="description" content="{{ $item_row->seo_meta_description }}">
-        <title>{{ $item_row->seo_title }}</title>
+        <title>{{ translateText($item_row->seo_title) }}</title>
+    @endif
+    
+    @if($conName[0] == 'dasar-hukum')
+        <title>{{ translateText('Dasar Hukum') }}</title>
     @endif
 
     @if($conName[0] == 'struktur-organisasi')
@@ -64,7 +78,7 @@
             $item_row = DB::table('page_struktur_organisasi_items')->where('id', 1)->first();
         @endphp
         <meta name="description" content="{{ $item_row->seo_meta_description }}">
-        <title>{{ $item_row->seo_title }}</title>
+        <title>{{ translateText($item_row->seo_title) }}</title>
     @endif
 
     @if($conName[0] == 'tupoksi')
@@ -72,7 +86,15 @@
             $item_row = DB::table('page_tupoksi_items')->where('id', 1)->first();
         @endphp
         <meta name="description" content="{{ $item_row->seo_meta_description }}">
-        <title>{{ $item_row->seo_title }}</title>
+        <title>{{ translateText($item_row->seo_title) }}</title>
+    @endif
+    
+    @if($conName[0] == 'anggota-jdih')
+        <title>{{ translateText('Anggota JDIH Provinsi Banten') }}</title>
+    @endif
+    
+    @if($conName[0] == 'sop')
+        <title>{{ translateText('SOP') }}</title>
     @endif
 
     @if($conName[0] == 'about')
@@ -83,12 +105,12 @@
         <title>{{ $item_row->seo_title }}</title>
     @endif
 
-    @if($conName[0] == 'spmipm')
-        <title>Survey Kepuasan Pengunjung</title>
+    @if($conName[0] == 'skmikm')
+        <title>{{ translateText('Survey Kepuasan Masyarakat') }}</title>
     @endif
     
-    @if($conName[1] == 'search-peraturan')
-        <title>{{ 'Pencarian' }}</title>
+    @if($conName[1] == 'search')
+        <title>{{ translateText('Pencarian') }}</title>
     @endif
     
     @if($conName[0] == 'frontpage' || $conName[0] == 'produkhukum')
@@ -97,17 +119,21 @@
         @endphp
         
         @if($item_row)
-            <title>{{ $item_row->menu_name }}</title>
+            <title>{{ translateText($item_row->menu_name) }}</title>
         @else
             @php
                 $item_row_second = DB::table('menus')->where('slug', $conName[2])->first();
             @endphp
-            <title>{{ $item_row_second->menu_name }}</title>
+            <title>{{ translateText($item_row_second->menu_name) }}</title>
         @endif
     @endif
     
     @if($conName[0] == 'berita')
-        <title>{{ 'Berita' }}</title>
+        <title>{{ translateText('Berita') }}</title>
+    @endif
+
+    @if($conName[0] == 'privacy-policy')
+        <title>{{ 'Privacy Policy' }}</title>
     @endif
 
     @include('layouts.styles')
@@ -115,221 +141,7 @@
     <!-- Favicon -->
     <link href="{{ asset('storage/places/'.$g_setting->favicon) }}" rel="shortcut icon" type="image/png">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap" rel="stylesheet">
-
     @include('layouts.scripts')
-
-    <style>
-        .top,
-        .main-nav nav .navbar-nav .nav-item .dropdown-menu,
-        .video-button:before,
-        .video-button:after,
-        .special .read-more a,
-        .service .read-more a,
-        .testimonial-bg,
-        .project .read-more a,
-        .team-text,
-        .cta .overlay,
-        .blog-area .blog-image .date,
-        .blog-area .read-more a,
-        .newsletter-area .overlay,
-        .footer-social-link ul li a,
-        .scroll-top,
-        .single-section .read-more a,
-        .sidebar .widget .search button,
-        .comment button,
-        .contact-item:hover .contact-icon,
-        .product-item .text button,
-        .btn-arf,
-        .project-photo-carousel .owl-nav .owl-prev,
-        .project-photo-carousel .owl-nav .owl-next,
-        .faq h4.panel-title a,
-        .team-social li a:hover,
-        .doc_detail_social li i,
-        .nav-doctor .nav-link.active,
-        .product-detail button,
-        .product-detail .nav-pills .nav-link.active,
-        .contact-form .btn,
-        .career-sidebar .widget button {
-            background: {{ '#'.$g_setting->theme_color }}!important;
-        }
-        .main-nav nav .navbar-nav .nav-item a:hover,
-        .main-nav nav .navbar-nav .nav-item:hover a,
-        .service .service-item .text h3 a:hover,
-        .project .project-item .text h3 a:hover,
-        .blog-area .blog-item h3 a:hover,
-        .footer-item ul li a:hover,
-        .sidebar .widget .type-2 ul li a:hover,
-        .sidebar .widget .type-1 ul li:before,
-        .sidebar .widget .type-1 ul li a:hover,
-        .single-section h3,
-        .contact-icon,
-        .product-item .text h3 a:hover,
-        .career-main-item h3,
-        .reg-login-form .new-user a,
-        .product-detail .nav-pills .nav-link {
-            color: {{ '#'.$g_setting->theme_color }}!important;
-        }
-        .text-animated li a:hover,
-        .feature .feature-item {
-            background-color: {{ '#'.$g_setting->theme_color }}!important;
-        }
-        .text-animated li a:hover,
-        .special .read-more a,
-        .footer-social-link ul li a,
-        .contact-item:hover .contact-icon,
-        .faq h4.panel-title,
-        .team-social li a:hover,
-        .contact-form .btn {
-            border-color: {{ '#'.$g_setting->theme_color }}!important;
-        }
-
-        .main-nav nav .navbar-nav .nav-item .dropdown-menu li a,
-        .contact-item:hover .contact-icon,
-        .product-detail .nav-pills .nav-link.active {
-            color: #fff!important;
-        }
-        .feature .feature-item:hover,
-        .service .read-more a:hover,
-        .project .read-more a:hover,
-        .blog-area .read-more a:hover,
-        .single-section .read-more a:hover,
-        .comment button:hover,
-        .doc_detail_social li:hover i,
-        .product-detail button:hover,
-        .contact-form .btn:hover {
-            background: #333!important;
-        }
-        .footer-social-link ul li a:hover {
-            background: transparent!important;
-        }
-        .special .read-more a:hover {
-            background: transparent!important;
-            border-color: #fff!important;
-        }
-
-        .container-iframe {
-          position: relative;
-          width: 100%;
-          height: auto;
-          overflow: hidden;
-        }
-
-        .responsive-iframe {
-          position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          right: 0;
-          width: 100%;
-          height: 100%;
-          border: none;
-        }
-
-        .feature-mono {
-            padding-left: 20px;
-            padding-right: 20px;
-            padding-top: 0;
-            padding-bottom: 5px;
-            border: 1px solid #ddd;
-            overflow: hidden;
-            background-color: #ffffff;
-            box-shadow: 1px 1px 3px 4px rgba(226, 228, 229, 0.3);
-            position: relative;
-            margin-bottom: 10px;
-        }
-
-        .feature-mono span {
-            font-size: 15px;
-            font-weight: 700;
-            margin: 5px 0 10px;
-            padding: 0;
-        }
-
-        .feature-mono h4 a {
-            font-size: 18px !important;
-            font-weight: 600 !important;
-            margin: 5px 0 5px !important;
-            padding: 0 !important;
-            color:#000 !important;
-        }
-
-        .feature-mono p {
-            padding-bottom: 0;
-            margin-bottom: 5px;
-            font-size: 14px;
-            line-height: 1.2;
-        }
-
-        .feature-seo {
-            height: 225px;
-            padding: 10px;
-            border:1px solid #ddd;
-            overflow: hidden;
-            background-color: #ffffff;
-            -webkit-box-shadow: 10px 5px 5px 5px rgba(226, 228, 229, 0.5);
-            -moz-box-shadow: 5px 5px 5px 5px rgba(226, 228, 229, 0.5);
-            box-shadow: 5px 5px 5px 5px rgba(226, 228, 229, 0.5);
-            position: relative;
-        }
-
-        .feature-seo small {
-            padding-bottom: 0;
-            margin-bottom: 5px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .feature-seo h4 {
-            font-weight: 600;
-            margin: 5px 0 10px;
-            padding: 0;
-        }
-
-        .feature-seo.footer {
-            height: 40px;
-            padding: 7px;
-            margin-bottom: 10px;
-            overflow: hidden;
-            background: #e6bc67;
-            /* Old browsers */
-            color:#000;
-            -webkit-box-shadow: 10px 10px 5px 10px rgba(226, 228, 229, 1);
-            -moz-box-shadow: 10px 10px 5px 0px rgba(226, 228, 229, 1);
-            box-shadow: 10px 10px 5px 0px rgba(226, 228, 229, 1);
-            position: relative;
-        }
-
-        .ebook-details {
-            padding: 10px 0 10px 0;
-        }
-
-        .ebook-details img {
-            -webkit-transition: all .3s ease-in-out;
-            -moz-transition: all .3s ease-in-out;
-            -ms-transition: all .3s ease-in-out;
-            -o-transition: all .3s ease-in-out;
-            transition: all .3s ease-in-out;
-        }
-
-        .copybox img {
-            -webkit-box-shadow: 10px 10px 5px 0px rgba(226, 228, 229, 1);
-            -moz-box-shadow: 10px 10px 5px 0px rgba(226, 228, 229, 1);
-            box-shadow: 10px 10px 5px 0px rgba(226, 228, 229, 1);
-        }
-        
-        .shadowbox {
-            width: 15em;
-            margin: auto;
-            text-align: center;
-            border: 1px solid #333;
-            box-shadow: 8px 8px 5px #444;
-            padding: 8px 12px;
-            font-size: larger;
-            background-image: linear-gradient(180deg, #fff, #ddd 40%, #ccc);
-          }
-    </style>
 </head>
 <body>
 
@@ -340,7 +152,7 @@
 @endif
 
 <div class="top">
-    <div class="container">
+    <div class="container-xl">
         <div class="row">
             <div class="col-md-6">
                 <div class="top-contact">
@@ -356,7 +168,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-md-6">
+            
+            <div class="col-md-3">
                 <div class="top-right">
 
                     @if($g_setting->top_bar_social_status == 'Show')
@@ -383,8 +196,18 @@
                             $menu_arr[$row->menu_name] = $row->menu_status;
                         @endphp
                     @endforeach
-
                 </div>
+            </div>
+            
+            <div class="col-md-3">
+                <select class="form-control form-control-sm changeLanguage">
+                    <option value="id" {{ session()->get('locale') == 'id' ? 'selected' : '' }}>Indonesian</option>
+                    <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
+                    <option value="ar" {{ session()->get('locale') == 'ar' ? 'selected' : '' }}>Arabic</option>
+                    <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>Chinese</option>
+                    <option value="ja" {{ session()->get('locale') == 'ja' ? 'selected' : '' }}>Japanese</option>
+                    <option value="ko" {{ session()->get('locale') == 'ko' ? 'selected' : '' }}>Korean</option>
+                </select>
             </div>
         </div>
     </div>
@@ -394,25 +217,26 @@
 @include('layouts.nav')
 
 @yield('content')
+<span id="loadmodaldisabilitas"></span>
 
 <div class="footer-area">
-    <div style="padding-left: 50px; padding-right: 50px;">
+    <div style="padding-left: 50px; padding-right: 50px; background-image: url('{{ asset('storage/places/indonesia-map.png')}}'); background-repeat: no-repeat; background-position: center;">
         <div class="row">
             <div class="col-md-3 col-sm-3">
-                <div class="footer-item footer-service">
-                    <img src="{{ url('storage/places/logo.png') }}" class="img-responsive img-thumbnail">
+                <div class="footer-item footer-service" style="text-align: justify; text-justify: inter-word;">
+                    <img src="{{ asset('storage/places/logo.png') }}" class="img-responsive img-thumbnail" style="background-color: transparent; border: none;">
                     <font>
-                        JDIH Provinsi Banten adalah wadah pendayagunaan bersama atas dokumen hukum secara tertib, terpadu, dan berkesinambungan, serta merupakan sarana pemberian pelayanan informasi hukum secara lengkap, akurat, mudah dan cepat. Keberadaan sebuah wadah yang dapat menyajikan informasi hukum dan data produk hukum yang berlaku yang selalu diperbarui menjadi sesuatu yang sangat dibutuhkan.
+                        {{ translateText('JDIH Provinsi Banten adalah wadah pendayagunaan bersama atas dokumen hukum secara tertib, terpadu, dan berkesinambungan, serta merupakan sarana pemberian pelayanan informasi hukum secara lengkap, akurat, mudah dan cepat. Keberadaan sebuah wadah yang dapat menyajikan informasi hukum dan data produk hukum yang berlaku yang selalu diperbarui menjadi sesuatu yang sangat dibutuhkan.') }}
                     </font>
                 </div>
             </div>
             <div class="col-md-3 col-sm-3">
                 <div class="footer-item footer-service">
-                    <h2>{{ $g_setting->footer_column2_heading }}</h2>
+                    <h2>{{ translateText($g_setting->footer_column2_heading) }}</h2>
                     <ul class="fmain">
                         @foreach($footer_col_2 as $row)
                         <li>
-                            <a href="{{ $row->column_item_url }}">
+                            <a href="{{ $row->column_item_url }}" target="_blank">
                                 {{ $row->column_item_text }}
                             </a>
                         </li>
@@ -422,33 +246,55 @@
             </div>
             <div class="col-md-3 col-sm-3">
                 <div class="footer-item footer-contact">
-                    <h2>{{ $g_setting->footer_column3_heading }}</h2>
+                    <h2>{{ translateText($g_setting->footer_column3_heading) }}</h2>
                     <ul>
-                        <li>{{ $g_setting->footer_address }}</li>
-                        <li>{{ $g_setting->footer_email }}</li>
-                        <li>{{ $g_setting->footer_phone }}</li>
+                        @if($g_setting->footer_address)
+                            <li>
+                                {{ $g_setting->footer_address }}
+                            </li>
+                        @endif
+                        
+                        @if($g_setting->footer_email)
+                            <li>
+                                {{ $g_setting->footer_email }}
+                            </li>
+                        @endif
+                        
+                        @if($g_setting->footer_phone)
+                            <li>
+                                {{ $g_setting->footer_phone }}
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
             <div class="col-md-3 col-sm-3">
-                <div class="footer-item">
-                    <h2>Statistik Pengunjung</h2>
-                    <ul>
+                <div class="footer-item footer-statistik">
+                    <h2>{{ translateText('Statistik Pengunjung') }}</h2>
+                    <ul class="stats-list">
                         <li>
-                            Hari ini
+                            {{ translateText('Online') }}
+                            <label class="badge badge-success badge-pill float-right">{{ number_format($onlineUsers) }}</label>
+                        </li>
+                        <li>
+                            {{ translateText('Hari ini') }}
                             <label class="badge badge-light badge-pill float-right">{{ number_format($countToday) }}</label>
                         </li>
                         <li>
-                            Minggu lalu
+                            {{ translateText('Minggu lalu') }}
                             <label class="badge badge-light badge-pill float-right">{{ number_format($countLastWeek) }}</label>
                         </li>
                         <li>
-                            Bulan lalu
+                            {{ translateText('Bulan lalu') }}
                             <label class="badge badge-light badge-pill float-right">{{ number_format($countLastMonth) }}</label>
                         </li>
                         <li>
-                            Total
+                            {{ translateText('Total s/d bulan ini') }}
                             <label class="badge badge-light badge-pill float-right">{{ number_format($totCount) }}</label>
+                        </li>
+                        <li>
+                            {{ translateText('Total Pengunjung') }}
+                            <label class="badge badge-light badge-pill float-right">{{ number_format($totVisit) }}</label>
                         </li>
                         <!-- <li>
                             Online
@@ -476,14 +322,14 @@
                     <p>{{ $g_setting->footer_copyright }}</p>
                 </div>
             </div>
-            <!-- <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="footer-pages">
                     <ul>
-                        <li><a href="{{ route('front.term') }}">Terms and Conditions</a></li>
+<!--                        <li><a href="{{ route('front.term') }}">Terms and Conditions</a></li>-->
                         <li><a href="{{ route('front.privacy') }}">Privacy Policy</a></li>
                     </ul>
                 </div>
-            </div> -->
+            </div> 
         </div>
     </div>
 </div>
@@ -491,6 +337,12 @@
 <div class="scroll-top">
     <i class="fa fa-angle-up"></i>
 </div>
+
+<a href="https://api.whatsapp.com/send?phone=6282298899098" target="_blank">
+    <div class="scroll-wa">
+        <i class="fab fa-whatsapp text-white"></i>
+    </div>
+</a>
 
 @include('layouts.scripts_footer')
 

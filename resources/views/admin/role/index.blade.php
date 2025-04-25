@@ -13,20 +13,20 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
+                    <thead>
                     <tr>
-                        <th style="width: 5%;">No.</th>
+                        <th style="width: 2%;">No.</th>
                         <th>Nama Role</th>
-                        <th style="width: 15%;">Aksi</th>
+                        <th>Aksi</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($roles as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->role_name }}</td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->role_name }}</td>
+                            <td style="text-align: center; width: auto;">
                                 @if($row->id != 1)
                                     <a href="{{ URL::to('admin/role/access-setup/'.$row->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-cubes"></i>

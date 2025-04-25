@@ -11,6 +11,7 @@
                     <a href="{{ route('admin.produk_hukum.jenis.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat List</a>
                 </div>
             </div>
+            
             <div class="card-body">
                 <div class="form-group">
                     <label for="">Jenis Peraturan *</label>
@@ -30,8 +31,12 @@
                         </div>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Simpan
+                </button>
             </div>
         </div>
     </form>

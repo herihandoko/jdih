@@ -19,7 +19,7 @@ class SliderController extends Controller
 
     public function index()
     {
-        $slider = Slider::all();
+        $slider = Slider::orderBy('created_at', 'desc')->get();
         return view('admin.slider.index', compact('slider'));
     }
 

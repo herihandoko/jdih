@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Menu;
 use App\Models\Admin\ProdukHukumType;
+use App\Models\Admin\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -19,16 +20,21 @@ class MenuController extends Controller
 
     public function index()
     {
-        $menus = Menu::orderBy('id', 'asc')->where('is_active', 1)->get();
-        $menus_name = Menu::select('id', 'menu_name', 'parent_id')->where('is_active', 1)->orderBy('parent_id', 'asc')->get();
+        $menus = Menu::orderBy('order', 'asc')->where('parent_id', '=', 0)->where('is_active', 1)->get();
+        $menus_name = Menu::select('id', 'menu_name', 'parent_id')->where('is_active', 1)->orderBy('menu_name', 'asc')->get();
         $rules_name = ProdukHukumType::orderBy('type_name', 'asc')->where('type_active', 1)->get();
-        return view('admin.menu.index', compact('menus', 'menus_name', 'rules_name'));
+        $pages_name = Page::orderBy('page_name', 'asc')->get();
+        return view('admin.menu.index', compact('menus', 'menus_name', 'rules_name', 'pages_name'));
     }
     
     public function store(Request $request)
     {
         $request->validate([
             'menu_name' => 'required|unique:menus'
+        ],
+        [
+            'menu_name.required' => 'Menu Name harus diisi.',
+            'menu_name.unique' => 'Menu Name sudah ada. Silakan input Menu Name lainnya.'
         ]);
         
         $menuCreate = new Menu();
@@ -72,6 +78,13 @@ class MenuController extends Controller
         }
 
         $i=0;
+        foreach(request('menu_status') as $value)
+        {
+            $arr2[$i] = $value;
+            $i++;
+        }
+        
+        $i=0;
         foreach(request('parent_id') as $value)
         {
             $arr3[$i] = $value;
@@ -82,13 +95,6 @@ class MenuController extends Controller
         foreach(request('slug') as $value)
         {
             $arr4[$i] = $value;
-            $i++;
-        }
-
-        $i=0;
-        foreach(request('menu_status') as $value)
-        {
-            $arr2[$i] = $value;
             $i++;
         }
         
@@ -133,6 +139,13 @@ class MenuController extends Controller
             $arr10[$i] = $value;
             $i++;
         }
+        
+        $i=0;
+        foreach(request('page_id') as $value)
+        {
+            $arr11[$i] = $value;
+            $i++;
+        }
 
         for($i=0; $i<count($arr1); $i++)
         {
@@ -143,6 +156,7 @@ class MenuController extends Controller
             $data['order'] = $arr8[$i];
             $data['type_ruledoc'] = $arr9[$i];
             $data['free_link'] = $arr10[$i];
+            $data['page_id'] = $arr11[$i];
             
             if($arr5[$i] == 1) {
                 $data['slug'] = Str::slug($arr6[$i], '-');

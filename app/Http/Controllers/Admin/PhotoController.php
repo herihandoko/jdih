@@ -59,7 +59,7 @@ class PhotoController extends Controller
                 
                 $name_file = $value->getClientOriginalName();
                 $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
-                $extension_file = $value->getClientOriginalExtension();
+                $extension_file = $value->extension();
                 $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
                 Storage::putFileAs('public/places/galeri_foto', $value, $final_name_file);
 //                $value->move(public_path('uploads/galeri_foto/'), $final_name_file);
@@ -97,7 +97,7 @@ class PhotoController extends Controller
             
             $name_file = $request->file('photo_name')->getClientOriginalName();
             $filename_img = pathinfo($name_file, PATHINFO_FILENAME);
-            $extension_file = $request->file('photo_name')->getClientOriginalExtension();
+            $extension_file = $request->file('photo_name')->extension();
             $final_name_file = $filename_img.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/galeri_foto', $request->file('photo_name'), $final_name_file);
 //            $request->file('photo_name')->move(public_path('uploads/galeri_foto/'), $final_name_file);

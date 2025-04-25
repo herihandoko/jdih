@@ -226,7 +226,7 @@ class PageHomeController extends Controller
             ]);
 
             // Unlink old photo
-            unlink(public_path('storage/places/'.$request->input('current_photo')));
+//            unlink(public_path('storage/places/'.$request->input('current_photo')));
 
             // Uploading new photo
             $ext = $request->file('artikel_bg')->extension();
@@ -252,7 +252,7 @@ class PageHomeController extends Controller
             ]);
 
             // Unlink old photo
-            unlink(public_path('storage/places/'.$request->input('current_photo')));
+//            unlink(public_path('storage/places/'.$request->input('current_photo')));
 
             // Uploading new photo
             $ext = $request->file('majalah_bg')->extension();
@@ -279,7 +279,7 @@ class PageHomeController extends Controller
             ]);
 
             // Unlink old photo
-            unlink(public_path('storage/places/'.$request->input('current_photo')));
+//            unlink(public_path('storage/places/'.$request->input('current_photo')));
 
             // Uploading new photo
             $ext = $request->file('peraturan_bg')->extension();
@@ -296,6 +296,64 @@ class PageHomeController extends Controller
 
         PageHomeItem::where('id',1)->update($data);
         return redirect()->back()->with('success', 'Peraturan Section is updated successfully!');
+    }
+    
+    public function update14(Request $request) {
+        if($request->hasFile('video_bg'))
+        {
+            $request->validate([
+                'video_bg' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            // Unlink old photo
+//            unlink(public_path('storage/places/'.$request->input('current_photo')));
+
+            // Uploading new photo
+            $ext = $request->file('video_bg')->extension();
+            $final_name = 'video_bg'.'.'.$ext;
+            Storage::putFileAs('public/places', $request->file('video_bg'), $final_name);
+
+            $data['video_bg'] = $final_name;
+        }
+
+        $data['video_title'] = $request->input('video_title');
+        $data['video_subtitle'] = $request->input('video_subtitle');
+        $data['video_status'] = $request->input('video_status');
+
+        PageHomeItem::where('id',1)->update($data);
+        return redirect()->back()->with('success', 'Video Section is updated successfully!');
+    }
+    
+    public function update15(Request $request) {
+        if($request->hasFile('grafis_bg'))
+        {
+            $request->validate([
+                'grafis_bg' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            // Uploading new photo
+            $ext = $request->file('grafis_bg')->extension();
+            $final_name = 'grafis_bg'.'.'.$ext;
+            Storage::putFileAs('public/places', $request->file('grafis_bg'), $final_name);
+
+            $data['grafis_bg'] = $final_name;
+        }
+
+        $data['grafis_title'] = $request->input('grafis_title');
+        $data['grafis_subtitle'] = $request->input('grafis_subtitle');
+        $data['grafis_status'] = $request->input('grafis_status');
+
+        PageHomeItem::where('id',1)->update($data);
+        return redirect()->back()->with('success', 'Grafis Section is updated successfully!');
+    }
+    
+    public function update16(Request $request) {
+        $data['skm_popup_link'] = $request->input('skm_popup_link');
+        $data['skm_popup_show'] = $request->input('skm_popup_show');
+        $data['skm_popup_status'] = $request->input('skm_popup_status');
+
+        PageHomeItem::where('id',1)->update($data);
+        return redirect()->back()->with('success', 'Popup SKM is updated successfully!');
     }
 
 }

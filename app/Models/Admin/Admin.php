@@ -14,6 +14,7 @@ class Admin extends Model
     
     protected static $logAttributes = [
         'name',
+        'username',
         'email',
         'password',
         'token',
@@ -40,6 +41,7 @@ class Admin extends Model
     
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
         'token',

@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\LanguageManager::class,
         ],
 
         'api' => [
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'prevent-back-history' => \App\Http\Middleware\PreventBackHistory::class,
         'get.adminmenu' => \App\Http\Middleware\GetMenu::class,
         'XssSanitizer' => \App\Http\Middleware\XssSanitizer::class,
+        'persist.search' => \App\Http\Middleware\PersistSearchParams::class,
     ];
 }

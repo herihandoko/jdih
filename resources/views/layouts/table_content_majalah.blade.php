@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="shadow table table-striped">
 	<thead class="text-white" style="background-color: #11D694;">
         <tr>
             <th scope="col" style="width: 220px;">META</th>

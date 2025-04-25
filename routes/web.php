@@ -1,5 +1,8 @@
 <?php
 
+/* --------------------------------------- */
+/* JDIH Admin Controller */
+/* --------------------------------------- */
 use App\Http\Controllers\Admin\DashboardController as DashboardControllerForAdmin;
 use App\Http\Controllers\Admin\FooterColumnController;
 use App\Http\Controllers\Admin\GeneralSettingController;
@@ -11,6 +14,7 @@ use App\Http\Controllers\Admin\PageContactController;
 use App\Http\Controllers\Admin\PageHomeController;
 use App\Http\Controllers\Admin\PhotoChangeController;
 use App\Http\Controllers\Admin\PhotoController;
+use App\Http\Controllers\Admin\VideoController;
 use App\Http\Controllers\Admin\ResetPasswordController as ResetPasswordControllerForAdmin;
 use App\Http\Controllers\Admin\PasswordChangeController as PasswordChangeControllerForAdmin;
 use App\Http\Controllers\Admin\ProfileChangeController as ProfileChangeControllerForAdmin;
@@ -20,18 +24,13 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SurveyController as SurveyControllerForAdmin;
 
-use App\Http\Controllers\Front\HomeController;
-use App\Http\Controllers\Front\PrivacyController;
-use App\Http\Controllers\Front\SearchController;
-use App\Http\Controllers\Front\TermController;
-
-/* --------------------------------------- */
-/* JDIH Admin Controller */
-/* --------------------------------------- */
 use App\Http\Controllers\Admin\PageVisiMisiController;
 use App\Http\Controllers\Admin\PageStrukturOrganisasiController;
 use App\Http\Controllers\Admin\PageTupoksiController;
+use App\Http\Controllers\Admin\PageDasarHukumController;
+use App\Http\Controllers\Admin\PageSopController;
 use App\Http\Controllers\Admin\ProdukHukumTypeController;
+use App\Http\Controllers\Admin\ProdukHukumLanguageController;
 use App\Http\Controllers\Admin\ProdukHukumCategoryController;
 use App\Http\Controllers\Admin\ProdukHukumListController;
 use App\Http\Controllers\Admin\ProdukHukumUrusanPemerintahanController;
@@ -40,14 +39,20 @@ use App\Http\Controllers\Admin\ArtikelHukumListController;
 use App\Http\Controllers\Admin\MajalahHukumListController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\BeritaListController;
+use App\Http\Controllers\Admin\PageManageController;
+use App\Http\Controllers\Admin\PagePrivacyController;
+use App\Http\Controllers\Admin\LayananHukumBimtekHibridController;
+use App\Http\Controllers\Admin\HukumAdatController;
+use App\Http\Controllers\Admin\DaftarLbhController;
+use App\Http\Controllers\Admin\IndexHukumIrhController;
+use App\Http\Controllers\Admin\IndexHukumIkkController;
+use App\Http\Controllers\Admin\IndexHukumIkdController;
+use App\Http\Controllers\Admin\ApiLinkController;
 
 /* --------------------------------------- */
 /* JDIH Front End Controller */
 /* --------------------------------------- */
-use App\Http\Controllers\Front\VisiMisiController;
-use App\Http\Controllers\Front\StrukturOrganisasiController;
-use App\Http\Controllers\Front\TupoksiController;
-use App\Http\Controllers\Front\SurveyController;
+use App\Http\Controllers\Front\ProfilController;
 
 use App\Http\Controllers\Front\ProdukHukumController;
 use App\Http\Controllers\Front\SearchPeraturanController;
@@ -59,8 +64,21 @@ use App\Http\Controllers\Front\MajalahHukumController;
 use App\Http\Controllers\Front\SearchMajalahHukumController;
 
 use App\Http\Controllers\Front\FrontPageController;
+use App\Http\Controllers\Front\FrontPoolPageController;
+
+use App\Http\Controllers\Front\HomeController;
+use App\Http\Controllers\Front\PrivacyController;
+use App\Http\Controllers\Front\SearchController;
+use App\Http\Controllers\Front\TermController;
+use App\Http\Controllers\Front\BimtekHibridController;
+use App\Http\Controllers\Front\HukumAdatViewController;
+use App\Http\Controllers\Front\SearchHukumAdatViewController;
+use App\Http\Controllers\Front\SurveyController;
+use App\Http\Controllers\Front\DaftarLbhController as DaftarLbhControllerforFront;
 
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Front\LangController;
 
 Route::get('/turun', function() {
     Artisan::call('down');
@@ -111,6 +129,12 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     /* --------------------------------------- */
     Route::get('admin/setting/general/logo/edit', [GeneralSettingController::class,'logo_edit'])->name('admin.general_setting.logo');
     Route::post('admin/setting/general/logo/update', [GeneralSettingController::class,'logo_update']);
+
+    /* --------------------------------------- */
+    /* Banner Android - Admin */
+    /* --------------------------------------- */
+    Route::get('admin/setting/general/bannerandroid/edit', [GeneralSettingController::class,'bannerandroid_edit'])->name('admin.general_setting.bannerandroid');
+    Route::post('admin/setting/general/bannerandroid/update', [GeneralSettingController::class,'bannerandroid_update']);
 
 
     /* --------------------------------------- */
@@ -225,6 +249,9 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
         Route::post('/11', [PageHomeController::class,'update11']);
         Route::post('/12', [PageHomeController::class,'update12']);
         Route::post('/13', [PageHomeController::class,'update13']);
+        Route::post('/14', [PageHomeController::class,'update14']);
+        Route::post('/15', [PageHomeController::class,'update15']);
+        Route::post('/16', [PageHomeController::class,'update16']);
     });
 
     Route::group(['prefix'=>'admin/page'], function() {
@@ -251,13 +278,26 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     Route::get('admin/footer/delete/{id}', [FooterColumnController::class,'destroy']);
     Route::get('admin/footer/edit/{id}', [FooterColumnController::class,'edit']);
     Route::post('admin/footer/update/{id}', [FooterColumnController::class,'update']);
-
+    
+    /* --------------------------------------- */
+    /* Page Manage - Admin */
+    /* --------------------------------------- */
+    Route::get('admin/page-manage/view', [PageManageController::class, 'index'])->name('admin.page.index');
+    Route::resource('admin/page-manage/store', PageManageController::class);
+    Route::post('admin/page-manage/update', [PageManageController::class, 'update']);
 
     /* --------------------------------------- */
     /* Menu - Admin */
     /* --------------------------------------- */
     Route::get('admin/menu/view', [MenuController::class,'index'])->name('admin.menu.index');
     Route::post('admin/menu/update', [MenuController::class,'update']);
+    
+    /* --------------------------------------- */
+    /* API Link - Admin */
+    /* --------------------------------------- */
+    Route::get('admin/api-link/view', [ApiLinkController::class, 'index'])->name('admin.apilink.index');
+    Route::resource('admin/api-link/store', ApiLinkController::class);
+    Route::post('admin/api-link/update', [ApiLinkController::class, 'update']);
 
 
     /* --------------------------------------- */
@@ -294,22 +334,36 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     Route::get('admin/survey/get-data/', [SurveyControllerForAdmin::class,'getSurveyData'])->name('admin.survey.get_data');
     
     Route::get('admin/page-visimisi/view', [PageVisiMisiController::class,'index'])->name('admin.web_setting.page_visimisi');
-    Route::post('admin/page-visimisi/store', [PageVisiMisiController::class,'store']);
-    Route::post('admin/page-visimisi/update', [PageVisiMisiController::class,'update']);
+    Route::post('admin/page-visimisi/store', [PageVisiMisiController::class,'store'])->name('admin.web_setting.page_visimisi.store');
+    Route::post('admin/page-visimisi/update', [PageVisiMisiController::class,'update'])->name('admin.web_setting.page_visimisi.update');
 
     Route::get('admin/page-strukturorganisasi/view', [PageStrukturOrganisasiController::class,'index'])->name('admin.web_setting.page_strukturorganisasi');
-    Route::post('admin/page-strukturorganisasi/store', [PageStrukturOrganisasiController::class,'store']);
-    Route::post('admin/page-strukturorganisasi/update', [PageStrukturOrganisasiController::class,'update']);
+    Route::post('admin/page-strukturorganisasi/store', [PageStrukturOrganisasiController::class,'store'])->name('admin.web_setting.page_strukturorganisasi.store');
+    Route::post('admin/page-strukturorganisasi/update', [PageStrukturOrganisasiController::class,'update'])->name('admin.web_setting.page_strukturorganisasi.update');
 
     Route::get('admin/page-tupoksi/view', [PageTupoksiController::class,'index'])->name('admin.web_setting.page_tupoksi');
-    Route::post('admin/page-tupoksi/store', [PageTupoksiController::class,'store']);
-    Route::post('admin/page-tupoksi/update', [PageTupoksiController::class,'update']);
+    Route::post('admin/page-tupoksi/store', [PageTupoksiController::class,'store'])->name('admin.web_setting.page_tupoksi.store');
+    Route::post('admin/page-tupoksi/update', [PageTupoksiController::class,'update'])->name('admin.web_setting.page_tupoksi.update');
+    
+    Route::get('admin/page-dasarhukum/view', [PageDasarHukumController::class,'index'])->name('admin.web_setting.page_dasarhukum');
+    Route::post('admin/page-dasarhukum/store', [PageDasarHukumController::class,'store'])->name('admin.web_setting.page_dasarhukum.store');
+    Route::post('admin/page-dasarhukum/update', [PageDasarHukumController::class,'update'])->name('admin.web_setting.page_dasarhukum.update');
+    
+    Route::get('admin/page-sop/view', [PageSopController::class,'index'])->name('admin.web_setting.page_sop');
+    Route::post('admin/page-sop/store', [PageSopController::class,'store'])->name('admin.web_setting.page_sop.store');
+    Route::post('admin/page-sop/update', [PageSopController::class,'update'])->name('admin.web_setting.page_sop.update');
     
     Route::get('admin/produk-hukum/tipe-dokumen/view', [ProdukHukumTypeController::class,'index'])->name('admin.produk_hukum.tipe.index');
     Route::get('admin/produk-hukum/tipe-dokumen/create', [ProdukHukumTypeController::class,'create'])->name('admin.produk_hukum.tipe.create');
     Route::post('admin/produk-hukum/tipe-dokumen/store', [ProdukHukumTypeController::class,'store'])->name('admin.produk_hukum.tipe.store');
     Route::get('admin/produk-hukum/tipe-dokumen/edit/{id}', [ProdukHukumTypeController::class,'edit']);
     Route::post('admin/produk-hukum/tipe-dokumen/update/{id}', [ProdukHukumTypeController::class,'update']);
+    
+    Route::get('admin/produk-hukum/bahasa/view', [ProdukHukumLanguageController::class,'index'])->name('admin.produk_hukum.bahasa.index');
+    Route::get('admin/produk-hukum/bahasa/create', [ProdukHukumLanguageController::class,'create'])->name('admin.produk_hukum.bahasa.create');
+    Route::post('admin/produk-hukum/bahasa/store', [ProdukHukumLanguageController::class,'store'])->name('admin.produk_hukum.bahasa.store');
+    Route::get('admin/produk-hukum/bahasa/edit/{id}', [ProdukHukumLanguageController::class,'edit']);
+    Route::post('admin/produk-hukum/bahasa/update/{id}', [ProdukHukumLanguageController::class,'update']);
 
     Route::get('admin/produk-hukum/jenis-peraturan/view', [ProdukHukumCategoryController::class,'index'])->name('admin.produk_hukum.jenis.index');
     Route::get('admin/produk-hukum/jenis-peraturan/create', [ProdukHukumCategoryController::class,'create'])->name('admin.produk_hukum.jenis.create');
@@ -337,6 +391,7 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     Route::get('admin/produk-hukum/list-data/delete/{id}', [ProdukHukumListController::class,'destroy']);
     Route::get('admin/produk-hukum/list-data/jenisdokumen', [ProdukHukumListController::class,'jenisdokumen'])->name('admin.produk_hukum.listdata.jenisdokumen');
     Route::post('admin/produk-hukum/list-data/postjenisdokumen', [ProdukHukumListController::class,'postjenisdokumen'])->name('admin.produk_hukum.listdata.postjenisdokumen');
+    Route::get('admin/produk-hukum/list-data/select', [ProdukHukumListController::class,'select'])->name('admin.produk_hukum.listdata.select');
 
     Route::get('admin/media-hukum/artikel-hukum/view', [ArtikelHukumListController::class,'index'])->name('admin.media_hukum.artikelhukum.index');
     Route::get('admin/media-hukum/artikel-hukum/create', [ArtikelHukumListController::class,'create'])->name('admin.media_hukum.artikelhukum.create');
@@ -357,11 +412,18 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     Route::get('admin/photo-gallery/edit/{id}', [PhotoController::class,'edit']);
     Route::post('admin/photo-gallery/update/{id}', [PhotoController::class,'update']);
     
+    Route::get('admin/video-gallery/view', [VideoController::class,'index'])->name('admin.video.index');
+    Route::get('admin/video-gallery/create', [VideoController::class,'create'])->name('admin.video.create');
+    Route::post('admin/video-gallery/store', [VideoController::class,'store'])->name('admin.video.store');
+    Route::get('admin/video-gallery/delete/{id}', [VideoController::class,'destroy']);
+    Route::get('admin/video-gallery/edit/{id}', [VideoController::class,'edit']);
+    Route::post('admin/video-gallery/update/{id}', [VideoController::class,'update']);
+    
     Route::get('admin/media-hukum/berita/view', [BeritaListController::class,'index'])->name('admin.media_hukum.berita.index');
     Route::get('admin/media-hukum/berita/create', [BeritaListController::class,'create'])->name('admin.media_hukum.berita.create');
     Route::post('admin/media-hukum/berita/store', [BeritaListController::class,'store'])->name('admin.media_hukum.berita.store');
     Route::get('admin/media-hukum/berita/edit/{id}', [BeritaListController::class,'edit']);
-    Route::post('admin/media-hukum/berita/update/{id}', [BeritaListController::class,'update']);
+    Route::post('admin/media-hukum/berita/update/{id}', [BeritaListController::class,'update'])->name('admin.media_hukum.berita.update');
     Route::get('admin/media-hukum/berita/delete/{id}', [BeritaListController::class,'destroy']);
     
     Route::get('admin/media-hukum/category-berita/view', [BeritaListController::class,'category'])->name('admin.media_hukum.berita.category');
@@ -370,16 +432,63 @@ Route::group(['middleware' => ['prevent-back-history', 'get.adminmenu', 'XssSani
     Route::post('admin/media-hukum/category-berita/store', [BeritaListController::class,'categorystore'])->name('admin.media_hukum.berita.categorystore');
     Route::post('admin/media-hukum/category-berita/update/{id}', [BeritaListController::class,'categoryupdate']);
     
+    Route::get('admin/privacy/edit', [PagePrivacyController::class,'edit'])->name('admin.web_setting.page_privacy.edit');
+    Route::post('admin/privacy/update', [PagePrivacyController::class,'update'])->name('admin.web_setting.page_privacy.update');
+    
+    Route::get('admin/layanan-hukum/bimtek-hibrid/view', [LayananHukumBimtekHibridController::class,'index'])->name('admin.layanan_hukum.bimtekhibrid.index');
+    Route::get('admin/layanan-hukum/bimtek-hibrid/create', [LayananHukumBimtekHibridController::class,'create'])->name('admin.layanan_hukum.bimtekhibrid.create');
+    Route::post('admin/layanan-hukum/bimtek-hibrid/store', [LayananHukumBimtekHibridController::class,'store'])->name('admin.layanan_hukum.bimtekhibrid.store');
+    Route::get('admin/layanan-hukum/bimtek-hibrid/edit/{id}', [LayananHukumBimtekHibridController::class,'edit']);
+    Route::post('admin/layanan-hukum/bimtek-hibrid/update/{id}', [LayananHukumBimtekHibridController::class,'update']);
+    
+
+Route::get('admin/hukum-adat/view', [HukumAdatController::class, 'index'])->name('admin.hukumadat.index');
+    Route::get('admin/hukum-adat/create', [HukumAdatController::class, 'create'])->name('admin.hukumadat.create');
+    Route::post('admin/hukum-adat/store', [HukumAdatController::class, 'store'])->name('admin.hukumadat.store');
+    Route::get('admin/hukum-adat/delete/{id}', [HukumAdatController::class, 'destroy']);
+    Route::get('admin/hukum-adat/edit/{id}', [HukumAdatController::class, 'edit']);
+    Route::post('admin/hukum-adat/update/{id}', [HukumAdatController::class, 'update']);
+
+
+    Route::get('admin/daftar-lbh/view', [DaftarLbhController::class,'index'])->name('admin.daftar_lbh.index');
+    Route::get('admin/daftar-lbh/create', [DaftarLbhController::class,'create'])->name('admin.daftar_lbh.create');
+    Route::post('admin/daftar-lbh/store', [DaftarLbhController::class,'store'])->name('admin.daftar_lbh.store');
+    Route::get('admin/daftar-lbh/delete/{id}', [DaftarLbhController::class,'destroy']);
+    Route::get('admin/daftar-lbh/edit/{id}', [DaftarLbhController::class,'edit']);
+    Route::post('admin/daftar-lbh/update/{id}', [DaftarLbhController::class,'update']);
+    
+    Route::get('admin/index-hukum/irh/view', [IndexHukumIrhController::class,'index'])->name('admin.index_hukum.irh.index');
+    Route::get('admin/index-hukum/irh/create', [IndexHukumIrhController::class,'create'])->name('admin.index_hukum.irh.create');
+    Route::post('admin/index-hukum/irh/store', [IndexHukumIrhController::class,'store'])->name('admin.index_hukum.irh.store');
+    Route::get('admin/index-hukum/irh/delete/{id}', [IndexHukumIrhController::class,'destroy']);
+    Route::get('admin/index-hukum/irh/edit/{id}', [IndexHukumIrhController::class,'edit']);
+    Route::post('admin/index-hukum/irh/update/{id}', [IndexHukumIrhController::class,'update']);
+    
+    Route::get('admin/index-hukum/ikk/view', [IndexHukumIkkController::class,'index'])->name('admin.index_hukum.ikk.index');
+    Route::get('admin/index-hukum/ikk/create', [IndexHukumIkkController::class,'create'])->name('admin.index_hukum.ikk.create');
+    Route::post('admin/index-hukum/ikk/store', [IndexHukumIkkController::class,'store'])->name('admin.index_hukum.ikk.store');
+    Route::get('admin/index-hukum/ikk/delete/{id}', [IndexHukumIkkController::class,'destroy']);
+    Route::get('admin/index-hukum/ikk/edit/{id}', [IndexHukumIkkController::class,'edit']);
+    Route::post('admin/index-hukum/ikk/update/{id}', [IndexHukumIkkController::class,'update']);
+    
+    Route::get('admin/index-hukum/ikd/view', [IndexHukumIkdController::class,'index'])->name('admin.index_hukum.ikd.index');
+    Route::get('admin/index-hukum/ikd/create', [IndexHukumIkdController::class,'create'])->name('admin.index_hukum.ikd.create');
+    Route::post('admin/index-hukum/ikd/store', [IndexHukumIkdController::class,'store'])->name('admin.index_hukum.ikd.store');
+    Route::get('admin/index-hukum/ikd/delete/{id}', [IndexHukumIkdController::class,'destroy']);
+    Route::get('admin/index-hukum/ikd/edit/{id}', [IndexHukumIkdController::class,'edit']);
+    Route::post('admin/index-hukum/ikd/update/{id}', [IndexHukumIkdController::class,'update']);
+    
     Route::get('admin/dashboard/getyear/{years}', [DashboardControllerForAdmin::class,'getyear'])->name('admin.dashboard.getyear');
 });
 
 /* --------------------------------------- */
 /* JDIH Front End Route */
 /* --------------------------------------- */
-Route::group(['middleware' => ['XssSanitizer']], function () {
+Route::group(['middleware' => ['XssSanitizer', 'web']], function () {
     Route::get('/', [HomeController::class,'index'])->name('homepage');
     Route::post('search', [SearchController::class,'index']);
     Route::get('search', function() {abort(404);});
+    Route::get('getJenisByKategori/{kategoriId}', [HomeController::class, 'getJenisByKategori']);
     
     Route::get('terms-and-conditions', [TermController::class,'index'])->name('front.term');
     Route::get('privacy-policy', [PrivacyController::class,'index'])->name('front.privacy');
@@ -390,16 +499,25 @@ Route::group(['middleware' => ['XssSanitizer']], function () {
     Route::get('admin/forget-password', [ForgetPasswordControllerForAdmin::class,'index'])->name('admin.forget_password');
     Route::post('admin/forget-password/store', [ForgetPasswordControllerForAdmin::class,'store'])->name('admin.forget_password.store');
     
-    Route::get('visi-misi', [VisiMisiController::class,'index'])->name('front.visimisi');
-    Route::get('struktur-organisasi', [StrukturOrganisasiController::class,'index'])->name('front.strukturorganisasi');
-    Route::get('tupoksi', [TupoksiController::class,'index'])->name('front.tupoksi');
-    Route::get('spmipm', [SurveyController::class,'index'])->name('front.spmipm');
-    Route::post('spmipm/create', [SurveyController::class,'create'])->name('front.spmipm.create');
+    Route::get('visi-misi', [ProfilController::class,'visimisi'])->name('front.visimisi');
+    Route::get('dasar-hukum', [ProfilController::class,'dasarhukum'])->name('front.dasarhukum');
+    Route::get('struktur-organisasi', [ProfilController::class,'strukturorganisasi'])->name('front.strukturorganisasi');
+    Route::get('tupoksi', [ProfilController::class,'tupoksi'])->name('front.tupoksi');
+    Route::get('sop', [ProfilController::class,'sop'])->name('front.sop');
+    Route::get('anggota-jdih', [ProfilController::class,'anggotajdih'])->name('front.anggotajdih');
+    
+    Route::get('skmikm', [SurveyController::class,'index'])->name('front.spmipm');
+    Route::post('skmikm/create', [SurveyController::class,'create'])->name('front.spmipm.create');
 
     Route::get('produkhukum/{slug}', [ProdukHukumController::class,'peraturan'])->name('front.peraturanhukum');
-    Route::get('produkhukum/{menuslug}/{slug}', [ProdukHukumController::class,'detail']);
-    Route::post('produkshukum/search-peraturan', [SearchPeraturanController::class,'index']);
-    Route::get('produkshukum/search-peraturan', [SearchPeraturanController::class,'index']);
+    Route::post('produkhukum/{slug}', [ProdukHukumController::class,'peraturan'])->name('front.peraturanhukum');
+    Route::get('produkhukum/{menuslug}/{slug}', [ProdukHukumController::class,'detail'])->name('front.detail.peraturanhukum');
+    Route::post('produkhukum/{menuslug}/{slug}', [ProdukHukumController::class,'detail'])->name('front.detail.peraturanhukum');
+    Route::post('produkshukum/search', [SearchPeraturanController::class,'index'])->name('front.search')->middleware('persist.search');
+    Route::get('produkshukum/search', [SearchPeraturanController::class,'index'])->name('front.search')->middleware('persist.search');
+    Route::post('produkshukum/search/detail', [SearchPeraturanController::class,'detail'])->name('front.detail.search');
+    Route::get('produkshukum/search/detail', [SearchPeraturanController::class,'detail'])->name('front.detail.search');
+    Route::get('dokumen/{menuslug}/{id}', [ProdukHukumController::class,'detailApi']);
 
     Route::get('artikel-hukum', [ArtikelHukumController::class,'index'])->name('front.artikelhukum');
     Route::get('artikel-hukum/{slug}', [ArtikelHukumController::class,'detail']);
@@ -410,10 +528,24 @@ Route::group(['middleware' => ['XssSanitizer']], function () {
     Route::post('search-majalah-hukum', [SearchMajalahHukumController::class,'index']);
 
     Route::get('frontpage/{slug}', [FrontPageController::class,'index'])->name('front.frontpage');
-    Route::get('frontpage/{menuslug}/{slug}', [FrontPageController::class,'detail']);
+    Route::post('frontpage/{slug}', [FrontPageController::class,'index'])->name('front.frontpage');
+    Route::get('frontpage/{menuslug}/{slug}', [FrontPageController::class,'detail'])->name('front.detail');
+    Route::post('frontpage/{menuslug}/{slug}', [FrontPageController::class,'detail'])->name('front.detail');
     Route::post('frontpage/search-dokumen/{slug}', [SearchPeraturanController::class,'dokumen']);
     Route::get('frontpage/search-dokumen/{slug}', [SearchPeraturanController::class,'dokumen']);
-    Route::get('berita/{slug}', [FrontPageController::class,'detailBerita'])->name('front.detailberita'); 
+    
+    Route::post('frontpage/{menuslug}/pool/{slug}', [FrontPoolPageController::class,'detail'])->name('front.pool.detail');
+    
+    Route::get('berita/{slug}', [FrontPageController::class,'detailBerita'])->name('front.detailberita');
+    
+    Route::get('lang/home', [LangController::class, 'index']);
+    Route::get('lang/change', [LangController::class, 'change'])->name('changeLang');
+    
+    Route::post('frontpage/daftar-lbh', [DaftarLbhControllerforFront::class,'index'])->name('front.daftarlbh');
+    Route::post('frontpage/bimtek-hybrid', [BimtekHibridController::class,'index'])->name('front.bimtekhibrid');
+Route::post('frontpage/hukum-adat', [HukumAdatViewController::class, 'index'])->name('front.hukumadat');
+    Route::get('hukum-adat/{slug}', [HukumAdatViewController::class, 'detail']);
+    Route::post('search-hukum-adat', [SearchHukumAdatViewController::class, 'index']);
 });
 
 Route::get('integrasi.go', [App\Http\Controllers\api\ProdukHukumController::class, 'integrasi']);

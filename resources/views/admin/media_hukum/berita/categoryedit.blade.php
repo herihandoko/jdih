@@ -13,6 +13,7 @@
                     </a>
                 </div>
             </div>
+            
             <div class="card-body">
                 <div class="form-group">
                     <label for="">Nama Kategori *</label>
@@ -32,8 +33,12 @@
                         </div>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-success">Ubah</button>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Ubah
+                </button>
             </div>
         </div>
     </form>

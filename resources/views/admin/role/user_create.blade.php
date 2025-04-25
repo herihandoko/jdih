@@ -5,7 +5,7 @@
     <form action="{{ route('admin.role.user-store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 mt-2 font-weight-bold text-primary">Tambah Admin User</h6>
@@ -17,13 +17,30 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Nama *</label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" autofocus required>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Nama *</label>
+                                        <input type="text" name="name" class="form-control form-control-sm" value="{{ old('name') }}" autofocus required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Username *</label>
+                                        <input type="text" name="username" class="form-control form-control-sm" value="{{ old('username') }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Alamat Email *</label>
+                                        <input type="email" name="email" class="form-control form-control-sm" value="{{ old('email') }}" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="">Alamat Email *</label>
-                            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
-                        </div>
+                        
                         <div class="form-group">
                             <label for="">Foto</label>
                             <span style="font-style: italic; font-size: smaller;">(Ekstensi Foto: .jpeg, .png, .jpg, .gif || Maks.: 2 MB)</span>
@@ -31,13 +48,23 @@
                                 <input type="file" name="photo" accept=".jpeg, .png, .jpg, .gif">
                             </div>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="">Password *</label>
-                            <input type="password" name="password" class="form-control" value="{{ old('password') }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="">Konfirmasi Password *</label>
-                            <input type="password" name="re_password" class="form-control" value="{{ old('re_password') }}" required>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Password *</label>
+                                        <input type="password" name="password" class="form-control form-control-sm" value="{{ old('password') }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Konfirmasi Password *</label>
+                                        <input type="password" name="re_password" class="form-control form-control-sm" value="{{ old('re_password') }}" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="form-group">
@@ -45,7 +72,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Pilih Role *</label>
-                                        <select name="role_id" class="form-control">
+                                        <select name="role_id" class="form-control form-control-sm">
                                             @foreach($roles as $row)
                                                 @if($row->role_name == 'Super Admin')
                                                     @continue
@@ -59,7 +86,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Pilih Dinas *</label>
-                                        <select name="comp_code" class="form-control">
+                                        <select name="comp_code" class="form-control form-control-sm">
                                             @foreach($company as $row)
                                                 <option value="{{ $row->comp_code }}">{{ $row->comp_name }}</option>
                                             @endforeach

@@ -1,40 +1,48 @@
 @extends('layouts.app')
 
 @section('content')
-
-	<div class="page-banner" style="background-image: url({{ asset('storage/places/'.$g_setting->banner_blog_detail) }})">
-        <div class="bg-page"></div>
-        <div class="text">
-            <h1>{{ $produkHukumDetail->judul_peraturan }}</h1>
-            <!-- <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('front.peraturanhukum', $menu->slug) }}">Peraturan Pusat</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $produkHukumDetail->judul_peraturan }}</li>
-                </ol>
-            </nav> -->
-        </div>
+<div class="page-banner">
+    <div class="container">
+        <h2>{{ translateText($produkHukumDetail->judul_peraturan) }}</h2>
     </div>
+</div>
 
-    <div class="page-content">
-    	<div class="container">
-    		<div class="row">
-                <div class="col-sm-8">
-                    <a href="{{ route('front.peraturanhukum', $menu->slug) }}" style="color: #000;">
-                        <i class="fa fa-chevron-circle-left"></i>&nbsp;Kembali
+<div class="page-content">
+    <div class="container-jdihcontent">
+        <div class="row">
+            <div class="col-sm-8">
+                @if($pageFrom == 'inside' || $pageFrom == 'terkait')
+                    <form id="detailForm" action="{{ route('front.peraturanhukum', ['slug' => $menu->slug]) }}" method="POST" style="display: inline;">
+                        @csrf
+                        <input style="display: none;" name="slugs" value="{{ $menu->slug }}">
+                        <input style="display: none;" name="keyword" value="{{ $keyword }}">
+                        <input style="display: none;" name="nomor" value="{{ $nomor }}">
+                        <input style="display: none;" name="tahun" value="{{ $tahun }} ">
+                        <input style="display: none;" name="pagefrom" value="{{ $pageFrom }} ">
+                        <input style="display: none;" name="page" value="{{ $page }}">
+
+                        <button type="submit" class="btn btn-sm btn-links">
+                            <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ route('homepage') }}" class="btn btn-sm btn-links">
+                        <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
                     </a>
-                </div>
+                @endif
+            </div>
 
-                <div class="col-sm-8">
-                    <br/>
-                </div>
+            <div class="col-sm-8">
+                <br/>
+            </div>
 
-                <div class="col-sm-8">
-                    @include('layouts.table_content_peraturan')
-                </div>
-                    
-                <div class="col-md-4">
-                    <div class="container-iframe">
+            <div class="col-sm-8">
+                @include('layouts.table_content_peraturan')
+            </div>
+
+            <div class="col-md-4 sidebar">
+                <div class="theiaStickySidebar">
+                    <div class="container-iframe shadow">
                         @if($produkHukumDetail->file_peraturan)
                             @php
                                 $extension = pathinfo(storage_path('/places/peraturan/'.$produkHukumDetail->file_peraturan), PATHINFO_EXTENSION);
@@ -47,24 +55,24 @@
                         @else
                             <embed src="{{ url('storage/places/peraturan/404.jpg') }}#scrollbar=0" style="height: 400px; width: 100%;" class="hidden-xs">
                         @endif
-	            </div>
+                    </div>
                     @if($produkHukumDetail->file_peraturan)
-    	                <div class="d-grid gap-2 col-12 mx-auto mt-2">
-    	                    <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-primary btn-block" download style=" color: #fff; background-color: #11D694; border-color: #11D694; font-weight: 800;">
-                                <i class="fa fa-download"></i>&nbsp;Download
-    	                    </a>
-    	                </div>
+                        <div class="d-grid gap-2 col-12 mx-auto mt-2">
+                            <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-block btn-download-doc" download>
+                                <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}
+                            </a>
+                        </div>
                     @else
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
-                            <button class="btn btn-secondary btn-block" disabled="true" style="cursor: default; font-weight: 800;">
-                                <i class="fa fa-download"></i>&nbsp;Download
+                            <button class="btn btn-sm btn-secondary btn-block" disabled="true" style="cursor: default; font-weight: 800;">
+                                <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}
                             </button>
                         </div>
                     @endif
-    		</div>
-                    
-    		</div>
-    	</div>
-    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
+</div>
 @endsection

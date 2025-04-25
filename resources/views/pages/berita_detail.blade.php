@@ -139,52 +139,52 @@
     }
 </style>
 
-
-    <div class="page-banner" style="background-image: url({{ asset('storage/places/'.$g_setting->banner_blog_detail) }})">
-        <div class="bg-page"></div>
-        <div class="text">
-            <h1>{{ $beritaDetail->judul_berita }}</h1>
-        </div>
+<div class="page-banner">
+    <div class="container">
+        <h1>{{ translateText($beritaDetail->judul_berita) }}</h1>
     </div>
+</div>
 
-    <div class="page-content">
-    	<div class="container">
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="single-section">
-                        <div class="featured-photo">
-                            @if($beritaDetail->photo_berita)
-                                <img class="card-img-top rounded" src="{{ url('storage/places/berita/'.$beritaDetail->photo_berita) }}" alt="Foto Berita">
-                            @else
-                                <img class="card-img-top rounded" src="{{ url('storage/places/berita/logo-berita.png') }}" alt="Foto Berita">
-                            @endif
-                        </div>
-                        <div class="text">
-                            <h2>{{ $beritaDetail->judul_berita }}</h2>
-                            
-                             <div class="meta-post-sm mb-4">
-                                <ul class="list-unstyled d-flex flex-wrap mb-0">
-                                    <li class="meta-tag mr-4 mb-1">
-                                        <i class="fa fa-user text-gray-color"></i>
-                                        <span class="ml-1 text-capitalize text-gray-color">{{ $beritaDetail->name }}</span>
-                                    </li>
+<div class="page-content">
+    <div class="container-jdihcontent">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="single-section">
+                    <div class="featured-photo">
+                        @if($beritaDetail->photo_berita)
+                            <img class="card-img-top rounded" src="{{ url('storage/places/berita/'.$beritaDetail->photo_berita) }}" alt="Foto Berita">
+                        @else
+                            <img class="card-img-top rounded" src="{{ url('storage/places/berita/logo-berita.png') }}" alt="Foto Berita">
+                        @endif
+                    </div>
+                    <div class="text">
+                        <h2>{{ translateText($beritaDetail->judul_berita) }}</h2>
 
-                                    <li class="meta-tag text-gray-color mr-4 mb-1">
-                                        <i class="fa fa-calendar"></i>
-                                        <span class="ml-1 text-capitalize">{!! date('d-m-Y H:i:s', strtotime($beritaDetail->publish_at)) !!}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            
-                            {!!  $beritaDetail->content_berita !!}
+                         <div class="meta-post-sm mb-4">
+                            <ul class="list-unstyled d-flex flex-wrap mb-0">
+                                <li class="meta-tag mr-4 mb-1">
+                                    <i class="fa fa-user text-gray-color"></i>
+                                    <span class="ml-1 text-capitalize text-gray-color">{{ $beritaDetail->name }}</span>
+                                </li>
+
+                                <li class="meta-tag text-gray-color mr-4 mb-1">
+                                    <i class="fa fa-calendar"></i>
+                                    <span class="ml-1 text-capitalize">
+                                        {{ Carbon\Carbon::parse($beritaDetail->publish_at)->isoFormat('DD MMMM Y HH:m:s') }}
+                                        <!--{!! date('d-m-Y H:i:s', strtotime($beritaDetail->publish_at)) !!}-->
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
+
+                        {!! html_entity_decode(translateText($beritaDetail->content_berita)) !!}
                     </div>
                 </div>
-                <div class="col-md-5 col-lg-4 order-2">
-                    @include('layouts.sidebar_berita')
-                </div>
             </div>
-    	</div>
+            <div class="col-md-5 col-lg-4 order-2 sidebar">
+                @include('layouts.sidebar_berita')
+            </div>
+        </div>
     </div>
-
+</div>
 @endsection

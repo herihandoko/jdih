@@ -7,7 +7,7 @@
 
         <input type="hidden" name="current_photo" value="{{ $admin_user->photo }}">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 mt-2 font-weight-bold text-primary">Ubah Admin User</h6>
@@ -19,13 +19,32 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="">Nama *</label>
-                            <input type="text" name="name" class="form-control" value="{{ $admin_user->name }}" autofocus required>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Nama *</label>
+                                        <input type="text" name="name" class="form-control form-control-sm" value="{{ $admin_user->name }}" autofocus required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Username *</label>
+                                        <input type="text" name="username" class="form-control form-control-sm" value="{{ $admin_user->username }}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="">Alamat Email *</label>
+                                        <input type="email" name="email" class="form-control form-control-sm" value="{{ $admin_user->email }}" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="">Alamat Email *</label>
-                            <input type="email" name="email" class="form-control" value="{{ $admin_user->email }}" required>
-                        </div>
+                        
+                        
+                        
                         <div class="form-group">
                             <label for="">Foto Saat Ini</label>
                             <div>

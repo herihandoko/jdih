@@ -1,7 +1,7 @@
 @php
-$menus = DB::table('menus')->get();
-$menu_arr = array();
-$is_active = array();
+    $menus = DB::table('menus')->get();
+    $menu_arr = array();
+    $is_active = array();
 @endphp
 
 @foreach($menus as $row)
@@ -16,7 +16,7 @@ $is_active = array();
 
     <!-- Menu For Mobile Device -->
     <div class="mobile-nav">
-        <a href="" class="logo">
+        <a href="{{ url('/') }}" class="logo">
             <img src="{{ asset('storage/places/'.$g_setting->logo) }}" alt="">
         </a>
     </div>
@@ -40,8 +40,8 @@ $is_active = array();
 
     <!-- Menu For Desktop Device -->
     <div class="main-nav">
-        <div class="container">
-            <nav class="navbar navbar-expand-md navbar-light">
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-md navbar-light pl-5">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('storage/places/'.$g_setting->logo) }}" alt="logo">
                 </a>
@@ -57,17 +57,30 @@ $is_active = array();
                         @if(
                             ($menu_arr['Visi dan Misi'] == 'Hide') &&
                             ($menu_arr['Struktur Organisasi'] == 'Hide') &&
-                            ($menu_arr['Tupoksi'] == 'Hide')
+                            ($menu_arr['Tupoksi'] == 'Hide') &&
+                            ($menu_arr['Dasar Hukum'] == 'Hide') &&
+                            ($menu_arr['Anggota JDIH Provinsi Banten'] == 'Hide') &&
+                            ($menu_arr['SOP'] == 'Hide')
                         )
                         @else
                             <li class="nav-item @if($conName[0] == 'visi-misi') active @endif">
-                                <a href="javascript:void(0);" class="nav-link @if($conName[0] == 'visi-misi' || $conName[0] == 'struktur-organisasi' || $conName[0] == 'tupoksi') active @endif dropdown-toggle">Profil</a>
+                                <a href="javascript:void(0);" class="nav-link @if($conName[0] == 'visi-misi' || $conName[0] == 'struktur-organisasi' || $conName[0] == 'tupoksi' || $conName[0] == 'dasar-hukum' || $conName[0] == 'sop' || $conName[0] == 'anggota-jdih') active @endif dropdown-toggle">
+                                    {{ translateText('Profil Kami') }}
+                                </a>
                                 <ul class="dropdown-menu">
 
                                     @if($menu_arr['Visi dan Misi'] == 'Show' && $is_active['Visi dan Misi'] == 1)
                                     <li class="nav-item">
                                         <a href="{{ route('front.visimisi') }}" class="nav-link @if($conName[0] == 'visi-misi') active @endif">
-                                            Visi dan Misi
+                                            {{ translateText('Visi dan Misi') }}
+                                        </a>
+                                    </li>
+                                    @endif
+                                    
+                                    @if($menu_arr['Dasar Hukum'] == 'Show' && $is_active['Dasar Hukum'] == 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('front.dasarhukum') }}" class="nav-link @if($conName[0] == 'dasar-hukum') active @endif">
+                                            {{ translateText('Dasar Hukum') }}
                                         </a>
                                     </li>
                                     @endif
@@ -75,7 +88,7 @@ $is_active = array();
                                     @if($menu_arr['Struktur Organisasi'] == 'Show' && $is_active['Struktur Organisasi'] == 1)
                                     <li class="nav-item">
                                         <a href="{{ route('front.strukturorganisasi') }}" class="nav-link @if($conName[0] == 'struktur-organisasi') active @endif">
-                                            Struktur Organisasi
+                                            {{ translateText('Struktur Organisasi') }}
                                         </a>
                                     </li>
                                     @endif
@@ -83,7 +96,23 @@ $is_active = array();
                                     @if($menu_arr['Tupoksi'] == 'Show' && $is_active['Tupoksi'] == 1)
                                     <li class="nav-item">
                                         <a href="{{ route('front.tupoksi') }}" class="nav-link @if($conName[0] == 'tupoksi') active @endif">
-                                            Tupoksi
+                                            {{ translateText('Tupoksi Biro Hukum') }}
+                                        </a>
+                                    </li>
+                                    @endif
+                                    
+                                    @if($menu_arr['Anggota JDIH Provinsi Banten'] == 'Show' && $is_active['Anggota JDIH Provinsi Banten'] == 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('front.anggotajdih') }}" class="nav-link @if($conName[0] == 'anggota-jdih') active @endif">
+                                            {{ translateText('Anggota JDIH Provinsi Banten') }}
+                                        </a>
+                                    </li>
+                                    @endif
+                                    
+                                    @if($menu_arr['SOP'] == 'Show' && $is_active['SOP'] == 1)
+                                    <li class="nav-item">
+                                        <a href="{{ route('front.sop') }}" class="nav-link @if($conName[0] == 'sop') active @endif">
+                                            {{ translateText('SOP') }}
                                         </a>
                                     </li>
                                     @endif
@@ -106,29 +135,31 @@ $is_active = array();
                         @endforeach
                         
                         @foreach($parentIdIn as $item)
+                            @php
+                                $hasActiveChild = false;
+                                foreach($item->children as $child) {
+                                    if(Request::is('frontpage/'.$child->slug)) {
+                                        $hasActiveChild = true;
+                                    }
+                                    
+                                    if(Request::is('produkhukum/'.$child->slug)) {
+                                        $hasActiveChild = true;
+                                    }
+                                }
+                            @endphp
                             @if($menu_arr[$item->menu_name] == 'Show' && $is_active[$item->menu_name] == 1)
                             <li class="nav-item">
-                                <a class="nav-link {{ count($item->children) ? 'dropdown-toggle' :'' }}" href="{{ count($item->children) ? 'javascript:void(0);' : '/frontpage/'.$item->slug }}" id="navbarDropdownMenuLink" data-toggle="{{ count($item->children) ? 'dropdown' : '' }}" aria-haspopup="true" aria-expanded="false">
-                                    {{ $item->menu_name }}
+                                <a class="nav-link {{ count($item->children) ? 'dropdown-toggle' :'' }} @if(Request::is('frontpage/'.$item->slug) || $hasActiveChild) active @endif" href="{{ count($item->children) ? 'javascript:void(0);' : route('front.frontpage', ['slug' => $item->slug]) }}" id="navbarDropdownMenuLink" data-toggle="{{ count($item->children) ? 'dropdown' : '' }}" aria-haspopup="true" aria-expanded="false">
+                                    {{ translateText($item->menu_name) }}
                                 </a>
-                                <ul class="dropdown-menu">
-                                    @if(count($item->children))
+                                @if(count($item->children))
+                                    <ul class="dropdown-menu">
                                         @include('pages.menusub',['childs' => $item->children])
-                                    @endif
-                                </ul>
+                                    </ul>
+                                @endif
                             </li>
                             @endif
                         @endforeach
-
-                        @if(
-                            ($menu_arr['SPM/IPM'] == 'Hide')
-                        )
-                        @else
-                            <li class="nav-item">
-                                <a href="{{ route('front.spmipm') }}" class="nav-link @if($conName[0] == 'spmipm') active @endif">SPM/IPM</a>
-                            </li>
-                        @endif
-
                     </ul>
                 </div>
             </nav>

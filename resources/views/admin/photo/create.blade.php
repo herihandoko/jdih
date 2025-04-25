@@ -11,6 +11,7 @@
                     <a href="{{ route('admin.photo.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i> Lihat List</a>
                 </div>
             </div>
+            
             <div class="card-body">
                 <div class="row">
                     <div style="margin-bottom: 5px;">
@@ -30,10 +31,12 @@
                         </tr>
                     </table>
                 </div>
-                
-                <div class="row">
-                    <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Simpan
+                </button>
             </div>
         </div>
     </form>

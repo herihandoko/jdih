@@ -11,58 +11,77 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
-                    <tr>
-                        <th style="width: 5%;">No.</th>
-                        <th style="width: 5%;">Foto</th>
-                        <th style="width: 10%;">Kategori</th>
-                        <th style="width: 15%;">Judul Berita</th>
-                        @if($compcode == '')
-                        <th style="width: 6%;">Dinas</th>
-                        @endif
-                        <th style="width: 12%;">Dibuat Oleh</th>
-                        <th style="width: 10%;">Status</th>
-                        <th style="width: 12%;">Publish Tgl</th>
-                        <th style="width: 8%;">Aksi</th>
-                    </tr>
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: x-small;">
+                    <thead>
+                        <tr>
+                            <th style="width: 2%;">No.</th>
+                            <th>Foto</th>
+                            <th>Kategori</th>
+                            <th>Judul Berita</th>
+                            @if($compcode == '')
+                                <th>Dinas</th>
+                            @endif
+                            <th>Dibuat Oleh</th>
+                            <th>Publish</th>
+                            <th>Publish Tgl</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><input type="text" placeholder="Cari Judul" class="form-control form-control-sm column-filter" data-column="3" /></th>
+                            <th></th>
+                            <th></th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="6">
+                                    <option value="">Semua</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($beritaList as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">
                                 @if($row->photo_berita)
-                                    <img src="{{ url('storage/places/berita/'.$row->photo_berita) }}" alt="Foto Berita" class="w_30">
+                                    <img src="{{ url('storage/places/berita/'.$row->photo_berita) }}" alt="Foto Berita" class="w_50">
                                 @else
-                                    <img src="{{ url('storage/places/berita/logo-berita.png') }}" alt="Foto Berita" class="w_30">
+                                    <img src="{{ url('storage/places/berita/logo-berita.png') }}" alt="Foto Berita" class="w_50">
                                 @endif
                             </td>
-                            <td>
+                            <td style="width: auto;">
                                 @if($row->berita_categories)
                                     {{ $row->berita_categories->category_name }}
                                 @endif
                             </td>
-                            <td>{{ $row->judul_berita }}</td>
+                            <td style="width: 15%;">{{ $row->judul_berita }}</td>
                             @if($compcode == '')
-                                <td>{{ $row->comp_name }}</td>
+                                <td style="width: auto;">{{ $row->comp_name }}</td>
                             @endif
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 {{ $row->name }}
                             </td>
-                            <td style="text-align: center;">
-                                @if($row->publish == 0) <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Belum Publish' }}</font>
-                                @else <font class="btn-success btn-sm" style="font-size: small;">{{ 'Publish' }}</font>@endif
+                            <td style="text-align: center; width: auto;">
+                                @if($row->publish == 0) <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Tidak' }}</font>
+                                @else <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Ya' }}</font>@endif
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 @if($row->publish_at)
-                                    {!! date('d-m-Y H:i:s', strtotime($row->publish_at)) !!}
+                                    {!! date('d M Y H:i:s', strtotime($row->publish_at)) !!}
                                 @else
                                     {{ '-' }}
                                 @endif
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 @php $beritaID = Crypt::encrypt($row->id); @endphp
                                 <a href="{{ URL::to('admin/media-hukum/berita/edit/'.$beritaID) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>

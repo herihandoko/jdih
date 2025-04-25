@@ -11,10 +11,10 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>No.</th>
+                        <th style="width: 2%;">No.</th>
                         <th>URL</th>
                         <th>Icon</th>
                         <th>Icon Color</th>
@@ -25,12 +25,12 @@
                     <tbody>
                         @foreach($social_media as $row)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $row->social_url }}</td>
-                            <td><i class="{{ $row->social_icon }}"></i></td>
-                            <td><span style="padding: 5px; color: white; background-color: #{{ $row->social_color }}">#{{ $row->social_color }}</span></td>
-                            <td>{{ $row->social_order }}</td>
-                            <td>
+                            <td style="width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: auto;">{{ $row->social_url }}</td>
+                            <td style="width: auto;"><i class="{{ $row->social_icon }}"></i></td>
+                            <td style="width: auto;"><span style="padding: 5px; color: white; background-color: #{{ $row->social_color }}">#{{ $row->social_color }}</span></td>
+                            <td style="width: auto;">{{ $row->social_order }}</td>
+                            <td style="width: auto;">
                                 <a href="{{ URL::to('admin/social-media/edit/'.$row->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
                                 <a href="{{ URL::to('admin/social-media/delete/'.$row->id) }}" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
                             </td>

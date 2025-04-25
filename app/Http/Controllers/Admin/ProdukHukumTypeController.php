@@ -40,6 +40,7 @@ class ProdukHukumTypeController extends Controller
         ]);
 
         $produkHukumCategory = new ProdukHukumCategory();
+
         $data = $request->only($produkHukumCategory->getFillable());
 
         $data['created_by'] = session('id');

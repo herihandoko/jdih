@@ -49,22 +49,21 @@ class ArtikelHukumListController extends Controller
         $slug = Str::slug($request->judul_artikel, '-');
 
         $artikelHukumList = new ArtikelHukumList();
-        $data = $request->only($artikelHukumList->getFillable());
 
         if($request->publish == 1) {
-            $data['publish'] = 1;
-            $data['publish_at'] = Carbon::now()->toDateTimeString();
+            $artikelHukumList->publish = 1;
+            $artikelHukumList->publish_at = Carbon::now()->toDateTimeString();
         } else {
-            $data['publish'] = 0;
+            $artikelHukumList->publish = 0;
         }
 
-        $data['slug'] = $slug;
-        $data['penulis_artikel'] = session('name');
-        $data['tahun_artikel'] = Carbon::now()->format('Y');
-        $data['comp_code'] = session('comp_code');
-        $data['created_by'] = session('id');
+        $artikelHukumList->slug = $slug;
+        $artikelHukumList->penulis_artikel = session('name');
+        $artikelHukumList->tahun_artikel = Carbon::now()->format('Y');
+        $artikelHukumList->comp_code = session('comp_code');
+        $artikelHukumList->created_by = session('id');
 
-        $artikelHukumList->fill($data)->save();
+        $artikelHukumList->save();
         return redirect()->route('admin.media_hukum.artikelhukum.index')->with('success', 'Artikel Hukum is added successfully!');
     }
 
@@ -76,27 +75,26 @@ class ArtikelHukumListController extends Controller
 
     public function update(Request $request, $id)
     {
-        $artikelHukumList = ArtikelHukumList::findOrFail($id);
-        $data = $request->only($artikelHukumList->getFillable());
-
         $request->validate([
             'judul_artikel' =>  [
                 'required',
                 Rule::unique('artikel_hukum_lists')->ignore($id),
             ]
         ]);
+        
+        $artikelHukumList = ArtikelHukumList::findOrFail($id);
 
         $slug = Str::slug($request->judul_artikel, '-');
 
         if($request->publish == 1) {
-            $data['publish'] = 1;
-            $data['publish_at'] = Carbon::now()->toDateTimeString();
+            $artikelHukumList->publish = 1;
+            $artikelHukumList->publish_at = Carbon::now()->toDateTimeString();
         }
 
-        $data['slug'] = $slug;
-        $data['updated_by'] = session('id');
+        $artikelHukumList->slug = $slug;
+        $artikelHukumList->updated_by = session('id');
 
-        $artikelHukumList->fill($data)->save();
+        $artikelHukumList->save();
         return redirect()->route('admin.media_hukum.artikelhukum.index')->with('success', 'Artikel Hukum is updated successfully!');
     }
 

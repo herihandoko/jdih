@@ -11,6 +11,7 @@
                     <a href="{{ route('admin.social_media.index') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> View All</a>
                 </div>
             </div>
+            
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
@@ -41,7 +42,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Update</button>
+            </div>
+            
+            <div class="card-footer">
+                <button type="submit" class="btn btn-block btn-sm btn-success">
+                    Update
+                </button>
             </div>
         </div>
     </form>

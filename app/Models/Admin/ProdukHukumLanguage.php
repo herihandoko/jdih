@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Models\Admin;
+
+use Illuminate\Database\Eloquent\Model;
+
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
+
+class ProdukHukumLanguage extends Model
+{
+    use LogsActivity;
+    
+    protected static $logAttributes = [
+        'language_name',
+        'language_active'];
+
+    protected static $recordEvents = ['created', 'updated', 'deleted'];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'Bahasa';
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "Have {$eventName} Bahasa Data";
+    }
+    
+    public function tapActivity(Activity $activity)
+    {
+        $activity->causer_id = session('id');
+    }
+    
+    protected $fillable = [
+        'language_name',
+        'language_active',
+        'created_by',
+        'updated_by'
+    ];
+
+}

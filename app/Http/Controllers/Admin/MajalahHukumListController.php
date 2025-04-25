@@ -42,13 +42,12 @@ class MajalahHukumListController extends Controller
 
     public function store(Request $request)
     {
-        $majalahHukumList = new MajalahHukumList();
-        $data = $request->only($majalahHukumList->getFillable());
-
         $request->validate([
             'judul_majalah' => 'required|unique:majalah_hukum_lists',
             'slug' => 'unique:majalah_hukum_lists'
         ]);
+        
+        $majalahHukumList = new MajalahHukumList();
 
         if($request->hasFile('cover_majalah')) {
             $request->validate([
@@ -57,12 +56,12 @@ class MajalahHukumListController extends Controller
 
             $name_imgfile = $request->file('cover_majalah')->getClientOriginalName();
             $filename_img = pathinfo($name_imgfile, PATHINFO_FILENAME);
-            $extension_file = $request->file('cover_majalah')->getClientOriginalExtension();
+            $extension_file = $request->file('cover_majalah')->extension();
             $final_name_imgfile = $filename_img.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/majalah/cover', $request->file('cover_majalah'), $final_name_imgfile);
 //            $request->file('cover_majalah')->move(public_path('uploads/majalah/cover/'), $final_name_imgfile);
 
-            $data['cover_majalah'] = $final_name_imgfile;
+            $majalahHukumList->cover_majalah = $final_name_imgfile;
         }
 
         if($request->hasFile('file_majalah')) {
@@ -72,21 +71,21 @@ class MajalahHukumListController extends Controller
 
             $name_pdffile = $request->file('file_majalah')->getClientOriginalName();
             $filename_pdf = pathinfo($name_pdffile, PATHINFO_FILENAME);
-            $extension_file = $request->file('file_majalah')->getClientOriginalExtension();
+            $extension_file = $request->file('file_majalah')->extension();
             $final_name_pdffile = $filename_pdf.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/majalah', $request->file('file_majalah'), $final_name_pdffile);
 //            $request->file('file_majalah')->move(public_path('uploads/majalah/'), $final_name_pdffile);
 
-            $data['file_majalah'] = $final_name_pdffile;
+            $majalahHukumList->file_majalah = $final_name_pdffile;
         }
 
         $slug = Str::slug($request->judul_majalah, '-');
 
-        $data['slug'] = $slug;
-        $data['comp_code'] = session('comp_code');
-        $data['created_by'] = session('id');
+        $majalahHukumList->slug = $slug;
+        $majalahHukumList->comp_code = session('comp_code');
+        $majalahHukumList->created_by = session('id');
 
-        $majalahHukumList->fill($data)->save();
+        $majalahHukumList->save();
         return redirect()->route('admin.media_hukum.majalahhukum.index')->with('success', 'Majalah Hukum is added successfully!');
     }
 
@@ -98,20 +97,19 @@ class MajalahHukumListController extends Controller
 
     public function update(Request $request, $id)
     {
-        $majalahHukumList = MajalahHukumList::findOrFail($id);
-        $data = $request->only($majalahHukumList->getFillable());
-
         $request->validate([
             'judul_majalah' =>  [
                 'required',
                 Rule::unique('majalah_hukum_lists')->ignore($id),
             ]
         ]);
+        
+        $majalahHukumList = MajalahHukumList::findOrFail($id);
 
         $slug = Str::slug($request->judul_majalah, '-');
-        $data['slug'] = $slug;
+        $majalahHukumList->slug = $slug;
 
-        $data['updated_by'] = session('id');
+        $majalahHukumList->updated_by = session('id');
 
         if($request->hasFile('cover_majalah')) {
             $request->validate([
@@ -120,12 +118,12 @@ class MajalahHukumListController extends Controller
 
             $name_imgfile = $request->file('cover_majalah')->getClientOriginalName();
             $filename_img = pathinfo($name_imgfile, PATHINFO_FILENAME);
-            $extension_file = $request->file('cover_majalah')->getClientOriginalExtension();
+            $extension_file = $request->file('cover_majalah')->extension();
             $final_name_imgfile = $filename_img.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/majalah/cover', $request->file('cover_majalah'), $final_name_imgfile);
 //            $request->file('cover_majalah')->move(public_path('uploads/majalah/cover/'), $final_name_imgfile);
 
-            $data['cover_majalah'] = $final_name_imgfile;
+            $majalahHukumList->cover_majalah = $final_name_imgfile;
         }
 
         if($request->hasFile('file_majalah')) {
@@ -135,15 +133,15 @@ class MajalahHukumListController extends Controller
 
             $name_pdffile = $request->file('file_majalah')->getClientOriginalName();
             $filename_pdf = pathinfo($name_pdffile, PATHINFO_FILENAME);
-            $extension_file = $request->file('file_majalah')->getClientOriginalExtension();
+            $extension_file = $request->file('file_majalah')->extension();
             $final_name_pdffile = $filename_pdf.'_'.time().'.'.$extension_file;
             Storage::putFileAs('public/places/majalah', $request->file('file_majalah'), $final_name_pdffile);
 //            $request->file('file_majalah')->move(public_path('uploads/majalah/'), $final_name_pdffile);
             
-            $data['file_majalah'] = $final_name_pdffile;
+            $majalahHukumList->file_majalah = $final_name_pdffile;
         }
 
-        $majalahHukumList->fill($data)->save();
+        $majalahHukumList->save();
         return redirect()->route('admin.media_hukum.majalahhukum.index')->with('success', 'Majalah Hukum is updated successfully!');
     }
 

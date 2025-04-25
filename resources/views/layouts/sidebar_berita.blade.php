@@ -1,6 +1,6 @@
-<div class="sidebar">
-    <div class="widget">
-        <h3>Berita Lainnya</h3>
+<div class="theiaStickySidebar">
+    <div class="widget feature-mono">
+        <h3>{{ translateText('Berita Lainnya') }}</h3>
         <div class="type-2">
             <ul>
                 @php $i=0 @endphp
@@ -16,8 +16,8 @@
                             <img class="card-img-top rounded" src="{{ url('storage/places/berita/logo-berita.png') }}" alt="Foto Berita">
                         @endif
                         
-                        <a class="text-dark hover-text-primary text-capitalize mb-1" href="{{ url('berita/'.$row->slug) }}" style="font-size: 14px !important;">
-                            {{ $row->judul_berita }}
+                        <a class="text-dark hover-text-primary text-capitalize mb-1" href="{{ url('berita/'.$row->slug) }}" style="font-size: 11px !important;">
+                            {{ translateText($row->judul_berita) }}
                         </a>
                     </li>
                     <hr/ style="background: transparent !important;">

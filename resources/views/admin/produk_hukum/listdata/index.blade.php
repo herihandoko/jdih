@@ -11,69 +11,104 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: small;">
-                    <thead style="text-align: center;">
-                    <tr>
-                        <th style="width: 2%;">No.</th>
-                        <th>Jns Dokumen</th>
-                        <th style="width: 10%;">Jns Peraturan</th>
-                        <th style="width: 15%;">Judul</th>
-                        @if($compcode == '')
-                        <th>Dinas</th>
-                        @endif
-                        <th>Status</th>
-                        <th style="width: 5%;">Dibuat Oleh</th>
-                        <th style="width: 5%;">Tgl Dibuat</th>
-                        <th style="width: 5%;">Tgl Diubah</th>
-                        <th>Aksi</th>
-                    </tr>
+                <table class="table table-fixed table-condensed table-responsive table-striped" id="dataTable" width="100%" cellspacing="0" style="font-size: x-small;">
+                    <thead style="font-size: small;">
+                        <tr>
+                            <th style="width: 2%;">No.</th>
+                            <th>Jns Dokumen</th>
+                            <th>Jns Peraturan</th>
+                            <th>Judul</th>
+                            @if($compcode == '')
+                                <th>Dinas</th>
+                            @endif
+                            <th>Status</th>
+                            <th>Publish</th>
+                            <th>Dibuat Oleh</th>
+                            <th>Tgl Dibuat</th>
+                            <th>Tgl Diubah</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th><input type="text" placeholder="Cari Jns Dokumen" class="form-control form-control-sm column-filter" data-column="1" /></th>
+                            <th><input type="text" placeholder="Cari Jns Peraturan" class="form-control form-control-sm column-filter" data-column="2" /></th>
+                            <th><input type="text" placeholder="Cari Judul" class="form-control form-control-sm column-filter" data-column="3" /></th>
+                            <th></th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="5">
+                                    <option value="">Semua</option>
+                                    <option value="Berlaku">Berlaku</option>
+                                    <option value="Tidak Berlaku">Tidak Berlaku</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="6">
+                                    <option value="">Semua</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Tidak">Tidak</option>
+                                </select>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                     </thead>
                     <tbody>
                         @php $i=0; @endphp
                         @foreach($produkHukumList as $row)
                         <tr>
-                            <td style="text-align: center;">{{ $loop->iteration }}</td>
-                            <td>{{ $row->produk_hukum_categories->category_name }}</td>
+                            <td style="text-align: center; width: 2%;">{{ $loop->iteration }}</td>
+                            <td style="width: 5%;">{{ $row->produk_hukum_categories->category_name }}</td>
                             @if($row->produk_hukum_types)
-                                <td>{{ $row->produk_hukum_types->type_name }}</td>
+                                <td style="width: 5%;">{{ $row->produk_hukum_types->type_name }}</td>
                             @else
-                                <td style="text-align: center">{{ '-' }}</td>
+                                <td style="text-align: center; width: 5%;">{{ '-' }}</td>
                             @endif
-                            <td>{{ $row->judul_peraturan }}</td>
+                            <td style="width: 15%;">{{ $row->judul_peraturan }}</td>
                             @if($compcode == '')
                                 @if($row->comp_name == '')
-                                    <td style="text-align: center">{{ '-' }}</td>
+                                    <td style="text-align: center; width: auto;">{{ '-' }}</td>
                                 @else
-                                    <td>{{ $row->comp_name }}</td>
+                                    <td style="width: auto;">{{ $row->comp_name }}</td>
                                 @endif
                             @endif
-                            @if(!empty($row->is_publish))
-                                <td style="text-align: center;">
-                                    @if($row->is_publish == 2) <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak Publish' }}</font>
-                                    @else <font class="btn-success btn-sm" style="font-size: small;">{{ 'Publish' }}</font>@endif
+                            @if(empty($row->status_akhir))
+                                <td style="text-align: center; width: auto;">
+                                    {{ '-' }}
                                 </td>
                             @else
-                                <td style="text-align: center;">
-                                    @if($row->status_akhir == 'Berlaku') <font class="btn-success btn-sm" style="font-size: small;">{{ 'Berlaku' }}</font> @elseif($row->status_akhir == 'Diubah') <font class="btn-primary btn-sm" style="font-size: small;">{{ 'Diubah' }}</font>
-                                    @elseif($row->status_akhir == 'Mengubah') <font class="btn-primary btn-sm" style="font-size: small;">{{ 'Mengubah' }}</font>
-                                    @elseif($row->status_akhir == 'Dicabut') <font class="btn-warning btn-sm" style="font-size: small;">{{ 'Dicabut' }}</font>
-                                    @elseif($row->status_akhir == 'Mencabut') <font class="btn-warning btn-sm" style="font-size: small;">{{ 'Mencabut' }}</font>@elseif($row->status_akhir == 'Tidak Berlaku') <font class="btn-danger btn-sm" style="font-size: small;">{{ 'Tidak Berlaku' }}</font>@else <font class="btn-success btn-sm" style="font-size: small;">{{ 'Berlaku' }}</font>@endif
+                                <td style="text-align: center; width: auto;">
+                                    @if($row->status_akhir == 'Berlaku')
+                                        <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Berlaku' }}</font>
+                                    @else
+                                        <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Tidak Berlaku' }}</font>
+                                    @endif
                                 </td>
                             @endif
-                            <td>
+                            <td style="text-align: center; width: auto;">
+                                @if($row->is_publish == 2)
+                                    <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Tidak' }}</font>
+                                @else
+                                    <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Ya' }}</font>
+                                @endif
+                            </td>
+                            <td style="width: auto;">
                                 {{ $row->name }}
                             </td>
-                            <td style="text-align: center">
-                                {!! date('d-m-Y H:i:s', strtotime($row->created_at)) !!}
+                            <td style="text-align: center; width: auto;">
+                                {!! date('d M Y H:i:s', strtotime($row->created_at)) !!}
                             </td>
-                            <td style="text-align: center">
+                            <td style="text-align: center; width: auto;">
                                 @if($row->updated_at == $row->created_at)
                                     {{ '-' }}
                                 @else
-                                    {!! date('d-m-Y H:i:s', strtotime($row->updated_at)) !!}
+                                    {!! date('d M Y H:i:s', strtotime($row->updated_at)) !!}
                                 @endif
                             </td>
-                            <td style="text-align: center;">
+                            <td style="text-align: center; width: auto;">
                                 @php $produkID = Crypt::encrypt($row->id); @endphp
                                 <a href="{{ URL::to('admin/produk-hukum/list-data/edit/'.$produkID) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>

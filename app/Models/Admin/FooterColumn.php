@@ -10,7 +10,9 @@ class FooterColumn extends Model
         'column_item_text',
         'column_item_url',
         'column_item_order',
-        'column_name'
+        'column_name',
+        'logo',
+        'is_member',
     ];
 
 }
