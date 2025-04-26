@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="{{ asset('storage/frontend/css/spacing.css') }}">
 <link rel="stylesheet" href="{{ asset('storage/frontend/css/cookieconsent.min.css') }}">
 <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap" rel="stylesheet">
-
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
 <style>
@@ -498,5 +498,49 @@
     .toolbar-disabilitas {
       top: 11%;
     }
+  }
+
+  /* Bikin tiap cell kalender berbentuk kotak */
+  .fc .fc-daygrid-day-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+  }
+
+  .fc .fc-daygrid-day-top {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%; /* 🔥 Tinggi tanggal jadi 50% */
+  }
+
+  .fc .fc-daygrid-day-events {
+    flex: 1 1 auto;
+    height: 50%; /* 🔥 Bagian event juga 50% */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Kecilkan nomor tanggal */
+  .fc .fc-daygrid-day-number {
+    font-size: 16px;
+  }
+
+  /* Hilangkan margin-top kosong */
+  .fc .fc-daygrid-day-bottom {
+    margin-top: 0 !important;
+  }
+  /* Kecilkan font nama bulan */
+  .fc-toolbar-title {
+    font-size: 14px; /* Atur sesuai keinginan */
+    font-weight: normal; /* Atur bobot font jika perlu */
+  }
+  /* Sembunyikan tombol "Today" */
+  .fc-today-button {
+    display: none !important;
   }
 </style>

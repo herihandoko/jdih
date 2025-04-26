@@ -302,6 +302,9 @@
                         </li> -->
                     </ul>
                 </div>
+                <div class="footer-item footer-statistik">
+                    <div id="calendar" style="max-width: 800px; margin: 50px auto;"></div>
+                </div>
             </div>
             <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer-item footer-service">

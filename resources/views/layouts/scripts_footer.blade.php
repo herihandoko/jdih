@@ -1,5 +1,5 @@
 <script src="{{ asset('storage/frontend/js/custom.js') }}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 @if($g_setting->sticky_header_status == 'Show')
 <script>
     //StickyHeader
@@ -126,6 +126,54 @@
     }
   };
   $(document).ready(function() {
+    var calendarEl1 = document.getElementById('calendar');
+    var calendar1 = new FullCalendar.Calendar(calendarEl1, {
+      initialView: 'dayGridMonth',
+      locale: 'id', // Bahasa Indonesia
+      firstDay: 7,  // Senin sebagai hari pertama
+      height: 350, // 🔥 Fix tinggi 400px
+      aspectRatio: 1.7,      // 🔥 Biar cell lebih kotak
+      dayMaxEventRows: false,
+      displayEventTime: false, 
+      displayEventEnd: false,
+      titleFormat: { 
+          month: 'short', // Nama bulan pendek
+          year: 'numeric' // Menampilkan tahun
+      },
+      themeSystem: 'bootstrap5',
+      dayCellClassNames: function(arg) {
+        if (arg.date.getDay() === 0) { // Hari Minggu
+          return ['text-danger'];
+        }
+        return [];
+      }
+    });
+    calendar1.render();
+
+    var calendarEl2 = document.getElementById('calendar-sidebar');
+    var calendar2 = new FullCalendar.Calendar(calendarEl2, {
+      initialView: 'dayGridMonth',
+      locale: 'id', // Bahasa Indonesia
+      firstDay: 7,  // Senin sebagai hari pertama
+      height: 350, // 🔥 Fix tinggi 400px
+      aspectRatio: 1.7,      // 🔥 Biar cell lebih kotak
+      dayMaxEventRows: false,
+      displayEventTime: false, 
+      displayEventEnd: false,
+      titleFormat: { 
+          month: 'short', // Nama bulan pendek
+          year: 'numeric' // Menampilkan tahun
+      },
+      themeSystem: 'bootstrap5',
+      dayCellClassNames: function(arg) {
+        if (arg.date.getDay() === 0) { // Hari Minggu
+          return ['text-danger'];
+        }
+        return [];
+      }
+    });
+    calendar2.render();
+
     $(document).bind("mouseup", James.Selector.mouseup);
   });
   $(document).ready(function() {
