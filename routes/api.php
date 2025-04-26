@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\SuggestionController;
+use App\Http\Controllers\api\SuggestionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
