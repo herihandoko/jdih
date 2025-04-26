@@ -51,6 +51,11 @@
                     </div>
                     @if($produkHukumDetail->file_peraturan)
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
+                            <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-block" download>
+                                <i class="fa fa-file-audio"></i>&nbsp;{{ translateText('Dengarkan Peraturan') }}
+                            </a>
+                        </div>
+                        <div class="d-grid gap-2 col-12 mx-auto mt-2">
                             <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-block btn-download-doc" download>
                                 <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}
                             </a>
@@ -58,6 +63,7 @@
                         <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
                             {!! QrCode::size(150)->generate(asset('storage/places/peraturan/'.$produkHukumDetail->file_peraturan)) !!}
                         </div>
+                        <p id="calendar"></p>
                     @else
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
                             <button class="btn btn-sm btn-secondary btn-block" disabled="true" style="cursor: default; font-weight: 800;">
@@ -71,4 +77,47 @@
         </div>
     </div>
 </div>
+<style>
+    /* #footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+    } */
+
+    #calendar {
+        font-size: 16px;
+        margin-top: 10px;
+    }
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+            // Mendapatkan elemen untuk menampilkan kalender
+            const calendarElement = document.getElementById("calendar");
+
+            // Membuat objek Date untuk mendapatkan tanggal saat ini
+            const today = new Date();
+
+            // Mendapatkan nama hari dan bulan
+            const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            const dayOfWeek = daysOfWeek[today.getDay()];
+            const day = today.getDate();
+            const month = monthsOfYear[today.getMonth()];
+            const year = today.getFullYear();
+
+            // Format tanggal
+            const formattedDate = `${dayOfWeek}, ${day} ${month} ${year}`;
+
+            // Menampilkan tanggal di elemen kalender
+            calendarElement.textContent = `Today's Date: ${formattedDate}`;
+        });
+    $(document).ready(function() {
+
+    });
+</script>
 @endsection

@@ -12,6 +12,14 @@
         left: 0px;
         padding: 20px;
     }
+
+    #suggestionList {
+        max-height: 250px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-top: none; /* biar nempel langsung ke bawah input */
+        background: #fff;
+    }
 </style>
 
 <div class="slider">
@@ -54,8 +62,9 @@
         @csrf
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-12 mb-3">
-                    <input type="text" name="keyword" class="form-control form-control-sm" placeholder="{{ translateText('Masukkan Judul') }}" style="color: black; padding-left: 5px;">
+                <div class="col-md-12 mb-3 col-sm-12" style="position: relative;">
+                    <input type="text" name="keyword" class="form-control form-control-sm" id="searchField" placeholder="{{ translateText('Masukkan Judul') }}" style="color: black; padding-left: 5px;" autocomplete="off">
+                    <ul id="suggestionList" class="list-group" style="position: absolute; width: 98%; z-index: 999; display: none;"></ul>
                 </div>
                 
                 <div class="col-12">
@@ -496,10 +505,49 @@
     </div>
 </div>
 @endif
+<!-- CSS Select2 -->
+{{-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<!-- JS Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
 
 <script type="text/javascript">
     $(document).ready(function(){
         
+        // Data lokal contoh
+        const data = ["Durian", "Mangga", "Apel", "Semangka", "Melon", "Nanas", "Manggis"];
+
+        // Event saat user ketik
+        $('#searchField').on('input', function() {
+            let keyword = $(this).val().toLowerCase();
+            $('#suggestionList').empty();
+
+            if (keyword.length >= 2) { // Mulai dari 2 karakter
+                $.ajax({
+                    url: '/api/suggestions', // API endpoint kamu
+                    method: 'GET',
+                    data: { q: keyword },
+                    success: function(response) {
+                        if (response.data.length > 0) {
+                            response.data.forEach(function(item) {
+                                $('#suggestionList').append(`<li class="list-group-item suggestion-item">${item.name}</li>`);
+                            });
+                            $('#suggestionList').show();
+                        } else {
+                            $('#suggestionList').hide();
+                        }
+                    }
+                });
+            } else {
+                $('#suggestionList').hide();
+            }
+        });
+
+        // Klik suggestion
+        $(document).on('click', '.suggestion-item', function() {
+            $('#searchField').val($(this).text());
+            $('#suggestionList').hide();
+        });
+
         // Dropdown Kategori
         $('[data-toggle="tooltip"]').tooltip();
 
