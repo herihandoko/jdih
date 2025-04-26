@@ -30,4 +30,5 @@
             </div>
         </form>
     </div>
+    <div id="calendar-sidebar" style="max-width: 800px; margin: 50px auto;"></div>
 </div>
