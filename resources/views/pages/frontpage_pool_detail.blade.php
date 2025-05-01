@@ -59,11 +59,16 @@
                         @endif
                     </div>
                     @if($produkHukumDetail->file_peraturan)
-                        <div class="d-grid gap-2 col-12 mx-auto mt-2">
-                            <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-block" download>
-                                <i class="fa fa-file-audio"></i>&nbsp;{{ translateText('Dengarkan Peraturan') }}
-                            </a>
-                        </div>
+                        @if($produkHukumDetail->conversion_status == 'completed' && $produkHukumDetail->mp3_path )
+                            <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
+                                <div class="mb-4">
+                                    <audio controls preload="none" class="w-full">
+                                        <source src="{{ url('storage/places/mp3/'.$produkHukumDetail->mp3_path) }}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                            </div>
+                        @endif
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
                             <a href="{{ url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-block btn-download-doc" download>
                                 <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}

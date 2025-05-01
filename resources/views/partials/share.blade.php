@@ -65,7 +65,7 @@
     <div class="btn-copy-wrapper me-2">
         <button
         onclick="copyLink(this)"
-        class="d-inline-flex align-items-center justify-content-center bg-secondary text-white rounded-circle"
+        class="d-inline-flex align-items-center justify-content-center bg-secondary text-white rounded-circle mr-1"
         style="width:36px; height:36px; border:none; cursor:pointer;"
         aria-label="Copy link"
         >
