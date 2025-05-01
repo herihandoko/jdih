@@ -12,20 +12,27 @@
     <div class="container-jdihcontent">
         <div class="row">
             <div class="col-12 col-md-8">
-                <form id="detailForm" action="{{ route('front.search') }}" method="POST" style="display: inline;">
-                    @csrf
-                    <input type="hidden" name="keyword" value="{{ $keyword }}">
-                    <input type="hidden" name="nomor" value="{{ $nomor }}">
-                    <input type="hidden" name="kategori" value="{{ $kategori }}">
-                    <input type="hidden" name="instansi" value="{{ $instansi }}">
-                    <input type="hidden" name="bentuk" value="{{ $bentuk }}">
-                    <input type="hidden" name="tahun" value="{{ $tahun }}">
-                    <input type="hidden" name="page" value="{{ $page }}">
-
-                    <button type="submit" class="btn btn-sm btn-links">
-                        <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
-                    </button>
-                </form>
+                <div class="row">
+                    <div class="col-md-7 col-sm-7">
+                        <form id="detailForm" action="{{ route('front.search') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="keyword" value="{{ $keyword }}">
+                            <input type="hidden" name="nomor" value="{{ $nomor }}">
+                            <input type="hidden" name="kategori" value="{{ $kategori }}">
+                            <input type="hidden" name="instansi" value="{{ $instansi }}">
+                            <input type="hidden" name="bentuk" value="{{ $bentuk }}">
+                            <input type="hidden" name="tahun" value="{{ $tahun }}">
+                            <input type="hidden" name="page" value="{{ $page }}">
+        
+                            <button type="submit" class="btn btn-sm btn-links">
+                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
+                        @include('partials.share')
+                    </div>
+                </div>
             </div>
             
             <div class="col-12 col-md-8 mt-3">
@@ -67,6 +74,9 @@
                                 <a href="{{ url('storage/places/peraturan/' . $produkHukumDetail->file_peraturan) }}" class="btn btn-sm btn-primary btn-block btn-download-doc" download>
                                     <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}
                                 </a>
+                                <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
+                                    {!! QrCode::size(150)->generate(asset('storage/places/peraturan/'.$produkHukumDetail->file_peraturan)) !!}
+                                </div>
                             @else
                                 <button class="btn btn-sm btn-secondary btn-block" disabled style="cursor: default; font-weight: 800;">
                                     <i class="fa fa-download"></i>&nbsp;{{ translateText('Download') }}

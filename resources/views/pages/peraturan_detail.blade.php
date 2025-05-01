@@ -12,19 +12,26 @@
         <div class="row">
             <div class="col-sm-8">
                 @if($pageFrom == 'inside' || $pageFrom == 'terkait')
-                    <form id="detailForm" action="{{ route('front.peraturanhukum', ['slug' => $menu->slug]) }}" method="POST" style="display: inline;">
-                        @csrf
-                        <input style="display: none;" name="slugs" value="{{ $menu->slug }}">
-                        <input style="display: none;" name="keyword" value="{{ $keyword }}">
-                        <input style="display: none;" name="nomor" value="{{ $nomor }}">
-                        <input style="display: none;" name="tahun" value="{{ $tahun }} ">
-                        <input style="display: none;" name="pagefrom" value="{{ $pageFrom }} ">
-                        <input style="display: none;" name="page" value="{{ $page }}">
+                    <div class="row">
+                        <div class="col-md-7 col-sm-7">
+                            <form id="detailForm" action="{{ route('front.peraturanhukum', ['slug' => $menu->slug]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                <input style="display: none;" name="slugs" value="{{ $menu->slug }}">
+                                <input style="display: none;" name="keyword" value="{{ $keyword }}">
+                                <input style="display: none;" name="nomor" value="{{ $nomor }}">
+                                <input style="display: none;" name="tahun" value="{{ $tahun }} ">
+                                <input style="display: none;" name="pagefrom" value="{{ $pageFrom }} ">
+                                <input style="display: none;" name="page" value="{{ $page }}">
 
-                        <button type="submit" class="btn btn-sm btn-links">
-                            <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
-                        </button>
-                    </form>
+                                <button type="submit" class="btn btn-sm btn-links">
+                                    <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
+                            @include('partials.share')
+                        </div>
+                    </div>
                 @else
                     <a href="{{ route('homepage') }}" class="btn btn-sm btn-links">
                         <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}

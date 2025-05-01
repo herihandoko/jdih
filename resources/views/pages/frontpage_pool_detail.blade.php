@@ -11,18 +11,25 @@
     <div class="container-jdihcontent">
         <div class="row">
             <div class="col-sm-8">
-                <form id="detailForm" action="{{ route('front.frontpage', ['slug' => $menu->slug]) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <input style="display: none;" name="slugs" value="{{ $menu->slug }}">
-                    <input style="display: none;" name="keyword" value="{{ $keyword }}">
-                    <input style="display: none;" name="tahun" value="{{ $tahun }} ">
-                    <input style="display: none;" name="pagefrom" value="{{ $pageFrom }} ">
-                    <input style="display: none;" name="page" value="{{ $page }}">
+                <div class="row">
+                    <div class="col-md-7 col-sm-7">
+                        <form id="detailForm" action="{{ route('front.frontpage', ['slug' => $menu->slug]) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <input style="display: none;" name="slugs" value="{{ $menu->slug }}">
+                            <input style="display: none;" name="keyword" value="{{ $keyword }}">
+                            <input style="display: none;" name="tahun" value="{{ $tahun }} ">
+                            <input style="display: none;" name="pagefrom" value="{{ $pageFrom }} ">
+                            <input style="display: none;" name="page" value="{{ $page }}">
 
-                    <button type="submit" class="btn btn-sm btn-links">
-                        <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
-                    </button>
-                </form>
+                            <button type="submit" class="btn btn-sm btn-links">
+                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
+                        @include('partials.share')
+                    </div>
+                </div>
             </div>
 
             <div class="col-sm-8">
@@ -63,7 +70,6 @@
                         <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
                             {!! QrCode::size(150)->generate(asset('storage/places/peraturan/'.$produkHukumDetail->file_peraturan)) !!}
                         </div>
-                        <p id="calendar"></p>
                     @else
                         <div class="d-grid gap-2 col-12 mx-auto mt-2">
                             <button class="btn btn-sm btn-secondary btn-block" disabled="true" style="cursor: default; font-weight: 800;">
