@@ -27,7 +27,9 @@
                         </form>
                     </div>
                     <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
-                        @include('partials.share')
+                        @if($produkHukumDetail->file_peraturan)
+                            @include('partials.share')
+                        @endif
                     </div>
                 </div>
             </div>

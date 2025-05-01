@@ -1,4 +1,8 @@
 {{-- resources/views/partials/share.blade.php --}}
+@php
+  // URL yang akan di‐share via GET
+  $shareUrl = url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan);
+@endphp
 <style>
     .btn-copy-wrapper {
       position: relative;
@@ -30,28 +34,28 @@
     <span class="me-3 fw-semibold mr-1">{{ translateText('Bagikan') }}</span>
 
     {{-- Facebook --}}
-    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}" target="_blank"
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank"
         class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle me-2 mr-1"
         style="width: 36px; height: 36px;">
         <i class="fab fa-facebook-f fa-lg"></i>
     </a>
 
     {{-- X (Twitter) --}}
-    <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}" target="_blank"
+    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}" target="_blank"
         class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-circle me-2 mr-1"
         style="width: 36px; height: 36px;">
         <i class="fab fa-twitter fa-lg"></i>
     </a>
 
     {{-- WhatsApp --}}
-    <a href="https://wa.me/?text={{ urlencode(request()->fullUrl()) }}" target="_blank"
+    <a href="https://wa.me/?text={{ $shareUrl }}" target="_blank"
         class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle me-2 mr-1"
         style="width: 36px; height: 36px;">
         <i class="fab fa-whatsapp fa-lg"></i>
     </a>
 
     {{-- Telegram --}}
-    <a href="https://t.me/share/url?url={{ urlencode(request()->fullUrl()) }}" target="_blank"
+    <a href="https://t.me/share/url?url={{ $shareUrl }}" target="_blank"
         class="d-inline-flex align-items-center justify-content-center bg-info text-white rounded-circle me-2 mr-1"
         style="width: 36px; height: 36px;">
         <i class="fab fa-telegram-plane fa-lg"></i>
@@ -73,7 +77,7 @@
 
 <script>
     function copyLink(btn) {
-      const url = '{{ request()->fullUrl() }}';
+      const url = '{{ $shareUrl }}';
       const tooltip = btn.parentElement.querySelector('.tooltip-custom');
       navigator.clipboard.writeText(url)
         .then(() => {
