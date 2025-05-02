@@ -1,7 +1,8 @@
 {{-- resources/views/partials/share.blade.php --}}
 @php
   // URL yang akan di‐share via GET
-  $shareUrl = urlencode(url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan));
+  $shareUrlWo = url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan);
+  $shareUrl = urlencode($shareUrlWo);
 @endphp
 <style>
     .btn-copy-wrapper {
@@ -77,7 +78,7 @@
 
 <script>
     function copyLink(btn) {
-      const url = '{{ $shareUrl }}';
+      const url = '{{ $shareUrlWo }}';
       const tooltip = btn.parentElement.querySelector('.tooltip-custom');
       navigator.clipboard.writeText(url)
         .then(() => {
