@@ -25,7 +25,6 @@ class Tracker extends Model
 
     public static function hit()
     {
-        dd(static::getRealClientIp());
         $tracker = static::firstOrCreate([
             // 'ip' => Request::ip(),
             'ip' => static::getRealClientIp(),
