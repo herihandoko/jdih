@@ -197,7 +197,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="">File Peraturan</label>
-                <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 250 MB)</span>
+                <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 20 MB)</span>
                 <div class="custom-file mb-3">
                     <input type="file" class="form-control form-control-sm custom-file-input" id="customFilePeraturan" name="file_peraturan" accept=".pdf, .zip">
                     <label class="custom-file-label" for="customFile">Pilih file</label>
@@ -207,7 +207,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="">Abstrak File</label>
-                    <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 250 MB)</span>
+                    <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 20 MB)</span>
                     <div class="custom-file mb-3">
                         <input type="file" class="form-control form-control-sm custom-file-input" id="customAbstrak" name="abstrak" accept=".pdf, .zip">
                         <label class="custom-file-label" for="customFile">Pilih file</label>
