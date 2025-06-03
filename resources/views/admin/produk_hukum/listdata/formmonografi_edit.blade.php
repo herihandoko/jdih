@@ -151,7 +151,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label for="">Ubah Lampiran</label>
-                    <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 200 MB)</span>
+                    <span style="font-style: italic; font-size: smaller;">(Ekstensi File: .pdf, .zip || Maks.: 20 MB)</span>
                     <div>
                         <input type="file" name="file_peraturan" accept=".pdf, .zip">
                     </div>
