@@ -202,6 +202,7 @@
             <div class="col-md-3">
                 <select class="form-control form-control-sm changeLanguage">
                     <option value="id" {{ session()->get('locale') == 'id' ? 'selected' : '' }}>Indonesian</option>
+                    <option value="su" {{ session()->get('locale') == 'su' ? 'selected' : '' }}>Basa Sunda</option>
                     <option value="en" {{ session()->get('locale') == 'en' ? 'selected' : '' }}>English</option>
                     <option value="ar" {{ session()->get('locale') == 'ar' ? 'selected' : '' }}>Arabic</option>
                     <option value="zh" {{ session()->get('locale') == 'zh' ? 'selected' : '' }}>Chinese</option>
@@ -209,6 +210,13 @@
                     <option value="ko" {{ session()->get('locale') == 'ko' ? 'selected' : '' }}>Korean</option>
                 </select>
             </div>
+
+            <script type="text/javascript">
+                var url = "{{ route('changeLang') }}";
+                $('.changeLanguage').change(function() {
+                    window.location.href = url + "?lang=" + $(this).val();
+                });
+            </script>
         </div>
     </div>
 </div>
