@@ -66,7 +66,7 @@
                         @endif
                     </div>
                     @if($produkHukumDetail->file_peraturan)
-                        @if($produkHukumDetail->conversion_status == 'completed' && $produkHukumDetail->mp3_path )
+                        @if($produkHukumDetail->conversion_status == 'completed' && $produkHukumDetail->mp3_path && $produkHukumDetail->status_tts == 1)
                             <div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
                                 <div class="mb-4">
                                     <audio controls preload="none" class="w-full">

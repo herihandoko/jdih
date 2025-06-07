@@ -15,7 +15,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ProdukHukumListController extends Controller {
 
@@ -105,11 +105,15 @@ class ProdukHukumListController extends Controller {
     {
         $request->validate([
             'judul_peraturan' => 'required|unique:produk_hukum_lists',
-            'slug' => 'unique:produk_hukum_lists'
+            'slug' => 'unique:produk_hukum_lists',
+            'audio_file' => $request->status_tts ? 'required|mimes:mp3|max:10240' : ''
                 ],
                 [
                     'judul_peraturan.required' => 'Judul Peraturan harus diisi.',
-                    'judul_peraturan.unique' => 'Judul Peraturan sudah ada. Silakan input Judul Peraturan lainnya.'
+                    'judul_peraturan.unique' => 'Judul Peraturan sudah ada. Silakan input Judul Peraturan lainnya.',
+                    'audio_file.required' => 'File audio wajib diupload jika Audio Tersedia diaktifkan.',
+                    'audio_file.mimes' => 'File harus berformat MP3.',
+                    'audio_file.max' => 'Ukuran file tidak boleh lebih dari 10MB.'
         ]);
 
         $slug = Str::slug($request->judul_peraturan, '-');
@@ -182,6 +186,23 @@ class ProdukHukumListController extends Controller {
 
         $produkHukumList->created_by = session('id');
         $produkHukumList->comp_code = session('comp_code');
+
+        // Handle audio file upload if status_tts is true
+        if ($request->status_tts) {
+            $produkHukumList->status_tts = 1;
+            $produkHukumList->conversion_status = 'completed';
+            
+            if ($request->hasFile('audio_file')) {
+                $extension = $request->file('audio_file')->extension();
+                $audioFileName = 'peraturan_' . time() . '.' . $extension;
+                Storage::putFileAs('public/places/mp3', $request->file('audio_file'), $audioFileName);
+                $produkHukumList->mp3_path = $audioFileName;
+            }
+        } else {
+            $produkHukumList->status_tts = 0;
+            $produkHukumList->conversion_status = null;
+            $produkHukumList->mp3_path = null;
+        }
 
         if ($request->hasFile('file_peraturan')) {
             $request->validate([
@@ -367,11 +388,15 @@ class ProdukHukumListController extends Controller {
             'judul_peraturan' => [
                 'required',
                 Rule::unique('produk_hukum_lists')->ignore($id),
-            ]
+            ],
+            'audio_file' => $request->status_tts && !$request->mp3_path ? 'required|mimes:mp3|max:10240' : 'nullable|mimes:mp3|max:10240'
                 ],
                 [
                     'judul_peraturan.required' => 'Judul Peraturan harus diisi.',
-                    'judul_peraturan.unique' => 'Judul Peraturan sudah ada. Silakan input Judul Peraturan lainnya.'
+                    'judul_peraturan.unique' => 'Judul Peraturan sudah ada. Silakan input Judul Peraturan lainnya.',
+                    'audio_file.required' => 'File audio wajib diupload jika Audio Tersedia diaktifkan.',
+                    'audio_file.mimes' => 'File harus berformat MP3.',
+                    'audio_file.max' => 'Ukuran file tidak boleh lebih dari 10MB.'
         ]);
         
         $produkHukumList = ProdukHukumList::findOrFail($id);
@@ -442,6 +467,33 @@ class ProdukHukumListController extends Controller {
         }
 
         $produkHukumList->updated_by = session('id');
+
+        // Handle audio file status and upload
+        if ($request->status_tts) {
+            $produkHukumList->status_tts = 1;
+            $produkHukumList->conversion_status = 'completed';
+            
+            if ($request->hasFile('audio_file')) {
+                // Delete old file if exists
+                if ($produkHukumList->mp3_path) {
+                    Storage::delete('public/places/mp3/' . $produkHukumList->mp3_path);
+                }
+                
+                $extension = $request->file('audio_file')->extension();
+                $audioFileName = 'peraturan_' . $id . '_' . time() . '.' . $extension;
+                Storage::putFileAs('public/places/mp3', $request->file('audio_file'), $audioFileName);
+                $produkHukumList->mp3_path = $audioFileName;
+            }
+        } else {
+            $produkHukumList->status_tts = 0;
+            $produkHukumList->conversion_status = null;
+            
+            // Delete existing audio file if toggle is turned off
+            if ($produkHukumList->mp3_path) {
+                Storage::delete('public/places/mp3/' . $produkHukumList->mp3_path);
+                $produkHukumList->mp3_path = null;
+            }
+        }
 
         if ($request->hasFile('file_peraturan')) {
             $request->validate([
