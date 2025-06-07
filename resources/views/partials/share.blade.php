@@ -30,50 +30,51 @@
       opacity: 1;
     }
   </style>
-<div class="d-flex align-items-center">
-    {{-- Label --}}
-    <span class="me-3 fw-semibold mr-1">{{ translateText('Bagikan') }}</span>
+<div class="d-grid gap-2 col-12 mx-auto mt-2 text-center">
+  <div class="d-flex align-items-center justify-content-center">
+      {{-- Label --}}
+      {{-- <span class="me-3 fw-semibold mr-1">{{ translateText('Bagikan') }}</span> --}}
+      {{-- Facebook --}}
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank"
+          class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle me-2 mr-1"
+          style="width: 36px; height: 36px;">
+          <i class="fab fa-facebook-f fa-lg"></i>
+      </a>
 
-    {{-- Facebook --}}
-    <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank"
-        class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle me-2 mr-1"
-        style="width: 36px; height: 36px;">
-        <i class="fab fa-facebook-f fa-lg"></i>
-    </a>
+      {{-- X (Twitter) --}}
+      <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}" target="_blank"
+          class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-circle me-2 mr-1"
+          style="width: 36px; height: 36px;">
+          <i class="fab fa-twitter fa-lg"></i>
+      </a>
 
-    {{-- X (Twitter) --}}
-    <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}" target="_blank"
-        class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-circle me-2 mr-1"
-        style="width: 36px; height: 36px;">
-        <i class="fab fa-twitter fa-lg"></i>
-    </a>
+      {{-- WhatsApp --}}
+      <a href="https://wa.me/?text={{ $shareUrl }}" target="_blank"
+          class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle me-2 mr-1"
+          style="width: 36px; height: 36px;">
+          <i class="fab fa-whatsapp fa-lg"></i>
+      </a>
 
-    {{-- WhatsApp --}}
-    <a href="https://wa.me/?text={{ $shareUrl }}" target="_blank"
-        class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle me-2 mr-1"
-        style="width: 36px; height: 36px;">
-        <i class="fab fa-whatsapp fa-lg"></i>
-    </a>
+      {{-- Telegram --}}
+      <a href="https://t.me/share/url?url={{ $shareUrl }}" target="_blank"
+          class="d-inline-flex align-items-center justify-content-center bg-info text-white rounded-circle me-2 mr-1"
+          style="width: 36px; height: 36px;">
+          <i class="fab fa-telegram-plane fa-lg"></i>
+      </a>
 
-    {{-- Telegram --}}
-    <a href="https://t.me/share/url?url={{ $shareUrl }}" target="_blank"
-        class="d-inline-flex align-items-center justify-content-center bg-info text-white rounded-circle me-2 mr-1"
-        style="width: 36px; height: 36px;">
-        <i class="fab fa-telegram-plane fa-lg"></i>
-    </a>
-
-    {{-- tombol copy + tooltip --}}
-    <div class="btn-copy-wrapper me-2">
-        <button
-        onclick="copyLink(this)"
-        class="d-inline-flex align-items-center justify-content-center bg-secondary text-white rounded-circle mr-1"
-        style="width:36px; height:36px; border:none; cursor:pointer;"
-        aria-label="Copy link"
-        >
-        <i class="fas fa-link fa-lg"></i>
-        </button>
-        <div class="tooltip-custom">Copy link</div>
-    </div>
+      {{-- tombol copy + tooltip --}}
+      <div class="btn-copy-wrapper me-2">
+          <button
+          onclick="copyLink(this)"
+          class="d-inline-flex align-items-center justify-content-center bg-secondary text-white rounded-circle mr-1"
+          style="width:36px; height:36px; border:none; cursor:pointer;"
+          aria-label="Copy link"
+          >
+          <i class="fas fa-link fa-lg"></i>
+          </button>
+          <div class="tooltip-custom">Copy link</div>
+      </div>
+  </div>
 </div>
 
 <script>
