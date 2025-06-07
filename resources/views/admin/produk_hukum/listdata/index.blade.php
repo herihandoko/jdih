@@ -23,6 +23,7 @@
                             @endif
                             <th>Status</th>
                             <th>Publish</th>
+                            <th>Audio</th>
                             <th>Dibuat Oleh</th>
                             <th>Tgl Dibuat</th>
                             <th>Tgl Diubah</th>
@@ -48,6 +49,13 @@
                                     <option value="">Semua</option>
                                     <option value="Ya">Ya</option>
                                     <option value="Tidak">Tidak</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select class="form-control form-control-sm column-filter" data-column="7">
+                                    <option value="">Semua</option>
+                                    <option value="1">Enabled</option>
+                                    <option value="0">Disabled</option>
                                 </select>
                             </th>
                             <th></th>
@@ -93,6 +101,13 @@
                                     <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Tidak' }}</font>
                                 @else
                                     <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Ya' }}</font>
+                                @endif
+                            </td>
+                            <td style="text-align: center; width: auto;">
+                                @if($row->status_tts == 1)
+                                    <font class="btn-success btn-sm" style="font-size: xx-small;">{{ 'Enabled' }}</font>
+                                @else
+                                    <font class="btn-danger btn-sm" style="font-size: xx-small;">{{ 'Disabled' }}</font>
                                 @endif
                             </td>
                             <td style="width: auto;">
