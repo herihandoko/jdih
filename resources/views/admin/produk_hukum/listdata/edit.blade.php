@@ -14,6 +14,8 @@
                 </div>
             </div>
             
+            @include('admin.produk_hukum.listdata.form_audio')
+            
             @if(Illuminate\Support\Str::contains($produkHukumCategoryName->category_name, 'Peraturan'))
                 @include('admin.produk_hukum.listdata.formperaturan_edit')
             @elseif($produkHukumCategoryName->category_name == 'Monografi Hukum')
