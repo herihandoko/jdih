@@ -1226,9 +1226,9 @@
     }
   }
   
-  var url = "{{ route('changeLang') }}";
+  // var url = "{{ route('changeLang') }}";
   
-  $(".changeLanguage").change(function() {
-      window.location.href = url + "?lang="+ $(this).val();
-  });
+  // $(".changeLanguage").change(function() {
+  //     window.location.href = url + "?lang="+ $(this).val();
+  // });
 </script>
