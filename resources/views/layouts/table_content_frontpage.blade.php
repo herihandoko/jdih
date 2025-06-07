@@ -12,13 +12,13 @@
             <tr>
                 <td>{{ translateText('Tipe Dokumen') }}</td>
                 <td>:</td>
-                <td>{{ translateText($produkHukumDetail->produk_hukum_categories->category_name) }}</td>
+                <td>{{ translateText($produkHukumDetail->category_name) }}</td>
             </tr>
             
             <tr>
                 <td>{{ translateText('Jenis') }}</td>
                 <td>:</td>
-                <td>{{ translateText($produkHukumDetail->produk_hukum_types->type_name) }}</td>
+                <td>{{ translateText($produkHukumDetail->type_name) }}</td>
             </tr>
 
             <tr>
@@ -80,13 +80,13 @@
             <tr>
                 <td>{{ translateText('Tipe Dokumen') }}</td>
                 <td>:</td>
-                <td>{{ translateText($produkHukumDetail->produk_hukum_categories->category_name) }}</td>
+                <td>{{ translateText($produkHukumDetail->category_name) }}</td>
             </tr>
             
             <tr>
                 <td>{{ translateText('Jenis') }}</td>
                 <td>:</td>
-                <td>{{ translateText($produkHukumDetail->produk_hukum_types->type_name) }}</td>
+                <td>{{ translateText($produkHukumDetail->type_name) }}</td>
             </tr>
 
             <tr>
@@ -178,13 +178,13 @@
             <tr>
                 <td>Tipe Dokumen</td>
                 <td>:</td>
-                <td>{{ $produkHukumDetail->produk_hukum_categories->category_name }}</td>
+                <td>{{ $produkHukumDetail->category_name }}</td>
             </tr>
             
             <tr>
                 <td>Jenis Putusan</td>
                 <td>:</td>
-                <td>{{ $produkHukumDetail->produk_hukum_types->type_name }}</td>
+                <td>{{ $produkHukumDetail->type_name }}</td>
             </tr>
 
             <tr>
@@ -276,13 +276,13 @@
             <tr>
                 <td>Tipe Dokumen</td>
                 <td>:</td>
-                <td>{{ $produkHukumDetail->produk_hukum_types->type_name }}</td>
+                <td>{{ $produkHukumDetail->type_name }}</td>
             </tr>
 
             <tr>
                 <td>Jenis peraturan</td>
                 <td>:</td>
-                <td>{{ $produkHukumDetail->produk_hukum_categories->category_name }}</td>
+                <td>{{ $produkHukumDetail->category_name }}</td>
             </tr>
 
             <tr>

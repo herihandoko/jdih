@@ -106,15 +106,39 @@ class FrontPageController extends Controller
                 $pageFrom = $request->input('pagefrom');
                 $routes = decrypt($request->input('routes'));
             } catch (\Exception $e) {
-                abort(400, 'Invalid encrypted data');
+                // For direct URL access when POST data is invalid
+                $document = ProdukHukumList::where('slug', $slug)
+                    ->where(function($query) use ($menu) {
+                        $query->where('produk_hukum_types_id', $menu->type_ruledoc)
+                            ->orWhere('produk_hukum_categories_id', $menu->type_doc);
+                    })
+                    ->first();
+                    
+                if (!$document) {
+                    abort(404);
+                }
+                
+                $id = $document->id;
+                $keyword = '';
+                $tahun = '';
+                $page = 1;
+                $pageFrom = '';
+                $routes = '';
             }
         } else {
             // For direct URL access (GET requests)
             // Find the document by slug
-            $document = ProdukHukumList::where('slug', $slug)->first();
+            $document = ProdukHukumList::where('slug', $slug)
+                ->where(function($query) use ($menu) {
+                    $query->where('produk_hukum_types_id', $menu->type_ruledoc)
+                        ->orWhere('produk_hukum_categories_id', $menu->type_doc);
+                })
+                ->first();
+                
             if (!$document) {
                 abort(404);
             }
+            
             $id = $document->id;
             $keyword = '';
             $tahun = '';
@@ -123,10 +147,20 @@ class FrontPageController extends Controller
             $routes = '';
         }
 
-        $produkHukumDetail = ProdukHukumList::leftJoin('produk_hukum_urusan_pemerintahans', 'produk_hukum_lists.urusan', '=', 'produk_hukum_urusan_pemerintahans.id')
+        $produkHukumDetail = ProdukHukumList::with(['produk_hukum_categories', 'produk_hukum_types'])
+                                ->leftJoin('produk_hukum_urusan_pemerintahans', 'produk_hukum_lists.urusan', '=', 'produk_hukum_urusan_pemerintahans.id')
                                 ->leftJoin('produk_hukum_bidang_hukums', 'produk_hukum_lists.bidang_hukum', '=', 'produk_hukum_bidang_hukums.id')
+                                ->leftJoin('produk_hukum_categories', 'produk_hukum_lists.produk_hukum_categories_id', '=', 'produk_hukum_categories.id')
+                                ->leftJoin('produk_hukum_types', 'produk_hukum_lists.produk_hukum_types_id', '=', 'produk_hukum_types.id')
                                 ->where('produk_hukum_lists.id', $id)
-                                ->first(['produk_hukum_lists.*', 'produk_hukum_urusan_pemerintahans.up_name', 'produk_hukum_bidang_hukums.bh_name']);
+                                ->select([
+                                    'produk_hukum_lists.*',
+                                    'produk_hukum_urusan_pemerintahans.up_name',
+                                    'produk_hukum_bidang_hukums.bh_name',
+                                    'produk_hukum_categories.category_name',
+                                    'produk_hukum_types.type_name'
+                                ])
+                                ->first();
 
         if(!$produkHukumDetail) {
             abort(404);
@@ -138,7 +172,7 @@ class FrontPageController extends Controller
         $produkHukumListDocTerkait = ProdukHukumListDocTerkait::where('produk_hukum_lists_id', $id)->get();
         $produkHukumListCatatanStat = ProdukHukumListCatatanStat::where('produk_hukum_lists_id', $id)->get();
 
-        return view('pages.detail', compact('menu', 'produkHukumDetail', 'produkHukumListDocument', 'produkHukumListDocTerkait', 'produkHukumListCatatanStat', 'keyword', 'tahun', 'page', 'pageFrom', 'routes'));
+        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumListDocument', 'produkHukumListDocTerkait', 'produkHukumListCatatanStat', 'keyword', 'tahun', 'page', 'pageFrom', 'routes'));
     }
     
     public function detailBerita($slug) {
