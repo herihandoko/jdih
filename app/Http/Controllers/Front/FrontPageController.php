@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Admin\ProdukHukumList;
 use App\Models\Admin\BeritaList;
 use App\Models\Admin\Page;
+use App\Models\Admin\ProdukHukumListDocument;
+use App\Models\Admin\ProdukHukumListDocTerkait;
+use App\Models\Admin\ProdukHukumListCatatanStat;
 use Illuminate\Support\Str;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\App;
 
 class FrontPageController extends Controller
 {
@@ -27,7 +32,7 @@ class FrontPageController extends Controller
             $secondNamespace = 'App\Http\Controllers\Front\\';
             $controllerName = $secondNamespace . $pageView->page_view;
             $secondMethod = 'index';
-            $response = \App::call("$controllerName@$secondMethod");
+            $response = app()->call("$controllerName@$secondMethod");
             
             return $response;
         } else {
@@ -77,39 +82,73 @@ class FrontPageController extends Controller
         }
     }
     
-    public function detail(Request $request)
+    public function detail(Request $request, $menuslug, $slug)
     {
         $g_setting = DB::table('general_settings')->where('id', 1)->first();
         
-        $menuslug = $request->input('menuslug');
-        $slug = $request->input('slug');
-        
-        $menu = DB::table('menus')->where('slug', $menuslug)->first();
-
-//        $produkHukumDetail = ProdukHukumList::leftJoin('produk_hukum_types', 'produk_hukum_lists.produk_hukum_types_id', '=', 'produk_hukum_types.id')
-//                                                ->where('produk_hukum_categories_id', $menu->type_doc)
-//                                                ->where('slug', $slug)
-//                                                ->first();
-        
-        $produkHukumDetail = ProdukHukumList::where('id', $request->input('id'))->first();
-
-        if(!$produkHukumDetail) {
-            return abort(404);
-        } else {
-            $currentView = $produkHukumDetail->view;
-            $plusOneView = $currentView + 1;
-            $dataView = [
-                'view' => $plusOneView
-            ];
-
-            ProdukHukumList::where('id', '=', $produkHukumDetail->id)->update($dataView);
+        if($request->input('menuslug')) {
+            $menuslug = $request->input('menuslug');
         }
         
-        $keyword = $request->input('keyword');
-        $tahun = $request->input('tahun');
-        $page = $request->input('page', 1);
+        if($request->input('slug')) {
+            $slug = $request->input('slug');
+        }
+
+        $menu = DB::table('menus')->where('slug', $menuslug)->first();
         
-        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'keyword', 'tahun', 'page'));
+        // For POST requests with encrypted data
+        if ($request->isMethod('post') && $request->has('id')) {
+            try {
+                $id = decrypt($request->input('id'));
+                $keyword = $request->has('keyword') ? decrypt($request->input('keyword')) : '';
+                $tahun = $request->has('tahun') ? decrypt($request->input('tahun')) : '';
+                $page = $request->has('page') ? decrypt($request->input('page')) : 1;
+                $pageFrom = $request->input('pagefrom', '');
+                $routes = $request->has('routes') ? decrypt($request->input('routes')) : '';
+            } catch (\Exception $e) {
+                // If decryption fails, try to find document by slug
+                $document = ProdukHukumList::where('slug', $slug)->first();
+                if (!$document) {
+                    abort(404);
+                }
+                $id = $document->id;
+                $keyword = '';
+                $tahun = '';
+                $page = 1;
+                $pageFrom = '';
+                $routes = '';
+            }
+        } else {
+            // For GET requests or POST without encrypted data
+            // Find the document by slug
+            $document = ProdukHukumList::where('slug', $slug)->first();
+            if (!$document) {
+                abort(404);
+            }
+            $id = $document->id;
+            $keyword = '';
+            $tahun = '';
+            $page = 1;
+            $pageFrom = '';
+            $routes = '';
+        }
+
+        $produkHukumDetail = ProdukHukumList::leftJoin('produk_hukum_urusan_pemerintahans', 'produk_hukum_lists.urusan', '=', 'produk_hukum_urusan_pemerintahans.id')
+                                ->leftJoin('produk_hukum_bidang_hukums', 'produk_hukum_lists.bidang_hukum', '=', 'produk_hukum_bidang_hukums.id')
+                                ->where('produk_hukum_lists.id', $id)
+                                ->first(['produk_hukum_lists.*', 'produk_hukum_urusan_pemerintahans.up_name', 'produk_hukum_bidang_hukums.bh_name']);
+
+        if(!$produkHukumDetail) {
+            abort(404);
+        }
+
+        $produkHukumDetail->increment('view');
+
+        $produkHukumListDocument = ProdukHukumListDocument::where('produk_hukum_lists_id', $id)->get();
+        $produkHukumListDocTerkait = ProdukHukumListDocTerkait::where('produk_hukum_lists_id', $id)->get();
+        $produkHukumListCatatanStat = ProdukHukumListCatatanStat::where('produk_hukum_lists_id', $id)->get();
+
+        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumListDocument', 'produkHukumListDocTerkait', 'produkHukumListCatatanStat', 'keyword', 'tahun', 'page', 'pageFrom', 'routes'));
     }
     
     public function detailBerita($slug) {
