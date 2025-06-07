@@ -25,11 +25,11 @@
                             </button>
                         </form>
                     </div>
-                    <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
+                    {{-- <div class="col-md-5 col-sm-5 d-flex justify-content-end align-items-center">
                         @if($produkHukumDetail->file_peraturan)
                             @include('partials.share')
                         @endif
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
@@ -83,6 +83,7 @@
                             </button>
                         </div>
                     @endif
+                    @include('partials.share')
                 </div>
             </div>
         </div>

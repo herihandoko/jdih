@@ -543,9 +543,9 @@ Route::group(['middleware' => ['XssSanitizer', 'web']], function () {
     
     Route::post('frontpage/daftar-lbh', [DaftarLbhControllerforFront::class,'index'])->name('front.daftarlbh');
     Route::post('frontpage/bimtek-hybrid', [BimtekHibridController::class,'index'])->name('front.bimtekhibrid');
-Route::post('frontpage/hukum-adat', [HukumAdatViewController::class, 'index'])->name('front.hukumadat');
-    Route::get('hukum-adat/{slug}', [HukumAdatViewController::class, 'detail']);
-    Route::post('search-hukum-adat', [SearchHukumAdatViewController::class, 'index']);
+    Route::post('frontpage/hukum-adat', [HukumAdatViewController::class,'index'])->name('front.hukumadat');
+    Route::get('hukum-adat/{slug}', [HukumAdatViewController::class,'detail']);
+    Route::post('search-hukum-adat', [SearchHukumAdatViewController::class,'index']);
 });
 
 Route::get('integrasi.go', [App\Http\Controllers\api\ProdukHukumController::class, 'integrasi']);

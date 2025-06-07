@@ -11,7 +11,7 @@ use App\Models\Admin\ProdukHukumListCatatanStat;
 use App\Models\Admin\Menu;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Crypt;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class ProdukHukumController extends Controller
 {
@@ -125,30 +125,40 @@ class ProdukHukumController extends Controller
         if($request->input('slug')) {
             $slug = $request->input('slug');
         }
-        
-        if($request->input('pagefrom') != 'terkait') {
-            $id = decrypt($request->input('id'));
-            $keyword = decrypt($request->input('keyword'));
-            $nomor = decrypt($request->input('nomor'));
-            $tahun = decrypt($request->input('tahun'));
-            $page = decrypt($request->input('page'));
-            $pageFrom = $request->input('pagefrom');
-            $routes = decrypt($request->input('routes'));
-        } else {
-            $id = $request->input('id');
-            $keyword = $request->input('keyword');
-            $nomor = $request->input('nomor');
-            $tahun = $request->input('tahun');
-            $page = $request->input('page');
-            $pageFrom = $request->input('pagefrom');
-            $routes = $request->input('routes');
-        }
-        
+
         $menu = DB::table('menus')->where('slug', $menuslug)->first();
+        
+        // For POST requests with encrypted data
+        if ($request->isMethod('post')) {
+            try {
+                $id = decrypt($request->input('id'));
+                $keyword = decrypt($request->input('keyword'));
+                $nomor = decrypt($request->input('nomor'));
+                $tahun = decrypt($request->input('tahun'));
+                $page = decrypt($request->input('page'));
+                $pageFrom = $request->input('pagefrom');
+                $routes = decrypt($request->input('routes'));
+            } catch (\Exception $e) {
+                abort(400, 'Invalid encrypted data');
+            }
+        } else {
+            // For direct URL access (GET requests)
+            // Find the document by slug
+            $document = ProdukHukumList::where('slug', $slug)->first();
+            if (!$document) {
+                abort(404);
+            }
+            $id = $document->id;
+            $keyword = '';
+            $nomor = '';
+            $tahun = '';
+            $page = 1;
+            $pageFrom = '';
+            $routes = '';
+        }
 
         $produkHukumDetail = ProdukHukumList::leftJoin('produk_hukum_urusan_pemerintahans', 'produk_hukum_lists.urusan', '=', 'produk_hukum_urusan_pemerintahans.id')
                                 ->leftJoin('produk_hukum_bidang_hukums', 'produk_hukum_lists.bidang_hukum', '=', 'produk_hukum_bidang_hukums.id')
-//                                ->where('produk_hukum_lists.produk_hukum_types_id', $menu->type_ruledoc)
                                 ->where('produk_hukum_lists.id', $id)
                                 ->first(['produk_hukum_lists.*', 'produk_hukum_urusan_pemerintahans.up_name', 'produk_hukum_bidang_hukums.bh_name']);
         
