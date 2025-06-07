@@ -1,8 +1,8 @@
 {{-- resources/views/partials/share.blade.php --}}
 @php
-  // URL yang akan di‐share via GET
-  $shareUrlWo = url('storage/places/peraturan/'.$produkHukumDetail->file_peraturan);
-  $shareUrl = urlencode($shareUrlWo);
+    // Use the current URL for sharing
+    $shareUrlWo = url()->current();
+    $shareUrl = urlencode($shareUrlWo);
 @endphp
 <style>
     .btn-copy-wrapper {
