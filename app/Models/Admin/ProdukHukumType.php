@@ -37,4 +37,11 @@ class ProdukHukumType extends Model
         'updated_by'
     ];
 
+    /**
+     * Relasi ke ProdukHukumList
+     */
+    public function produkHukumLists()
+    {
+        return $this->hasMany('App\Models\Admin\ProdukHukumList', 'produk_hukum_types_id');
+    }
 }

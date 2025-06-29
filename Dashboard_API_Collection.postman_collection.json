@@ -1,0 +1,478 @@
+{
+	"info": {
+		"_postman_id": "dashboard-api-collection",
+		"name": "Dashboard API - Teras Data Pimpinan",
+		"description": "Collection API untuk Teras Data/Dashboard Pimpinan PPID",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Dashboard Overview",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/overview",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"overview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Kategori Stats",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/kategori-stats",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"kategori-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Trend Bulanan",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/trend-bulanan?year=2024",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"trend-bulanan"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2024",
+							"description": "Tahun yang ingin dilihat"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Perbandingan Tahun",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/perbandingan-tahun?tahun1=2023&tahun2=2024",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"perbandingan-tahun"
+					],
+					"query": [
+						{
+							"key": "tahun1",
+							"value": "2023",
+							"description": "Tahun pertama"
+						},
+						{
+							"key": "tahun2",
+							"value": "2024",
+							"description": "Tahun kedua"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Top Peraturan",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/top-peraturan?limit=10&period=month",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"top-peraturan"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Jumlah data"
+						},
+						{
+							"key": "period",
+							"value": "month",
+							"description": "Periode (month/year/all)"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Jenis Peraturan",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/jenis-peraturan",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"jenis-peraturan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status Publikasi",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/status-publikasi",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"status-publikasi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Konten Instansi",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/konten-instansi",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"konten-instansi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/search?keyword=perda&kategori=peraturan&tahun=2024&status=published&limit=20",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "perda",
+							"description": "Kata kunci pencarian"
+						},
+						{
+							"key": "kategori",
+							"value": "peraturan",
+							"description": "Filter kategori"
+						},
+						{
+							"key": "tahun",
+							"value": "2024",
+							"description": "Filter tahun"
+						},
+						{
+							"key": "status",
+							"value": "published",
+							"description": "Filter status (published/draft)"
+						},
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "Jumlah data"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Activity Logs",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/activity-logs?period=week&action=created&limit=50",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"activity-logs"
+					],
+					"query": [
+						{
+							"key": "period",
+							"value": "week",
+							"description": "Periode (week/month/year)"
+						},
+						{
+							"key": "action",
+							"value": "created",
+							"description": "Filter aksi (created/updated/deleted)"
+						},
+						{
+							"key": "limit",
+							"value": "50",
+							"description": "Jumlah data"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "File Stats",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/dashboard/file-stats",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"file-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mobile Quick Stats",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/mobile/dashboard/quick-stats",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"mobile",
+						"dashboard",
+						"quick-stats"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://your-domain.com",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "your-bearer-token-here",
+			"type": "string"
+		}
+	]
+} 
