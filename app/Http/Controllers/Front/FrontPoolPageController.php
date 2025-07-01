@@ -29,11 +29,12 @@ class FrontPoolPageController extends Controller
         }
         
         $id = decrypt($request->input('id'));
-        $keyword = decrypt($request->input('keyword'));
-        $tahun = decrypt($request->input('tahun'));
-        $page = decrypt($request->input('page'));
-        $pageFrom = $request->input('pagefrom');
-        $routes = decrypt($request->input('routes'));
+        $keyword = $request->input('keyword') ? decrypt($request->input('keyword')) : '';
+        $kategori = $request->input('kategori') ? decrypt($request->input('kategori')) : '';
+        $tahun = $request->input('tahun') ? decrypt($request->input('tahun')) : '';
+        $page = $request->input('page') ? decrypt($request->input('page')) : 1;
+        $pageFrom = $request->input('pagefrom') ?: '';
+        $routes = $request->input('routes') ? decrypt($request->input('routes')) : '';
         
         $menu = DB::table('menus')->where('slug', $menuslug)->first();
         
@@ -71,6 +72,6 @@ class FrontPoolPageController extends Controller
             ProdukHukumList::where('id', '=', $produkHukumDetail->id)->update($dataView);
         }
         
-        return view('pages.frontpage_pool_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'tahun', 'page', 'pageFrom', 'routes', 'dokumenTerkait', 'catatanStatus', 'produkCat'));
+        return view('pages.frontpage_pool_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'kategori', 'tahun', 'page', 'pageFrom', 'routes', 'dokumenTerkait', 'catatanStatus', 'produkCat'));
     }
 }

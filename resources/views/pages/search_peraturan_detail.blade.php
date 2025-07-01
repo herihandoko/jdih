@@ -18,7 +18,7 @@
                             @csrf
                             <input type="hidden" name="keyword" value="{{ $keyword }}">
                             <input type="hidden" name="nomor" value="{{ $nomor }}">
-                            <input type="hidden" name="kategori" value="{{ $kategori }}">
+                            <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
                             <input type="hidden" name="instansi" value="{{ $instansi }}">
                             <input type="hidden" name="bentuk" value="{{ $bentuk }}">
                             <input type="hidden" name="tahun" value="{{ $tahun }}">

@@ -194,7 +194,7 @@
                                                 <input type="hidden" name="id" value="{{ $catatanStatus[$i]->id }}">
                                                 <input type="hidden" name="api_name" value="{{ 'Pemerintah Provinsi Banten' }}">
                                             @endif
-                                            <input type="hidden" name="kategori" value="{{ $kategori }}">
+                                            <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
                                             <input type="hidden" name="bentuk" value="{{ $bentuk }}">
                                             <input type="hidden" name="tahun" value="{{ $tahun }}">
                                             <input type="hidden" name="page" value="{{ $page }}">
@@ -358,7 +358,7 @@
                                         <input type="hidden" name="id" value="{{ $produkHukumDocument[$i]->id }}">
                                         <input type="hidden" name="api_name" value="{{ 'Pemerintah Provinsi Banten' }}">
                                     @endif
-                                    <input type="hidden" name="kategori" value="{{ $kategori }}">
+                                    <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
                                     <input type="hidden" name="bentuk" value="{{ $bentuk }}">
                                     <input type="hidden" name="tahun" value="{{ $tahun }}">
                                     <input type="hidden" name="page" value="{{ $page }}">

@@ -132,12 +132,13 @@ class ProdukHukumController extends Controller
         if ($request->isMethod('post')) {
             try {
                 $id = decrypt($request->input('id'));
-                $keyword = decrypt($request->input('keyword'));
-                $nomor = decrypt($request->input('nomor'));
-                $tahun = decrypt($request->input('tahun'));
-                $page = decrypt($request->input('page'));
-                $pageFrom = $request->input('pagefrom');
-                $routes = decrypt($request->input('routes'));
+                $keyword = $request->input('keyword') ? decrypt($request->input('keyword')) : '';
+                $nomor = $request->input('nomor') ? decrypt($request->input('nomor')) : '';
+                $kategori = $request->input('kategori') ? decrypt($request->input('kategori')) : '';
+                $tahun = $request->input('tahun') ? decrypt($request->input('tahun')) : '';
+                $page = $request->input('page') ? decrypt($request->input('page')) : 1;
+                $pageFrom = $request->input('pagefrom') ?: '';
+                $routes = $request->input('routes') ? decrypt($request->input('routes')) : '';
             } catch (\Exception $e) {
                 abort(400, 'Invalid encrypted data');
             }
@@ -151,6 +152,7 @@ class ProdukHukumController extends Controller
             $id = $document->id;
             $keyword = '';
             $nomor = '';
+            $kategori = '';
             $tahun = '';
             $page = 1;
             $pageFrom = '';
@@ -187,7 +189,7 @@ class ProdukHukumController extends Controller
             ProdukHukumList::where('id', '=', $produkHukumDetail->id)->update($dataView);
         }
         
-        return view('pages.peraturan_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'nomor', 'tahun', 'page', 'pageFrom', 'routes', 'dokumenTerkait', 'catatanStatus'));
+        return view('pages.peraturan_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'nomor', 'kategori', 'tahun', 'page', 'pageFrom', 'routes', 'dokumenTerkait', 'catatanStatus'));
     }
     
     public function detailApi($menuslug, $encryptedId)
@@ -214,10 +216,11 @@ class ProdukHukumController extends Controller
         
         $keyword = '';
         $nomor = '';
+        $kategori = '';
         $tahun = '';
         $page = '';
         $pageFrom = 'home';
         
-        return view('pages.peraturan_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'nomor', 'tahun', 'page', 'pageFrom'));
+        return view('pages.peraturan_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumDocument', 'keyword', 'nomor', 'kategori', 'tahun', 'page', 'pageFrom'));
     }
 }

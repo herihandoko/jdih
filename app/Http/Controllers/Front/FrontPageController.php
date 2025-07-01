@@ -100,11 +100,12 @@ class FrontPageController extends Controller
         if ($request->isMethod('post')) {
             try {
                 $id = decrypt($request->input('id'));
-                $keyword = decrypt($request->input('keyword'));
-                $tahun = decrypt($request->input('tahun'));
-                $page = decrypt($request->input('page'));
-                $pageFrom = $request->input('pagefrom');
-                $routes = decrypt($request->input('routes'));
+                $keyword = $request->input('keyword') ? decrypt($request->input('keyword')) : '';
+                $kategori = $request->input('kategori') ? decrypt($request->input('kategori')) : '';
+                $tahun = $request->input('tahun') ? decrypt($request->input('tahun')) : '';
+                $page = $request->input('page') ? decrypt($request->input('page')) : 1;
+                $pageFrom = $request->input('pagefrom') ?: '';
+                $routes = $request->input('routes') ? decrypt($request->input('routes')) : '';
             } catch (\Exception $e) {
                 // For direct URL access when POST data is invalid
                 $document = ProdukHukumList::where('slug', $slug)
@@ -120,6 +121,7 @@ class FrontPageController extends Controller
                 
                 $id = $document->id;
                 $keyword = '';
+                $kategori = '';
                 $tahun = '';
                 $page = 1;
                 $pageFrom = '';
@@ -141,6 +143,7 @@ class FrontPageController extends Controller
             
             $id = $document->id;
             $keyword = '';
+            $kategori = '';
             $tahun = '';
             $page = 1;
             $pageFrom = '';
@@ -172,7 +175,7 @@ class FrontPageController extends Controller
         $produkHukumListDocTerkait = ProdukHukumListDocTerkait::where('produk_hukum_lists_id', $id)->get();
         $produkHukumListCatatanStat = ProdukHukumListCatatanStat::where('produk_hukum_lists_id', $id)->get();
 
-        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumListDocument', 'produkHukumListDocTerkait', 'produkHukumListCatatanStat', 'keyword', 'tahun', 'page', 'pageFrom', 'routes'));
+        return view('pages.frontpage_detail', compact('g_setting', 'menu', 'produkHukumDetail', 'produkHukumListDocument', 'produkHukumListDocTerkait', 'produkHukumListCatatanStat', 'keyword', 'kategori', 'tahun', 'page', 'pageFrom', 'routes'));
     }
     
     public function detailBerita($slug) {
