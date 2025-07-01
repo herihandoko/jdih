@@ -418,11 +418,11 @@
                                                 <input style="display: none;" name="menuslug" value="{{ $menu->slug }}">
                                                 <input style="display: none;" name="slug" value="{{ $catatanStatus[$i]->slug }}">
                                                 <input style="display: none;" name="id" value="{{ $catatanStatus[$i]->id }}">
-                                                <input style="display: none;" name="keyword" value="{{ $keyword }}">
-                                                <input style="display: none;" name="tahun" value="{{ $tahun }}">
-                                                <input style="display: none;" name="page" value="{{ $page}}">
+                                                <input style="display: none;" name="keyword" value="{{ $keyword ?? '' }}">
+                                                <input style="display: none;" name="tahun" value="{{ $tahun ?? '' }}">
+                                                <input style="display: none;" name="page" value="{{ $page ?? '' }}}">
                                                 <input style="display: none;" name="pagefrom" value="{{ 'terkait' }}">
-                                                <input style="display: none;" name="routes" value="{{ $routes }}">
+                                                <input style="display: none;" name="routes" value="{{ $routes ?? '' }}">
 
                                                 <button type="submit" class="btn btn-outline-primary btn-information">
                                                     <i class="fas fa-external-link" style="color: #0080ff;"></i>
@@ -447,7 +447,7 @@
                                             @endphp
                                             <form id="detailForm" action="{{ route('front.detail.search') }}" method="POST" style="display: inline;">
                                                 @csrf
-                                                <input type="hidden" name="keyword" value="{{ $keyword }}">
+                                                <input type="hidden" name="keyword" value="{{ $keyword ?? '' }}">
                                                 @if($catatanStatus[$i]->api_name)
                                                     <input type="hidden" name="id" value="{{ $catatanStatus[$i]->idData }}">
                                                     <input type="hidden" name="api_name" value="{{ $catatanStatus[$i]->api_name }}">
@@ -456,11 +456,11 @@
                                                     <input type="hidden" name="api_name" value="{{ 'Pemerintah Provinsi Banten' }}">
                                                 @endif
                                                 <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
-                                                <input type="hidden" name="bentuk" value="{{ $bentuk }}">
-                                                <input type="hidden" name="tahun" value="{{ $tahun }}">
-                                                <input type="hidden" name="page" value="{{ $page }}">
+                                                <input type="hidden" name="bentuk" value="{{ $bentuk ?? '' }}">
+                                                <input type="hidden" name="tahun" value="{{ $tahun ?? '' }}">
+                                                <input type="hidden" name="page" value="{{ $page ?? '' }}">
                                                 <input style="display: none;" name="pagefrom" value="{{ 'terkait' }}">
-                                                <input type="hidden" name="routes" value="{{ $routes }}">
+                                                <input type="hidden" name="routes" value="{{ $routes ?? '' }}">
 
                                                 <button type="submit" class="btn btn-outline-primary btn-information">
                                                     <i class="fas fa-external-link" style="color: #0080ff;"></i>
@@ -579,12 +579,12 @@
                                         <input style="display: none;" name="menuslug" value="{{ $menu->slug }}">
                                         <input style="display: none;" name="slug" value="{{ $produkHukumDocument[$i]->slug }}">
                                         <input style="display: none;" name="id" value="{{ $produkHukumDocument[$i]->id }}">
-                                        <input style="display: none;" name="keyword" value="{{ $keyword }}">
-                                        <input style="display: none;" name="nomor" value="{{ $nomor }}">
-                                        <input style="display: none;" name="tahun" value="{{ $tahun }}">
-                                        <input style="display: none;" name="page" value="{{ $page}}">
+                                        <input style="display: none;" name="keyword" value="{{ $keyword ?? '' }}">
+                                        <input style="display: none;" name="nomor" value="{{ $nomor ?? '' }}">
+                                        <input style="display: none;" name="tahun" value="{{ $tahun ?? '' }}">
+                                        <input style="display: none;" name="page" value="{{ $page ?? '' }}}">
                                         <input style="display: none;" name="pagefrom" value="{{ 'terkait' }}">
-                                        <input style="display: none;" name="routes" value="{{ $routes }}">
+                                        <input style="display: none;" name="routes" value="{{ $routes ?? '' }}">
 
                                         <button type="submit" class="btn btn-outline-primary btn-information">
                                             <i class="fas fa-external-link" style="color: #0080ff;"></i>
@@ -610,8 +610,8 @@
                                     @endphp
                                     <form id="detailForm" action="{{ route('front.detail.search') }}" method="POST" style="display: inline;">
                                         @csrf
-                                        <input type="hidden" name="keyword" value="{{ $keyword }}">
-                                        <input type="hidden" name="nomor" value="{{ $nomor }}">
+                                        <input type="hidden" name="keyword" value="{{ $keyword ?? '' }}">
+                                        <input type="hidden" name="nomor" value="{{ $nomor ?? '' }}">
                                         @if($produkHukumDocument[$i]->api_name)
                                             <input type="hidden" name="id" value="{{ $produkHukumDocument[$i]->idData }}">
                                             <input type="hidden" name="api_name" value="{{ $produkHukumDocument[$i]->api_name }}">
@@ -620,11 +620,11 @@
                                             <input type="hidden" name="api_name" value="{{ 'Pemerintah Provinsi Banten' }}">
                                         @endif
                                         <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
-                                        <input type="hidden" name="bentuk" value="{{ $bentuk }}">
-                                        <input type="hidden" name="tahun" value="{{ $tahun }}">
-                                        <input type="hidden" name="page" value="{{ $page }}">
+                                        <input type="hidden" name="bentuk" value="{{ $bentuk ?? '' }}">
+                                        <input type="hidden" name="tahun" value="{{ $tahun ?? '' }}">
+                                        <input type="hidden" name="page" value="{{ $page ?? '' }}">
                                         <input style="display: none;" name="pagefrom" value="{{ 'terkait' }}">
-                                        <input type="hidden" name="routes" value="{{ $routes }}">
+                                        <input type="hidden" name="routes" value="{{ $routes ?? '' }}">
 
                                         <button type="submit" class="btn btn-outline-primary btn-information">
                                             <i class="fas fa-external-link" style="color: #0080ff;"></i>

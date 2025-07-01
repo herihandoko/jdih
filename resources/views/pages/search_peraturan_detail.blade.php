@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-banner">
     <div class="container">
-        <p class="subtitle">{{ $api_name }}</p>
+        <p class="subtitle">{{ $api_name ?? '' }}</p>
         <h2>{{ translateText($produkHukumDetail->judul_peraturan) }}</h2>
     </div>
 </div>
@@ -19,10 +19,10 @@
                             <input type="hidden" name="keyword" value="{{ $keyword }}">
                             <input type="hidden" name="nomor" value="{{ $nomor }}">
                             <input type="hidden" name="kategori" value="{{ $kategori ?? '' }}">
-                            <input type="hidden" name="instansi" value="{{ $instansi }}">
-                            <input type="hidden" name="bentuk" value="{{ $bentuk }}">
-                            <input type="hidden" name="tahun" value="{{ $tahun }}">
-                            <input type="hidden" name="page" value="{{ $page }}">
+                            <input type="hidden" name="instansi" value="{{ $instansi ?? '' }}">
+                            <input type="hidden" name="bentuk" value="{{ $bentuk ?? '' }}">
+                            <input type="hidden" name="tahun" value="{{ $tahun ?? '' }}">
+                            <input type="hidden" name="page" value="{{ $page ?? '' }}">
         
                             <button type="submit" class="btn btn-sm btn-links">
                                 <i class="fa fa-chevron-circle-left"></i>&nbsp;{{ translateText('Kembali') }}
