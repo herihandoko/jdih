@@ -3,7 +3,7 @@
 @section('content')
 <div class="page-banner">
     <div class="container">
-        <h1>{{ translateText('Anggota JDIHH Provinsi Banten') }}</h1>
+        <h1>{{ translateText('Anggota JDIH Provinsi Banten') }}</h1>
     </div>
 </div>
 
